@@ -402,8 +402,8 @@ details .body p { margin: 0 0 8px; }
             </div>
           </fieldset>
           <div class="field" id="onsetBox">
-            <label class="lbl" for="onset">Nogironlik belgilangan paytdagi yosh</label>
-            <div class="input-row"><input type="number" id="onset" inputmode="numeric" min="16" max="90" value="22"><span class="unit">yosh</span></div>
+            <label class="lbl" for="onset" id="onsetLbl">Nogironlik birinchi marta belgilangan yosh</label>
+            <div class="input-row" id="onsetRow"><input type="number" id="onset" inputmode="numeric" min="16" max="90" value="22"><span class="unit">yosh</span></div>
             <p class="hint" id="onsetHint"></p>
             <div class="dtab" id="disTab"></div>
           </div>
@@ -559,7 +559,7 @@ details .body p { margin: 0 0 8px; }
             <li>I va II guruhga tayinlanadi. III guruhga faqat Chernobil avariyasi bilan bog‘liq holatda (15-modda).</li>
             <li>Talab qilinadigan staj nogironlik boshlangan yoshga bog‘liq: 23 yoshgacha 2 yil, 56 yoshdan keyin 20 yil (17-modda).</li>
             <li>Staj talab qilinmaydi: ishdagi jarohat, kasb kasalligi yoki 20 yoshgacha nogiron bo‘lgan holatda (17-modda).</li>
-            <li>Staj kam bo‘lsa, pensiya mutanosib, lekin eng kam miqdordan kam emas (18, 29-moddalar). Staj umuman bo‘lmasa yoki nogironlik bolalikdan bo‘lsa, pensiya emas, ijtimoiy nafaqa beriladi.</li>
+            <li>Staj kam bo‘lsa, pensiya mutanosib, lekin eng kam miqdordan kam emas (18, 29-moddalar). Staj umuman bo‘lmasa, pensiya emas, ijtimoiy nafaqa beriladi. 20 yoshgacha (shu jumladan bolalikdan) nogiron bo‘lgan va keyin ishlaganlarga pensiya stajdan qat’i nazar tayinlanadi (17-modda).</li>
             <li>I guruhga va yolg‘iz II guruh nogironlariga ustama: pensiya hisoblash bazaviy miqdorining 75% (28-modda).</li>
           </ul>
         </div>
@@ -623,7 +623,7 @@ details .body p { margin: 0 0 8px; }
           <div class="body">
             <p>Harbiy xizmatchilar pensiyasi (alohida qonun), urush qatnashchilari va boshqa toifalar ustamalari (28-modda), uchuvchi, artist, sportchi, pedagog va tibbiyot xodimlarining maxsus toifalari, mintaqaviy koeffitsientlar (33-modda).</p>
             <p>Yillar bo‘yicha rejimda yil ichidagi oylar uchun o‘sha yilning o‘rtacha bazaviy miqdori olinadi. Jamg‘arma esa har bir oyni alohida hisoblaydi.</p>
-            <p>Taxminiy olingan joylar: bolalikdan nogiron va keyin ishlagan shaxs uchun staj talabi 2 yil deb olindi; boquvchi pensioner yoki ishdagi jarohatdan vafot etganda ortiqcha staj 17-moddadagi yosh jadvali bo‘yicha hisoblandi; ishdagi jarohatda ham ortiqcha staj shu jadvaldan hisoblandi.</p>
+            <p>Taxminiy olingan joylar: boquvchi pensioner yoki ishdagi jarohatdan vafot etganda ortiqcha staj 17-moddadagi yosh jadvali bo‘yicha hisoblandi; ishdagi jarohatda ham ortiqcha staj shu jadvaldan hisoblandi.</p>
             <p>Ilgari ba’zi manbalarda 5 va undan ko‘p bola tuqqan onalar uchun erta pensiya ko‘rsatilgan. Amaldagi Qonun matnida bu band yo‘q, shuning uchun hisoblagichga kiritilmadi.</p>
           </div>
         </details>
@@ -881,9 +881,10 @@ function calc(s) {
     if (noWage) { r.kind = 'empty'; return r; }
     let req, extraOver;
     if (s.cause === 'injury') { req = 0; extraOver = disRequired(s.onset); r.checks.push({ st: 'ok', t: 'Ishdagi jarohat yoki kasb kasalligi: staj talab qilinmaydi (17-modda)' }); }
+    else if (s.cause === 'child') { req = 0; extraOver = 2; r.checks.push({ st: 'ok', t: 'Bolalikdan (20 yoshgacha) nogironlik: staj talab qilinmaydi, pensiya stajdan qat’i nazar tayinlanadi (17-modda)' }); }
     else if (s.cause === 'general' && s.onset < 20) { req = 0; extraOver = disRequired(s.onset); r.checks.push({ st: 'ok', t: '20 yoshgacha nogiron bo‘lgan: staj talab qilinmaydi (17-modda)' }); }
     else {
-      req = s.cause === 'child' ? 2 : disRequired(s.onset); extraOver = req;
+      req = disRequired(s.onset); extraOver = req;
       const ok = months >= req * 12;
       r.checks.push({ st: ok ? 'ok' : 'warn', t: 'Staj ' + stajText(months) + ': to‘liq pensiya uchun ' + req + ' yil kerak (17-modda)' + (ok ? '' : '. Pensiya stajga mutanosib (18-modda)') });
     }
@@ -1067,7 +1068,7 @@ function render() {
   $('privBox').hidden = T !== 'priv';
   $('birthBox').hidden = !isAgeLike;
   $('disBox').hidden = T !== 'dis';
-  $('onsetBox').hidden = s.cause === 'child';
+  $('onsetBox').hidden = false; $('onsetRow').hidden = $('onsetLbl').hidden = s.cause === 'child';
   $('loneBox').hidden = s.group !== '2';
   $('groupHint').textContent = s.group === '1' ? 'I guruhga pensiyaga 75% × pensiya bazaviy miqdori ustama qo‘shiladi.' : (s.group === '3' ? 'III guruhga pensiya faqat Chernobil bilan bog‘liq holatda.' : '');
   $('survBox').hidden = T !== 'surv';
@@ -1094,14 +1095,14 @@ function render() {
   else if (T === 'priv') $('stajHint').textContent = pr ? 'Bu toifa uchun umumiy staj kamida ' + pr.total + ' yil bo‘lishi kerak.' : '';
   else if (T === 'dis') $('stajHint').textContent = s.cause === 'injury' ? 'Ishdagi jarohatda staj talab qilinmaydi, lekin ish haqi hisobga olinadi.' : 'Nogironlik belgilangan paytgacha bo‘lgan staj.';
   else $('stajHint').textContent = s.scause === 'general' ? 'Boquvchining vafot etgan kunigacha bo‘lgan staji.' : 'Bu holda staj talab qilinmaydi, lekin pensiya boquvchining ish haqidan hisoblanadi.';
-  $('onsetHint').textContent = s.cause === 'injury' ? 'Staj talab qilinmaydi. Shu yoshdagi talabdan (' + disRequired(s.onset) + ' yil) ortiq har bir yil uchun +1%.' : (s.onset < 20 ? '20 yoshgacha nogiron bo‘lganlarga staj talab qilinmaydi (Qonun 17-modda).' : 'Shu yoshda to‘liq pensiya uchun ' + disRequired(s.onset) + ' yil staj kerak.');
+  $('onsetHint').textContent = s.cause === 'child' ? 'Talab qilinadigan staj hozirgi yoshga emas, nogironlik birinchi marta belgilangan yoshga qarab aniqlanadi. Bolalikdan nogironlikda bu yosh 20 dan kichik, shuning uchun staj talab qilinmaydi (Qonun 17-modda).' : s.cause === 'injury' ? 'Staj talab qilinmaydi. Shu yoshdagi talabdan (' + disRequired(s.onset) + ' yil) ortiq har bir yil uchun +1%.' : (s.onset < 20 ? '20 yoshgacha nogiron bo‘lganlarga staj talab qilinmaydi (Qonun 17-modda).' : 'Shu yoshda to‘liq pensiya uchun ' + disRequired(s.onset) + ' yil staj kerak.');
   (function () {
     const rows = [['20 yoshgacha', 0]]; let from = 20;
     DIS_TABLE.forEach(([lim, yrs]) => { rows.push([lim === Infinity ? from + ' yosh va undan katta' : (from === 20 ? '20–' + (lim - 1) : from + '–' + (lim - 1)) + (lim === Infinity ? '' : ' yosh'), yrs]); from = lim; });
-    const cur = s.onset < 20 ? 0 : DIS_TABLE.findIndex(([lim]) => s.onset < lim) + 1;
+    const cur = (s.cause === 'child' || s.onset < 20) ? 0 : DIS_TABLE.findIndex(([lim]) => s.onset < lim) + 1;
     const t = $('disTab');
-    t.hidden = s.cause !== 'general';
-    t.innerHTML = '<div class="dt-h">Yoshga qarab talab qilinadigan staj</div>' + rows.map((r, k) => '<div class="dt-r' + (k === cur ? ' on' : '') + '"><span>' + r[0] + '</span><span>' + (r[1] ? r[1] + ' yil' : 'talab qilinmaydi') + '</span></div>').join('') + '<div class="dt-n">Nogironlik boshlangan paytdagi yosh olinadi. Staj kam bo‘lsa, pensiya stajga mutanosib tayinlanadi (Qonun 17–18-moddalar).</div>';
+    t.hidden = s.cause === 'injury';
+    t.innerHTML = '<div class="dt-h">Yoshga qarab talab qilinadigan staj</div>' + rows.map((r, k) => '<div class="dt-r' + (k === cur ? ' on' : '') + '"><span>' + r[0] + '</span><span>' + (r[1] ? r[1] + ' yil' : 'talab qilinmaydi') + '</span></div>').join('') + '<div class="dt-n">Hozirgi yosh emas, nogironlik birinchi marta belgilangan yosh olinadi. Staj kam bo‘lsa, pensiya stajga mutanosib tayinlanadi (Qonun 17–18-moddalar).</div>';
   })();
   $('deathHint').textContent = (s.scause === 'general' ? 'Shu yoshda ' + disRequired(s.deathAge) + ' yil staj talab qilinadi.' : 'Staj talab qilinmaydi.') + ' Undan ortiq har bir yil har bir a’zoning pensiyasiga 0,5% qo‘shadi.';
   const sh = $('salaryHint');
