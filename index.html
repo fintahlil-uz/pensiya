@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinTahlil.uz pensiya hisoblagichi</title>
+<meta name="description" content="Pensiyangiz qancha bo‘lishini taxminiy hisoblang: yoshga doir, imtiyozli, nogironlik va boquvchisini yo‘qotganlik pensiyasi. Qonun va 2026-yil miqdorlari asosida.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FinTahlil.uz">
+<meta property="og:title" content="Pensiya hisoblagich · FinTahlil.uz">
+<meta property="og:description" content="Pensiyangiz qancha bo‘lishini 1 daqiqada taxminiy hisoblang. Qonun va 2026-yil miqdorlari asosida.">
+<meta property="og:url" content="https://fintahlil-uz.github.io/pensiya/">
+<meta property="og:image" content="https://fintahlil-uz.github.io/pensiya/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="uz_UZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1F2A44">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F2A44'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-weight='700' font-size='34' text-anchor='middle' fill='%23F4EFE6'%3EF%3C/text%3E%3Ccircle cx='47' cy='42' r='4' fill='%23B08D57'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* FinTahlil.uz brendi: krem fon, to'q ko'k asosiy, to'q yashil ikkinchi, mat oltin faqat kalit raqam uchun ("Old Money", minimalist).
+   Layout: brend qatori; pensiya turi kartalari; shakl (chap) + yopishqoq natija (o'ng); pastda qo'llanma va brend bloki */
+:root {
+  --bg: #F4EFE6;
+  --surface: #FBF8F2;
+  --surface-2: #F4EFE6;
+  --ink: #2B2B2B;
+  --navy: #1F2A44;
+  --green: #2F4F3E;
+  --gold: #B08D57;
+  --muted: #6B655B;
+  --line: #DDD3C2;
+  --accent: #1F2A44;
+  --accent-soft: #EAE2D3;
+  --accent-ink: #F4EFE6;
+  --hero: #1F2A44;
+  --hero-ink: #F4EFE6;
+  --hero-soft: #C9C2B3;
+  --hero-gold: #CFAE78;
+  --ok: #9DBFA6;
+  --warnc: #D9B77E;
+  --noc: #D9907F;
+  --warn: #6E5226;
+  --warn-bg: #F6ECD9;
+  --warn-line: #E2CDA3;
+  --seg1: #F4EFE6;
+  --seg2: #A9B6CB;
+  --seg3: #9DBFA6;
+  --seg4: #B08D57;
+  --seg5: #6F7E99;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141B2C; --surface: #1F2A44; --surface-2: #19223A; --ink: #F4EFE6; --navy: #F4EFE6; --green: #9DBFA6; --gold: #CFAE78;
+    --muted: #B8B0A1; --line: #34425F; --accent: #E6D7B8; --accent-soft: #2A3756; --accent-ink: #1F2A44;
+    --hero: #0E1422; --hero-ink: #F4EFE6; --hero-soft: #B8B0A1; --hero-gold: #D6B884;
+    --warn: #E2C28E; --warn-bg: #2A2619; --warn-line: #5A4A2A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141B2C; --surface: #1F2A44; --surface-2: #19223A; --ink: #F4EFE6; --navy: #F4EFE6; --green: #9DBFA6; --gold: #CFAE78;
+  --muted: #B8B0A1; --line: #34425F; --accent: #E6D7B8; --accent-soft: #2A3756; --accent-ink: #1F2A44;
+  --hero: #0E1422; --hero-ink: #F4EFE6; --hero-soft: #B8B0A1; --hero-gold: #D6B884;
+  --warn: #E2C28E; --warn-bg: #2A2619; --warn-line: #5A4A2A; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5; padding-bottom: 92px; -webkit-text-size-adjust: 100%; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; color: var(--navy); font-weight: 700; }
+.num { font-variant-numeric: tabular-nums; }
+[hidden] { display: none !important; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 22px 16px 32px; }
+
+/* Sarlavha */
+.hero { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.hero h1 { font-size: clamp(32px, 7vw, 48px); letter-spacing: -0.01em; }
+.hero p { margin: 0; color: var(--muted); max-width: 62ch; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--navy); }
+
+.notice { display: flex; gap: 10px; align-items: flex-start; background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn); border-radius: 12px; padding: 10px 14px; font-size: 14px; margin-bottom: 18px; }
+.notice svg { flex: none; margin-top: 2px; }
+
+/* Pensiya turi kartalari */
+.types-h { font-size: 15px; font-weight: 700; margin: 0 0 10px; font-family: var(--font-body); }
+.types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+@media (min-width: 860px) { .types { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; } }
+.tcard { position: relative; display: block; cursor: pointer; }
+.tcard input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.tcard .tc { height: 100%; display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); transition: border-color .15s, box-shadow .15s, background .15s; }
+.tcard .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.tcard b { font-size: 15px; line-height: 1.25; }
+.tcard small { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.tcard input:checked + .tc { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1.5px var(--accent) inset; }
+.tcard input:checked + .tc .ic { background: var(--accent); color: var(--accent-ink); }
+.tcard input:focus-visible + .tc { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Asosiy setka */
+.grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 860px) {
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 410px); gap: 24px; }
+  .side { position: sticky; top: 16px; }
+  body { padding-bottom: 32px; }
+  #dock { display: none !important; }
+}
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+.form { display: flex; flex-direction: column; gap: 6px; }
+.step { display: flex; flex-direction: column; gap: 16px; padding: 6px 0 18px; border-bottom: 1px solid var(--line); }
+.step:last-child { border-bottom: 0; padding-bottom: 4px; }
+.step-h { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-top: 8px; color: var(--navy); }
+.step-h .sn { width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--surface); display: grid; place-items: center; font-family: var(--font-body); font-size: 13px; font-weight: 700; flex: none; }
+
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend, .lbl { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 8px; display: block; }
+.hint { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+.hint.warn { color: var(--warn); }
+.sub-box { display: flex; flex-direction: column; gap: 16px; }
+
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg label { flex: 1 1 0; min-width: 92px; position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.seg span { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 46px; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface-2); font-weight: 500; font-size: 15px; line-height: 1.25; transition: background .15s, border-color .15s; }
+.seg input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.seg input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Imtiyozli toifalar */
+.cats { display: flex; flex-direction: column; gap: 8px; }
+.cat { position: relative; display: block; cursor: pointer; }
+.cat input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.cat .cb { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.cat .dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); margin-top: 1px; }
+.cat b { display: block; font-size: 14.5px; font-weight: 600; }
+.cat small { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.cat input:checked + .cb { border-color: var(--accent); background: var(--accent-soft); }
+.cat input:checked + .cb .dot { border-color: var(--accent); background: radial-gradient(var(--accent) 45%, transparent 50%); }
+.cat input:focus-visible + .cb { outline: 3px solid var(--accent); outline-offset: 2px; }
+.cat.off .cb { opacity: .55; }
+
+.field { display: flex; flex-direction: column; }
+.input-row { display: flex; align-items: stretch; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface-2); overflow: hidden; }
+.input-row:focus-within { border-color: var(--accent); }
+.input-row input, .input-row select { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 18px; font-weight: 600; padding: 11px 14px; outline: none; font-variant-numeric: tabular-nums; }
+.input-row .unit { display: flex; align-items: center; padding: 0 14px; color: var(--muted); font-size: 14px; border-left: 1px solid var(--line); white-space: nowrap; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+
+.staj-box { display: grid; grid-template-columns: 42px minmax(0, 1fr) 42px; align-items: center; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface-2); min-height: 64px; }
+.staj-box:focus-within { border-color: var(--accent); }
+.staj-box .stp { height: 100%; width: 42px; border: 0; background: transparent; color: var(--ink); font-size: 22px; cursor: pointer; border-radius: 10px; }
+.staj-box .stp:hover { background: var(--line); }
+.staj-box .stp:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+.staj-val { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.staj-val input { width: 100%; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 22px; font-weight: 700; text-align: center; padding: 6px 0 0; outline: none; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.staj-val span { font-size: 12px; color: var(--muted); padding-bottom: 6px; }
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+.staj-total { margin: 8px 0 0; font-size: 14px; font-weight: 700; }
+input[type="range"] { width: 100%; margin: 10px 0 0; accent-color: var(--accent); height: 28px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 14px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.chip:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.yhead, .yrow { display: grid; grid-template-columns: 92px 70px minmax(0, 1fr); gap: 8px; }
+.yhead { font-size: 12px; color: var(--muted); font-weight: 600; }
+.yrows { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.yrow select, .yrow input { width: 100%; min-width: 0; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface-2); color: var(--ink); font: inherit; font-size: 16px; font-weight: 600; padding: 9px 8px; font-variant-numeric: tabular-nums; }
+.yrow select:focus-visible, .yrow input:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.ylist { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.ylist li { padding: 9px 0; border-bottom: 1px solid var(--line); }
+.yl-top { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.yl-top b { white-space: nowrap; }
+.yl-calc { font-size: 12px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ylist .yl-sum { border-bottom: 0; }
+.ylist .yl-sum .yl-top { font-size: 15px; font-weight: 700; color: var(--accent); }
+
+.check { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.check input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--accent); flex: none; }
+.check b { display: block; font-weight: 600; font-size: 15px; }
+.check small { color: var(--muted); font-size: 13px; }
+
+/* Natija */
+.result { background: var(--hero); color: var(--hero-ink); border-radius: 20px; padding: 22px 20px; border: 1px solid color-mix(in srgb, var(--hero-ink) 10%, transparent); }
+.rhead { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.rhead .mark { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--hero-soft); white-space: nowrap; }
+
+/* Brend qatori va pastki blok */
+.brandbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; margin-bottom: 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--navy); text-decoration: none; letter-spacing: -0.005em; }
+.brand span { color: var(--gold); }
+.brand:focus-visible, .social a:focus-visible, .bf-links a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+.social { display: flex; gap: 8px; flex-wrap: wrap; }
+.social a { font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.social a:hover { border-color: var(--navy); }
+.brandfoot { margin-top: 24px; background: var(--hero); color: var(--hero-ink); border-radius: 20px; padding: 24px 20px; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); border: 0; }
+@media (min-width: 760px) { .brandfoot { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; padding: 28px; } }
+.brandfoot .brand { color: var(--hero-ink); font-size: 26px; }
+.brandfoot .brand span { color: var(--hero-gold); }
+.brandfoot p { margin: 8px 0 0; color: var(--hero-soft); font-size: 14px; max-width: 52ch; }
+.bf-links { display: flex; flex-direction: column; gap: 8px; }
+.bf-links a { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--hero-ink) 18%, transparent); color: var(--hero-ink); text-decoration: none; font-size: 14px; font-weight: 600; }
+.bf-links a:hover { border-color: var(--hero-gold); }
+.bf-links a small { color: var(--hero-soft); font-weight: 500; font-size: 13px; }
+.copy { color: var(--muted); font-size: 12.5px; text-align: center; margin: 14px 0 0; }
+.pill { display: inline-block; font-size: 13px; font-weight: 700; padding: 4px 11px; border-radius: 999px; background: color-mix(in srgb, var(--hero-ink) 16%, transparent); }
+.pill.ok { background: #2F4F3E; color: #F4EFE6; }
+.pill.mid { background: #CFAE78; color: #1F2A44; }
+.pill.no { background: #8C3B33; color: #F4EFE6; }
+.big { font-family: var(--font-display); font-size: clamp(40px, 9.5vw, 58px); font-weight: 700; line-height: 1.05; margin: 16px 0 6px; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; color: var(--hero-gold); }
+.big small { font-family: var(--font-body); font-size: 0.3em; font-weight: 600; margin-left: 8px; color: var(--hero-soft); letter-spacing: 0; }
+.subline { color: var(--hero-soft); font-size: 14px; margin: 0; }
+.rtitle { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--hero-soft); margin: 20px 0 8px; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.checks li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 14px; align-items: start; }
+.checks .ci { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.checks .ok .ci { background: var(--ok); color: #1F2A44; }
+.checks .warn .ci { background: var(--warnc); color: #1F2A44; }
+.checks .no .ci { background: var(--noc); color: #1F2A44; }
+.bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--hero-ink) 12%, transparent); gap: 2px; }
+.bar span { display: block; height: 100%; min-width: 4px; }
+.rows { margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; }
+.rows div { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid color-mix(in srgb, var(--hero-ink) 14%, transparent); font-size: 14.5px; }
+.rows i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.rows dt { color: var(--hero-soft); }
+.rows dt small { display: block; font-size: 12px; opacity: .85; }
+.rows dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rows div.total { border-bottom: 0; font-size: 16px; }
+.rows div.total dt { color: var(--hero-ink); font-weight: 700; }
+.rows div.total dd { font-weight: 800; }
+.msg { margin: 12px 0 0; font-size: 14px; }
+.msg p { margin: 0 0 8px; }
+.tipbox { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--hero-ink) 11%, transparent); font-size: 14px; }
+.tipbox p { margin: 0; }
+.tipbox p + p { margin-top: 6px; }
+.payer { margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; font-size: 13.5px; background: color-mix(in srgb, var(--hero-ink) 10%, transparent); }
+.payer:empty { display: none; }
+.payer b { font-weight: 700; }
+.retire { margin-top: 14px; padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--hero-ink) 22%, transparent); font-size: 14px; }
+.retire b { font-size: 16px; }
+.retire small { display: block; color: var(--hero-soft); font-size: 12.5px; margin-top: 4px; }
+
+/* Pastki bo'limlar */
+.more { display: grid; gap: 16px; margin-top: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 860px) { .more { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; } .more .span2 { grid-column: 1 / -1; } }
+.card h2 { font-size: 19px; margin-bottom: 4px; }
+.lead { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+.tgroup { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--green); margin: 14px 0 4px; }
+.tlist { list-style: none; margin: 0; padding: 0; }
+.tlist li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.tlist li:last-child { border-bottom: 0; }
+.tlist .n { font-size: 14px; }
+.tlist .v { font-weight: 700; font-size: 15px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tlist .d { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+
+.guide { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) { .guide { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.gitem { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: var(--surface-2); }
+.gitem h3 { font-size: 16px; margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
+.gitem ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink); }
+.gitem li { margin-bottom: 4px; }
+.gitem li b { font-weight: 600; }
+
+.disclaimer { background: var(--warn-bg); border: 1px solid var(--warn-line); }
+.disclaimer h2 { font-size: 17px; color: var(--warn); display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.disclaimer p { margin: 0 0 8px; font-size: 14px; }
+.disclaimer p:last-child { margin: 0; }
+
+details { border-top: 1px solid var(--line); padding: 12px 0; }
+details:first-of-type { border-top: 0; padding-top: 0; }
+summary { cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--muted); font-weight: 400; font-size: 20px; line-height: 1; }
+details[open] summary::after { content: "–"; }
+summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+details .body { margin-top: 10px; font-size: 14px; color: var(--muted); }
+details .body p { margin: 0 0 8px; }
+.param { width: 100%; border-collapse: collapse; font-size: 14px; }
+.param td { padding: 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.param td:last-child { text-align: right; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; padding-left: 12px; }
+.srclist { margin: 0; padding-left: 18px; }
+.srclist li { margin-bottom: 4px; }
+.srclist a { color: var(--accent); }
+.stamp { color: var(--muted); font-size: 13px; margin-top: 12px; }
+
+#dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--hero); color: var(--hero-ink); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); border: 0; width: 100%; font: inherit; text-align: left; cursor: pointer; box-shadow: 0 -6px 20px rgba(0,0,0,.18); }
+#dock .d-l { display: flex; flex-direction: column; min-width: 0; }
+#dock .d-l span { font-size: 12px; color: var(--hero-soft); }
+#dock .d-l b { font-family: var(--font-display); font-size: 22px; font-variant-numeric: lining-nums tabular-nums; color: var(--hero-gold); }
+#dock .d-r { font-size: 13px; color: var(--hero-soft); white-space: nowrap; }
+#dock:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandbar">
+    <a class="brand" href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener" aria-label="FinTahlil.uz Instagram sahifasi">FinTahlil<span>.uz</span></a>
+    <nav class="social" aria-label="FinTahlil.uz ijtimoiy tarmoqlarda">
+      <a href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://t.me/fintahlil_uz" target="_blank" rel="noopener">Telegram</a>
+    </nav>
+  </div>
+  <header class="hero">
+    <div class="badges"><span class="badge">Ma’lumotlar: 2026-yil noyabr</span><span class="badge">Pensiya jamg‘armasi usuli bo‘yicha</span></div>
+    <h1>Pensiya hisoblagich</h1>
+    <p>Pensiya turini tanlang, ma’lumotlaringizni kiriting. Taxminiy oylik pensiya, unga qanday shartlar kerakligi va har bir qism qayerdan kelgani shu zahoti ko‘rinadi.</p>
+  </header>
+
+  <div class="notice" role="note">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor"/></svg>
+    <span><strong>Taxminiy hisob.</strong> Natija siz kiritgan ma’lumotlar va ochiq manbalardagi qoidalar asosida chiqariladi. Haqiqiy pensiya rasmiy yozuvlaringizga qarab farq qilishi mumkin.</span>
+  </div>
+
+  <p class="types-h" id="typesLabel">Qaysi pensiyani hisoblaymiz?</p>
+  <div class="types" role="radiogroup" aria-labelledby="typesLabel">
+    <label class="tcard"><input type="radio" name="ptype" value="age" checked><span class="tc">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+      <b>Yoshga doir</b><small>Erkaklar 60, ayollar 55 yoshda</small></span></label>
+    <label class="tcard"><input type="radio" name="ptype" value="priv"><span class="tc">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+      <b>Imtiyozli (erta)</b><small>Og‘ir mehnat, ishdan bo‘shatilganlar va boshqalar</small></span></label>
+    <label class="tcard"><input type="radio" name="ptype" value="dis"><span class="tc">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 8v6h5l2 5"/><path d="M8.5 11a5 5 0 1 0 6 7"/></svg></span>
+      <b>Nogironlik</b><small>I va II guruh</small></span></label>
+    <label class="tcard"><input type="radio" name="ptype" value="surv"><span class="tc">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0"/><path d="M14 20a4 4 0 0 1 7 0"/></svg></span>
+      <b>Boquvchisini yo‘qotganlik</b><small>Vafot etgan boquvchining oilasiga</small></span></label>
+  </div>
+
+  <div class="grid">
+    <main class="card form" aria-label="Ma’lumotlarni kiritish">
+
+      <section class="step" aria-labelledby="s1h">
+        <h2 class="step-h" id="s1h"><span class="sn">1</span><span id="s1t">Siz haqingizda</span></h2>
+
+        <fieldset id="sexBox">
+          <legend>Jins</legend>
+          <div class="seg">
+            <label><input type="radio" name="sex" value="m" checked><span>Erkak</span></label>
+            <label><input type="radio" name="sex" value="f"><span>Ayol</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset id="privBox" hidden>
+          <legend>Imtiyoz toifasi</legend>
+          <div class="cats" id="cats"></div>
+          <div class="field" id="specialBox" style="margin-top:12px">
+            <label class="lbl" for="special">Shu ro‘yxatdagi ishlarda ishlagan yillar (maxsus staj)</label>
+            <div class="input-row">
+              <input type="number" id="special" inputmode="decimal" min="0" max="50" step="0.5" value="12">
+              <span class="unit">yil</span>
+            </div>
+            <p class="hint" id="specialHint"></p>
+          </div>
+          <label class="check" id="undergroundBox" style="margin-top:10px">
+            <input type="checkbox" id="underground">
+            <span><b>Yer osti ishlarida ishlaganman</b><small>Maxsus staj to‘liq bo‘lmasa, yer osti ishining har bir yili pensiya yoshini 1 yilga kamaytiradi.</small></span>
+          </label>
+        </fieldset>
+
+        <div class="field" id="birthBox">
+          <span class="lbl">Tug‘ilgan sana <span style="color:var(--muted);font-weight:500">(ixtiyoriy)</span></span>
+          <div class="two">
+            <div class="input-row"><input type="number" id="birthY" inputmode="numeric" min="1940" max="2010" placeholder="Yil, masalan 1990" aria-label="Tug‘ilgan yil"></div>
+            <div class="input-row"><select id="birthM" aria-label="Tug‘ilgan oy"></select></div>
+          </div>
+          <p class="hint">Kiritsangiz, pensiyaga qachon chiqishingizni ko‘rsatamiz.</p>
+        </div>
+
+        <div id="disBox" class="sub-box" hidden>
+          <fieldset>
+            <legend>Nogironlik guruhi</legend>
+            <div class="seg">
+              <label><input type="radio" name="group" value="1"><span>I guruh</span></label>
+              <label><input type="radio" name="group" value="2" checked><span>II guruh</span></label>
+              <label><input type="radio" name="group" value="3"><span>III guruh</span></label>
+            </div>
+            <p class="hint" id="groupHint"></p>
+          </fieldset>
+          <label class="check" id="loneBox">
+            <input type="checkbox" id="lone">
+            <span><b>Yolg‘iz yashayman</b><small>Yolg‘iz II guruh nogironlariga pensiyaga ustama qo‘shiladi (Qonun 28-modda).</small></span>
+          </label>
+          <fieldset>
+            <legend>Nogironlik sababi</legend>
+            <div class="seg">
+              <label><input type="radio" name="cause" value="general" checked><span>Umumiy kasallik</span></label>
+              <label><input type="radio" name="cause" value="child"><span>Bolalikdan</span></label>
+              <label><input type="radio" name="cause" value="injury"><span>Ishdagi jarohat yoki kasb kasalligi</span></label>
+            </div>
+          </fieldset>
+          <div class="field" id="onsetBox">
+            <label class="lbl" for="onset">Nogironlik belgilangan paytdagi yosh</label>
+            <div class="input-row"><input type="number" id="onset" inputmode="numeric" min="16" max="90" value="22"><span class="unit">yosh</span></div>
+            <p class="hint" id="onsetHint"></p>
+          </div>
+        </div>
+
+        <div id="survBox" class="sub-box" hidden>
+          <div class="field">
+            <span class="lbl">Pensiya oladigan mehnatga layoqatsiz oila a’zolari soni</span>
+            <div class="staj-box" style="max-width:260px">
+              <button type="button" class="stp" id="memMinus" aria-label="Bittaga kamaytirish">−</button>
+              <div class="staj-val"><input type="number" id="members" inputmode="numeric" min="1" max="10" value="2" aria-label="Oila a’zolari soni"><span>kishi</span></div>
+              <button type="button" class="stp" id="memPlus" aria-label="Bittaga ko‘paytirish">+</button>
+            </div>
+            <p class="hint">Masalan: farzandlar, 23 yoshgacha o‘quvchi va talabalar, pensiya yoshidagi yoki nogironligi bor ota-ona, er yoki xotin.</p>
+          </div>
+          <label class="check">
+            <input type="checkbox" id="orphan">
+            <span><b>Bolalar chin yetim</b><small>Ota-onasining ikkalasidan judo bo‘lgan yoki yolg‘iz onasi vafot etgan bolalar. Har bir bolaga eng kam miqdor yuqoriroq.</small></span>
+          </label>
+          <fieldset>
+            <legend>Boquvchi haqida</legend>
+            <div class="seg">
+              <label><input type="radio" name="scause" value="general" checked><span>Ishlagan, umumiy kasallik</span></label>
+              <label><input type="radio" name="scause" value="pensioner"><span>Pensioner edi</span></label>
+              <label><input type="radio" name="scause" value="injury"><span>Ishdagi jarohatdan</span></label>
+            </div>
+          </fieldset>
+          <div class="field" id="deathBox">
+            <label class="lbl" for="deathAge">Boquvchi vafot etgan paytdagi yoshi</label>
+            <div class="input-row"><input type="number" id="deathAge" inputmode="numeric" min="16" max="100" value="45"><span class="unit">yosh</span></div>
+            <p class="hint" id="deathHint"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="s2h">
+        <h2 class="step-h" id="s2h"><span class="sn">2</span><span id="s2t">Mehnat staji</span></h2>
+        <div class="field">
+          <div class="two">
+            <div class="staj-box">
+              <button type="button" class="stp" id="stajMinus" aria-label="Stajni 1 yilga kamaytirish">−</button>
+              <div class="staj-val"><input type="number" id="staj" inputmode="numeric" min="0" max="60" value="30" aria-label="Staj, yil"><span>yil</span></div>
+              <button type="button" class="stp" id="stajPlus" aria-label="Stajni 1 yilga oshirish">+</button>
+            </div>
+            <div class="staj-box">
+              <button type="button" class="stp" id="moMinus" aria-label="Stajni 1 oyga kamaytirish">−</button>
+              <div class="staj-val"><input type="number" id="stajM" inputmode="numeric" min="0" max="11" value="0" aria-label="Staj, oy"><span>oy</span></div>
+              <button type="button" class="stp" id="moPlus" aria-label="Stajni 1 oyga oshirish">+</button>
+            </div>
+          </div>
+          <p class="staj-total" id="stajTotal"></p>
+          <input type="range" id="stajRange" min="0" max="50" value="30" aria-label="Mehnat staji, yil">
+          <p class="hint" id="stajHint"></p>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="s3h">
+        <h2 class="step-h" id="s3h"><span class="sn">3</span><span id="s3t">Ish haqi</span></h2>
+        <fieldset>
+          <legend>Qanday kiritasiz</legend>
+          <div class="seg">
+            <label><input type="radio" name="wmode" value="simple" checked><span>Bitta o‘rtacha raqam</span></label>
+            <label><input type="radio" name="wmode" value="years"><span>Yillar bo‘yicha (aniqroq)</span></label>
+          </div>
+        </fieldset>
+        <div class="field" id="simpleBox">
+          <label class="lbl" for="salary" id="salaryLbl">O‘rtacha oylik ish haqi (bugungi so‘mda)</label>
+          <div class="input-row"><input type="text" id="salary" inputmode="numeric" autocomplete="off" value="5 000 000"><span class="unit">so‘m</span></div>
+          <div class="chips" id="chips"></div>
+          <p class="hint" id="salaryHint"></p>
+        </div>
+        <div class="field" id="yearsBox" hidden>
+          <p class="hint" style="margin:0 0 10px">Eng yaxshi ketma-ket 5 yilni (60 oy) kiriting: yil, o‘sha yili ishlagan oylar soni va <b>o‘sha paytdagi</b> o‘rtacha oylik (soliq ushlanmasdan oldingi summa). Staj 5 yildan kam bo‘lsa, faqat ishlagan oylarni kiriting.</p>
+          <div class="yhead"><span>Yil</span><span>Oylar</span><span>O‘rtacha oylik, so‘m</span></div>
+          <div class="yrows" id="yrows"></div>
+          <ul class="ylist" id="ylist" aria-label="Ish haqini bugungi qiymatga keltirish"></ul>
+          <p class="hint" id="yearsHint"></p>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="s4h">
+        <h2 class="step-h" id="s4h"><span class="sn">4</span><span>Qo‘shimcha</span></h2>
+        <fieldset id="titleBox">
+          <legend>Faxriy unvon</legend>
+          <div class="cats" id="titles"></div>
+          <p class="hint">Unvon egalariga pensiya turidan qat’i nazar har oylik ustama to‘lanadi (Vazirlar Mahkamasining 2008-yil 3-yanvardagi 2-son qarori).</p>
+        </fieldset>
+        <label class="check">
+          <input type="checkbox" id="card" checked>
+          <span><b>Pensiyani bank kartasiga olaman</b><small>Pensiya jamg‘armasi to‘laydigan pensiyani kartaga oluvchilarga har oylik to‘lovning 1 foizi miqdorida qo‘shimcha to‘lanadi. Ijtimoiy nafaqalarga qo‘llanmaydi.</small></span>
+        </label>
+      </section>
+    </main>
+
+    <aside class="side">
+      <section class="card result" id="result" aria-live="polite" aria-label="Natija">
+        <div class="rhead"><span class="pill" id="pill"></span><span class="mark" aria-hidden="true">FinTahlil.uz</span></div>
+        <div class="big" id="big"></div>
+        <p class="subline" id="sub"></p>
+        <p class="payer" id="payer"></p>
+        <div id="retire"></div>
+        <p class="rtitle">Shartlar</p>
+        <ul class="checks" id="checks"></ul>
+        <div id="breakdown">
+          <p class="rtitle" id="bdTitle">Pensiya nimalardan iborat</p>
+          <div class="bar" id="bar" aria-hidden="true"></div>
+          <dl class="rows" id="rows"></dl>
+        </div>
+        <div class="msg" id="msg"></div>
+        <div class="tipbox" id="tip" hidden></div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="more">
+    <section class="card span2" aria-labelledby="guideTitle">
+      <h2 id="guideTitle">Pensiya turlari va shartlari</h2>
+      <p class="lead">Qaysi pensiyaga qanday shartlarda haqli ekaningizni shu yerdan tekshiring.</p>
+      <div class="guide">
+        <div class="gitem" style="grid-column:1/-1;border-color:var(--accent);background:var(--accent-soft)">
+          <h3>Pensiya va ijtimoiy nafaqa: farqi nimada?</h3>
+          <ul>
+            <li><b>Pensiya</b> ish staji va ish haqiga qarab hisoblanadi. Uni <b>Pensiya jamg‘armasi</b> tayinlaydi va to‘laydi. Pensiyaning uch turi bor: yoshga doir, nogironlik va boquvchisini yo‘qotganlik.</li>
+            <li><b>Ijtimoiy nafaqa</b> pensiya emas. U pensiya uchun zarur staji bo‘lmagan yoki mehnatga layoqatsiz shaxslarga qat’iy miqdorda beriladi. Uni <b>Ijtimoiy himoya milliy agentligi</b> tumandagi «Inson» ijtimoiy xizmatlar markazlari orqali tayinlaydi va to‘laydi (VM 119-son qarori).</li>
+            <li>Nafaqa turlari: yoshga doir, nogironlik (shu jumladan bolalikdan), boquvchisini yo‘qotganlik, parvarishlash va 18 yoshgacha nogironligi bor bolalarga. Bir nechtasiga huquqi bo‘lsa ham, faqat bittasi to‘lanadi.</li>
+          </ul>
+        </div>
+        <div class="gitem">
+          <h3>Yoshga doir pensiya</h3>
+          <ul>
+            <li><b>Erkaklar:</b> 60 yosh, kamida 25 yil staj. <b>Ayollar:</b> 55 yosh, kamida 20 yil staj (7-modda).</li>
+            <li>Kamida 20 yil stajli ayollar 54 yoshdan chiqishi mumkin (12¹-modda).</li>
+            <li>Staj kamida 7 yil, lekin to‘liq emas: pensiya stajga mutanosib (8, 29-moddalar).</li>
+            <li>Staj 7 yildan kam: pensiya tayinlanmaydi. O‘rniga Ijtimoiy himoya milliy agentligi yoshga doir ijtimoiy nafaqa beradi (erkaklar 65, ayollar 60 yoshda; bolalikdan nogiron farzand onalari 55 yoshda).</li>
+            <li>Miqdori: o‘rtacha oylikning 55%, talab qilingan stajdan ortiq har bir to‘liq yil uchun +1% (26, 27-moddalar).</li>
+            <li>Pensiyadan ushlab qolishlar (alimentlar, qarzlar) 50% dan oshmaydi, pensionerga kamida 715 000 so‘m qolishi kerak (2026-yil avgust o‘zgarishlari).</li>
+          </ul>
+        </div>
+        <div class="gitem">
+          <h3>Imtiyozli (erta) pensiya</h3>
+          <ul>
+            <li><b>1-son ro‘yxat</b> (kon sanoatining yetakchi kasblari): shu ishda 20 yil, yoshidan qat’i nazar (10-modda).</li>
+            <li><b>2-son ro‘yxat</b> (yer osti, o‘ta zararli va o‘ta og‘ir ishlar): erkaklar 50 yosh (20 yil, shundan 10 yili), ayollar 45 yosh (15 yil, shundan 7,5 yili). Maxsus staj kamroq bo‘lsa, yosh qisman kamayadi (11-modda).</li>
+            <li><b>3-son ro‘yxat</b> (zararli va og‘ir ishlar): erkaklar 55 yosh (25 yil, shundan 12,5 yili), ayollar 50 yosh (20 yil, shundan 10 yili) (12-modda “b”).</li>
+            <li><b>Bolalikdan nogiron farzandini</b> 8 yoshgacha tarbiyalagan onalar: 50 yosh, 20 yil staj (12-modda “z”).</li>
+            <li><b>Ishdan bo‘shatilganlar</b> (shtat qisqarishi, korxona tugatilishi): erkaklar 58 yosh/25 yil, ayollar 53 yosh/20 yil (14-modda).</li>
+            <li>Boshqalar: uchuvchilar, ayrim artistlar va sportchilar, maxsus muassasa o‘qituvchilari, qishloq tibbiyot xodimlari, ijtimoiy xodimlar (10, 12-moddalar).</li>
+          </ul>
+        </div>
+        <div class="gitem">
+          <h3>Nogironlik pensiyasi</h3>
+          <ul>
+            <li>I va II guruhga tayinlanadi. III guruhga faqat Chernobil avariyasi bilan bog‘liq holatda (15-modda).</li>
+            <li>Talab qilinadigan staj nogironlik boshlangan yoshga bog‘liq: 23 yoshgacha 2 yil, 56 yoshdan keyin 20 yil (17-modda).</li>
+            <li>Staj talab qilinmaydi: ishdagi jarohat, kasb kasalligi yoki 20 yoshgacha nogiron bo‘lgan holatda (17-modda).</li>
+            <li>Staj kam bo‘lsa, pensiya mutanosib, lekin eng kam miqdordan kam emas (18, 29-moddalar). Staj umuman bo‘lmasa yoki nogironlik bolalikdan bo‘lsa, pensiya emas, ijtimoiy nafaqa beriladi.</li>
+            <li>I guruhga va yolg‘iz II guruh nogironlariga ustama: pensiya hisoblash bazaviy miqdorining 75% (28-modda).</li>
+          </ul>
+        </div>
+        <div class="gitem">
+          <h3>Boquvchisini yo‘qotganlik pensiyasi</h3>
+          <ul>
+            <li>Boquvchining qaramog‘idagi mehnatga layoqatsiz oila a’zolariga beriladi: 18 yoshgacha bolalar (o‘quvchi va talabalar 23 yoshgacha), pensiya yoshidagi yoki nogironligi bor ota-ona, er (xotin) va boshqalar (19, 20-moddalar).</li>
+            <li>Har bir a’zoga boquvchi o‘rtacha oyligining 30%, kamida eng kam pensiyaning 50%. Chin yetimlarga kamida 100% (26-modda).</li>
+            <li>Boquvchining talabdan ortiq har bir yil stajiga har bir a’zoga +0,5% (27-modda).</li>
+            <li>Ishdagi jarohatdan vafot etgan yoki pensioner bo‘lgan boquvchi uchun staj talab qilinmaydi. Staj kam bo‘lsa, pensiya mutanosib (21, 22-moddalar).</li>
+          </ul>
+        </div>
+        <div class="gitem" style="grid-column:1/-1">
+          <h3>Stajga nimalar kiradi (37-modda)</h3>
+          <ul>
+            <li>Mehnat shartnomasi bo‘yicha ish, harbiy xizmat, ichki ishlar va Milliy gvardiyadagi xizmat; ijtimoiy soliq to‘langan yakka tartibdagi tadbirkorlik va o‘zini o‘zi band qilish. 2026-yil 1-oktyabrdan o‘zini o‘zi band qilganlar uchun belgilangan ijtimoiy soliqni to‘lagan shaxsga yiliga 1 yil staj avtomatik hisoblanadi (PQ-355).</li>
+            <li>Bolani 3 yoshgacha parvarishlash ta’tili (jami ko‘pi bilan 6 yil), kunduzgi ta’limda o‘qish, I guruh nogironi, nogiron bola yoki 80 yoshdan oshgan keksani parvarishlash. Bu davrlar umumiy ish staji kamida 7 yil bo‘lsagina hisobga olinadi.</li>
+            <li>Yoshga doir pensiya tayinlangandan keyin ishlangan vaqt shu pensiya uchun stajga qo‘shilmaydi.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="todayTitle">
+      <h2 id="todayTitle">Bugungi kundagi hisoblash miqdorlari</h2>
+      <p class="lead">Hisoblagich shu miqdorlar bilan ishlaydi. Holat: 2026-yil noyabr.</p>
+      <div id="todayList"></div>
+    </section>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="card disclaimer" role="note">
+        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>Muhim ogohlantirish</h2>
+        <p>Bu hisob-kitob siz kiritgan ma’lumotlar va ochiq manbalardagi qoidalar (2026-yil noyabr holati) asosida bajarildi. U rasmiy hujjat yoki kafolat emas.</p>
+        <p>Haqiqiy pensiyani Pensiya jamg‘armasi rasmiy staj va ish haqi yozuvlaringiz bo‘yicha, har oyni alohida hisoblab belgilaydi. Shu sababli u bu natijadan farq qilishi mumkin. Qoidalar va miqdorlar ham yil davomida o‘zgaradi.</p>
+        <p>Aniq pensiya miqdorini Pensiya jamg‘armasining tuman (shahar) bo‘limida, my.gov.uz portalida yoki ishonch telefoni 12-71 orqali aniqlang. Ijtimoiy nafaqa bo‘yicha esa tumaningizdagi «Inson» ijtimoiy xizmatlar markaziga murojaat qiling.</p>
+      </section>
+
+      <section class="card">
+        <details>
+          <summary>Hisob qanday ishlaydi</summary>
+          <div class="body">
+            <p><b>1. O‘rtacha oylik.</b> Har bir oylik o‘sha oydagi bazaviy miqdorga bo‘linadi (yakka tartibdagi koeffitsient). Koeffitsient oxirgi 12 oyning o‘rtacha bazaviy miqdoriga ko‘paytiriladi. Shu tariqa eski oyliklar bugungi qiymatga keltiriladi.</p>
+            <p><b>2. Chegara.</b> O‘rtacha oylik 12 × pensiya hisoblash bazaviy miqdoridan (6 048 000 so‘m) oshsa, chegaragacha qismi olinadi.</p>
+            <p><b>3. Yoshga doir va nogironlik pensiyasi.</b> 55% × o‘rtacha oylik + talab qilingan stajdan ortiq har bir to‘liq yil uchun 1%. Staj yetmasa: 55% × oylik × (staj ÷ talab qilingan staj).</p>
+            <p><b>4. Boquvchisini yo‘qotganlik pensiyasi.</b> Har bir oila a’zosiga 30% × boquvchining o‘rtacha oyligi.</p>
+            <p><b>5. Eng kam miqdor.</b> Natija eng kam pensiyadan past bo‘lsa, eng kam miqdorgacha to‘ldiriladi.</p>
+            <p><b>6. Ustama va karta.</b> Faxriy unvon ustamasi qo‘shiladi, pensiyani kartaga olganda jami summaga 1% qo‘shiladi.</p>
+            <p><b>7. Ijtimoiy nafaqa.</b> Pensiya tayinlanmaydigan holatlarda qat’iy miqdordagi nafaqa ko‘rsatiladi. U pensiya emas, uni Ijtimoiy himoya milliy agentligi to‘laydi, karta qo‘shimchasi va unvon ustamasi unga qo‘shilmaydi.</p>
+            <p>Nogironlik pensiyasi va boquvchisini yo‘qotganlik pensiyasi uchun talab qilingan staj (yoshga qarab): 23 yoshgacha 2 yil, 23–26: 3, 26–31: 5, 31–36: 7, 36–41: 9, 41–46: 11, 46–51: 14, 51–56: 17, 56 va undan katta: 20 yil.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Bazaviy miqdorlar jadvali</summary>
+          <div class="body">
+            <p>Pensiya jamg‘armasi ish haqini qayta hisoblashda qo‘llaydigan bazaviy miqdorlar. 2026-yil 1-sentyabrdagi qiymat PF-115 farmonidan olindi.</p>
+            <table class="param" id="baseTable"></table>
+          </div>
+        </details>
+        <details>
+          <summary>Hisobga olinmagan va taxminiy joylar</summary>
+          <div class="body">
+            <p>Harbiy xizmatchilar pensiyasi (alohida qonun), urush qatnashchilari va boshqa toifalar ustamalari (28-modda), uchuvchi, artist, sportchi, pedagog va tibbiyot xodimlarining maxsus toifalari, mintaqaviy koeffitsientlar (33-modda).</p>
+            <p>Yillar bo‘yicha rejimda yil ichidagi oylar uchun o‘sha yilning o‘rtacha bazaviy miqdori olinadi. Jamg‘arma esa har bir oyni alohida hisoblaydi.</p>
+            <p>Taxminiy olingan joylar: bolalikdan nogiron va keyin ishlagan shaxs uchun staj talabi 2 yil deb olindi; boquvchi pensioner yoki ishdagi jarohatdan vafot etganda ortiqcha staj 17-moddadagi yosh jadvali bo‘yicha hisoblandi; ishdagi jarohatda ham ortiqcha staj shu jadvaldan hisoblandi.</p>
+            <p>Ilgari ba’zi manbalarda 5 va undan ko‘p bola tuqqan onalar uchun erta pensiya ko‘rsatilgan. Amaldagi Qonun matnida bu band yo‘q, shuning uchun hisoblagichga kiritilmadi.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Pensiya islohoti: loyiha va qabul qilingan hujjatlar</summary>
+          <div class="body">
+            <p><b>Hali qabul qilinmagan (loyiha).</b> “Aholi farovonligini ta’minlash va pensiya ta’minoti tizimini isloh qilish chora-tadbirlari to‘g‘risida”gi Prezident farmoni loyihasi (ID-10855) 2026-yil 15–30-sentyabrda jamoatchilik muhokamasida bo‘ldi. 2026-yil 24-noyabr holatiga ko‘ra imzolangani haqida ma’lumot topilmadi. Loyihadagi takliflar:</p>
+            <ul style="margin:0 0 8px;padding-left:18px">
+              <li>2028-yildan pensiya yoshini har yili 3 oyga oshirib, 2039-yilda erkaklar uchun 63, ayollar uchun 58 yoshga yetkazish;</li>
+              <li>2027-yildan 20 yil stajli ayollarning 54 yoshdan chiqish huquqini bekor qilish;</li>
+              <li>eng kam stajni 2027-yildan har yili 1 yilga oshirib, 2034-yilda 15 yilga yetkazish;</li>
+              <li>ish haqi hisobga olinadigan davrni 5 yildan 20 yilgacha uzaytirish;</li>
+              <li>kechroq chiqqanlar uchun ish haqi chegarasini 12 dan 15 baravargacha oshirish;</li>
+              <li>yoshga doir nafaqa yoshini erkaklar uchun 68, ayollar uchun 63 yoshga ko‘tarish.</li>
+            </ul>
+            <p>Hisoblagich amaldagi qoidalar bo‘yicha ishlaydi. Loyiha bo‘yicha pensiya yoshi natija kartasida alohida qatorda ko‘rsatiladi.</p>
+            <p><b>2026-yilda qabul qilingan va hisobga olingan hujjatlar:</b></p>
+            <ul style="margin:0 0 8px;padding-left:18px">
+              <li>PF-115 farmoni (23.06.2026): 1-iyuldan pensiya va nafaqalar 7% ga oshirildi. Hisoblagichdagi barcha miqdorlar shu farmondan olingan.</li>
+              <li>Qonunga o‘zgartirishlar (Senat 7-avgustda ma’qulladi): nogironlik pensiyasi proaktiv tayinlanadi va avtomatik qayta hisoblanadi; ushlab qolishlar pensiyaning 50% idan oshmaydi, pensionerga kamida 715 000 so‘m qoladi.</li>
+              <li>PQ-355 qarori (28.09.2026): 1-noyabrdan ishdan bo‘shatilganlarga 2 yil oldin pensiya proaktiv tayinlanadi; 1-oktyabrdan o‘zini o‘zi band qilganlar uchun belgilangan ijtimoiy soliqni to‘lagan shaxsga 1 yillik staj avtomatik hisoblanadi; 1-dekabrdan pensiyaning boshqa turiga onlayn o‘tish mumkin, yangi pensiya kichik bo‘lsa, avvalgisi saqlanadi.</li>
+              <li>Vazirlar Mahkamasining 576-son qarori (19.10.2026): oktyabr–dekabrda Andijon, Samarqand, Xorazm va Sirdaryo viloyatlarida pensiya xizmatlarini arizasiz ko‘rsatish sinovdan o‘tkaziladi (nogironlik guruhi o‘zgarganda qayta hisoblash va boshqalar).</li>
+            </ul>
+            <p>Bu hujjatlar pensiyani hisoblash formulasini o‘zgartirmagan. Ular asosan tayinlash tartibi, staj va ushlab qolishlarga tegishli.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Manbalar</summary>
+          <div class="body">
+            <p><b>Qonun hujjatlari (lex.uz)</b></p>
+            <ul class="srclist">
+              <li><a href="https://lex.uz/docs/-112314" target="_blank" rel="noopener">“Fuqarolarning davlat pensiya ta’minoti to‘g‘risida”gi Qonun (938-XII, 03.09.1993)</a></li>
+              <li><a href="https://lex.uz/docs/-8283656" target="_blank" rel="noopener">Prezident Farmoni PF-115, 23.06.2026: ish haqi, pensiya va nafaqalarni oshirish</a></li>
+              <li><a href="https://lex.uz/docs/-1976988" target="_blank" rel="noopener">2337-son yo‘riqnoma: imtiyozli pensiya ro‘yxatlarini qo‘llash tartibi</a></li>
+              <li><a href="https://lex.uz/ru/docs/-1297848" target="_blank" rel="noopener">Vazirlar Mahkamasining 2-son qarori, 03.01.2008: faxriy unvon egalariga to‘lovlar</a></li>
+              <li><a href="https://president.uz/oz/lists/view/5113" target="_blank" rel="noopener">Prezident qarori (2022): kartaga oluvchilarga 1% qo‘shimcha</a></li>
+              <li><a href="https://gov.uz/oz/advice/64/document/1884" target="_blank" rel="noopener">Davlat xizmatlari: ish staji bo‘lmaganlar va mehnatga layoqatsizlarga nafaqalar (VM 119-son qarori asosida)</a></li>
+              <li><a href="https://gov.uz/oz/pj/news/view/226187" target="_blank" rel="noopener">PQ-355, 28.09.2026: pensiya xizmatlarini raqamlashtirish (Pensiya jamg‘armasi xabari)</a></li>
+            </ul>
+            <p style="margin-top:10px"><b>Islohot va 2026-yil o‘zgarishlari</b></p>
+            <ul class="srclist">
+              <li><a href="https://kun.uz/news/2026/09/15/pensiya-yoshini-oshirish-rejasi-va-toshkentdagi-qurilishlarga-talab-mahalliy-dayjest" target="_blank" rel="noopener">Kun.uz: pensiya yoshini oshirish farmoni loyihasi muhokamada</a></li>
+              <li><a href="https://anhor.uz/uzl/jamiyat/uzbekistan-pensiya-yoshi-63-58" target="_blank" rel="noopener">Anhor: loyiha tafsilotlari (eng kam staj 15 yil)</a></li>
+              <li><a href="https://oyina.uz/uz/posts/34521" target="_blank" rel="noopener">Oyina: loyiha bandlari (54 yosh, chegara 15 baravar)</a></li>
+              <li><a href="https://www.gazeta.uz/ru/2026/08/12/pensions/" target="_blank" rel="noopener">Gazeta.uz: Qonunga avgust o‘zgarishlari (715 000 so‘m kafolati)</a></li>
+              <li><a href="https://www.uza.uz/oz/posts/ayrim-viloyatlarda-pensiya-tayinlash-boyicha-ixcham-xizmat-korsatish-tizimi-sinovdan-otkaziladi_925214" target="_blank" rel="noopener">UzA: VM 576-son qarori, to‘rt viloyatda sinov</a></li>
+              <li><a href="https://spot.uz/oz/2026/11/19/mygovpension" target="_blank" rel="noopener">Spot.uz: muddatidan oldin pensiya taqdimnomasi onlayn (19.11.2026)</a></li>
+            </ul>
+            <p style="margin-top:10px"><b>Tushuntirishlar va yangiliklar</b></p>
+            <ul class="srclist">
+              <li><a href="https://gov.uz/oz/pj/news/view/183000" target="_blank" rel="noopener">Pensiya jamg‘armasi: PF-115 farmoni, 2026-yil 1-iyuldan miqdorlar</a></li>
+              <li><a href="https://gov.uz/oz/pj/sections/view/2061" target="_blank" rel="noopener">Pensiya jamg‘armasi: yakka tartibdagi koeffitsient va bazaviy miqdorlar</a></li>
+              <li><a href="https://gov.uz/oz/advice/64/document/248" target="_blank" rel="noopener">Davlat xizmatlari: boquvchisini yo‘qotganlik pensiyasi</a></li>
+              <li><a href="https://gov.uz/oz/advice/NaN/document/205" target="_blank" rel="noopener">Davlat xizmatlari: yoshga doir pensiya tayinlash</a></li>
+              <li><a href="https://www.spot.uz/oz/2026/06/24/pensions" target="_blank" rel="noopener">Spot.uz: 1-iyuldan nafaqa va pensiyalar miqdori</a></li>
+              <li><a href="https://kun.uz/news/2026/04/08/ozbekistonda-pensiya-miqdori-qanday-hisoblanadi" target="_blank" rel="noopener">Kun.uz: pensiya miqdori qanday hisoblanadi</a></li>
+              <li><a href="https://anhor.uz/uzl/news/i-va-ii-guruh-nogironligi-bo-lgan-shaxslarga-pensiya-tayinlanishi-uchun-qancha-staj-talab-etiladi/" target="_blank" rel="noopener">Anhor: nogironlik pensiyasi uchun staj</a></li>
+              <li><a href="https://anhor.uz/uzl/news/pensiya-tayinlash" target="_blank" rel="noopener">Anhor: 20 yil stajli ayollarning 54 yoshdan pensiyasi</a></li>
+              <li><a href="https://daryo.uz/2023/07/13/imtiyozli-pensiya-necha-yoshdan-tayinlanadi-pensiya-jamgarmasi-malumot-berdi/" target="_blank" rel="noopener">Daryo: imtiyozli pensiya shartlari</a></li>
+            </ul>
+          </div>
+        </details>
+        <p class="stamp">Ma’lumotlar holati: 2026-yil 24-noyabr.</p>
+      </section>
+    </div>
+  </div>
+  <footer class="brandfoot" aria-label="FinTahlil.uz haqida">
+    <div>
+      <a class="brand" href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener">FinTahlil<span>.uz</span></a>
+      <p>Bu hisoblagichni FinTahlil.uz moliya va tahlil blogi tayyorladi. Moliya va tahlil bo‘yicha boshqa materiallarni blogimizda kuzatib boring.</p>
+    </div>
+    <div class="bf-links">
+      <a href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener"><span>Instagram</span><small>@fintahlil.uz</small></a>
+      <a href="https://t.me/fintahlil_uz" target="_blank" rel="noopener"><span>Telegram</span><small>@fintahlil_uz</small></a>
+    </div>
+  </footer>
+  <p class="copy">© 2026 FinTahlil.uz · Hisob taxminiy, rasmiy hujjat emas.</p>
+</div>
+
+<button type="button" id="dock" aria-label="Natijaga o‘tish">
+  <span class="d-l"><span id="dockLabel">Taxminiy pensiya</span><b id="dockVal">—</b></span>
+  <span class="d-r">Batafsil ↑</span>
+</button>
+
+<script>
+/*CALC-START*/
+// ---- 2026-yil noyabr holatidagi miqdorlar (PF-115, 23.06.2026) ----
+const PHBM = 504000;                 // pensiyani hisoblashning bazaviy miqdori (01.07.2026)
+const BHM = 440000;                  // bazaviy hisoblash miqdori (01.09.2026)
+const MIN_WAGE = 1360000;            // mehnatga haq to'lashning eng kam miqdori (01.09.2026)
+const CAP = 12 * PHBM;               // Qonun 31-modda: o'rtacha oylik 12 × PHBM dan oshmaydi
+const MIN_AGE = 983000;              // yoshga doir eng kam pensiya
+const MIN_AGE_FULL = 1083000;        // PF-115 ilova 4: 983 000–1 083 000 oralig'idagi yoshga doir pensiyalar 1 083 000 ga
+const MIN_AGE_PARTIAL = 878000;      // PF-115 ilova 6: to'liqsiz stajli yoshga doir pensiya (qo'shimcha to'lov bilan)
+const MIN_DIS = 1083000;             // nogironlik pensiyasining eng kami (to'liqsiz staj bilan ham)
+const AGE_ALLOW = 878000;            // PF-115 ilova 5: yoshga doir nafaqa
+const DIS_ALLOW_BASE = 1083000;      // PF-115: mehnatga layoqatsiz va bolalikdan nogironlarga nafaqa (guruhga ajratilmagan)
+const DIS_ALLOW_I_EXTRA = 126000;    // Ijtimoiy himoya milliy agentligi: I guruh nafaqasi 1 209 000 (qo'shimcha bilan)
+const DIS_ALLOW = { '1': DIS_ALLOW_BASE + DIS_ALLOW_I_EXTRA, '2': DIS_ALLOW_BASE };
+const SURV_MIN_1 = 878000;           // PF-115 ilova 9: boquvchisini yo'qotganlik pensiyasi, 1 a'zo
+const SURV_MIN_NEXT = 0.5 * MIN_AGE; // Qonun 26-modda: har bir a'zoga kamida eng kam pensiyaning 50%
+const SURV_MIN_ORPHAN = MIN_AGE;     // Qonun 26-modda: chin yetimga kamida 100%
+const SURV_ALLOW_1 = 878000;         // PF-115 ilova 8: boquvchisini yo'qotganlik nafaqasi, 1 a'zo
+const SURV_ALLOW_NEXT = 290000;      // keyingi har bir a'zo uchun
+const DIS1_BONUS = 0.75 * PHBM;      // Qonun 28-modda: I guruh nogironlariga 75% PHBM
+const TITLES = { '0': 0, '1.6': 1.6, '1.8': 1.8, '3': 3 }; // VM 2-son qarori: 1,6 / 1,8 / 3 × BHM
+const CARD_PCT = 0.01;               // kartaga olganda +1%
+const REQ = { m: 25, f: 20 };
+const RET_AGE = { m: 60, f: 55 };
+const MIN_PARTIAL = 7;
+const DIS_TABLE = [[23, 2], [26, 3], [31, 5], [36, 7], [41, 9], [46, 11], [51, 14], [56, 17], [Infinity, 20]];
+// Imtiyozli toifalar (Qonun 10–14-moddalar, 2337-son yo'riqnoma)
+const PRIV = {
+  w54:     { name: 'Kamida 20 yil stajli ayollar', law: '12¹-modda; loyiha bo‘yicha 2027-yildan bekor qilinishi mumkin', f: { age: 54, total: 20 } },
+  mother:  { name: 'Bolalikdan nogiron farzandini 8 yoshgacha tarbiyalagan ona', law: '12-modda “z”', f: { age: 50, total: 20 } },
+  layoff:  { name: 'Shtat qisqarishi yoki korxona tugatilishi sabab ishsiz qolganlar', law: '14-modda', m: { age: 58, total: 25 }, f: { age: 53, total: 20 } },
+  list2:   { name: '2-son ro‘yxat: yer osti, o‘ta zararli va o‘ta og‘ir ishlar', law: '11-modda “a”', m: { age: 50, total: 20, special: 10, pMin: 5, pMinU: 1, pBase: 60, pStep: 1 }, f: { age: 45, total: 15, special: 7.5, pMin: 3.75, pMinU: 1, pBase: 55, pStep: 1 } },
+  list3:   { name: '3-son ro‘yxat (I qism): zararli va og‘ir ishlar', law: '12-modda “b”', m: { age: 55, total: 25, special: 12.5, pMin: 6.25, pBase: 60, pStep: 2.5 }, f: { age: 50, total: 20, special: 10, pMin: 5, pBase: 55, pStep: 2 } },
+  list1:   { name: '1-son ro‘yxat: kon sanoatining yetakchi kasblari', law: '10-modda “a”', m: { age: 0, total: 20, special: 20 }, f: { age: 0, total: 20, special: 20 } },
+  liliput: { name: 'Gipofizar mittilik (liliputlar) va pakanalar', law: '13-modda', m: { age: 45, total: 20 }, f: { age: 40, total: 15 } }
+};
+
+// Pensiya jamg'armasining bazaviy miqdorlar jadvali [yil, oy, miqdor]; 2026-09 PF-115 dan
+const BASES = [
+  [2008,4,20865],[2008,9,25040],[2008,11,26540],[2008,12,28040],[2009,8,33645],[2009,12,37680],
+  [2010,8,45215],[2010,12,49735],[2011,8,57200],[2011,12,62920],[2012,8,72355],[2012,12,79590],
+  [2013,8,85560],[2013,9,91530],[2013,12,93817.5],[2014,1,96105],[2014,9,107635],[2014,12,113017.5],
+  [2015,1,118400],[2015,9,130240],[2016,10,149775],[2017,12,172240],[2018,7,178270],[2018,8,184300],
+  [2018,11,202730],[2019,8,223000],[2021,9,270000],[2022,5,300000],[2023,5,330000],[2023,12,340000],
+  [2024,9,375000],[2025,8,412000],[2026,9,440000]
+];
+function baseAt(y, m) { const k = y * 12 + (m - 1); let v = BASES[0][2]; for (const [by, bm, bv] of BASES) { if (by * 12 + (bm - 1) <= k) v = bv; else break; } return v; }
+function yearBase(y) { let s = 0; for (let m = 1; m <= 12; m++) s += baseAt(y, m); return s / 12; }
+function refBase(y, m) { let s = 0; const k = y * 12 + (m - 1); for (let i = 1; i <= 12; i++) { const kk = k - i; s += baseAt(Math.floor(kk / 12), (kk % 12) + 1); } return s / 12; }
+// Qonun 31-modda: 60 oy; 5 yildan kam ishlagan bo'lsa — haqiqatda ishlagan oylar bo'yicha
+function avgFromYears(rows, ref) {
+  let sum = 0, n = 0; const detail = [];
+  for (const r of rows) {
+    if (!(r.months > 0) || !(r.wage > 0)) continue;
+    const b = yearBase(r.year);
+    const ikz = Math.round((r.wage / b) * 10000) / 10000;
+    const pfz = ikz * ref;
+    sum += pfz * r.months; n += r.months;
+    detail.push({ year: r.year, months: r.months, wage: r.wage, base: b, ikz, pfz });
+  }
+  return { avg: n ? sum / n : 0, months: n, detail };
+}
+function disRequired(age) { for (const [lim, yrs] of DIS_TABLE) if (age < lim) return yrs; return 20; }
+
+// Islohot loyihasi: 2028-yildan har yili +3 oy, ko'pi bilan +3 yil
+function reformAgeMonths(by, bm, baseYears) {
+  for (let a = baseYears * 12; a <= (baseYears + 3) * 12; a++) {
+    const ym = by * 12 + (bm - 1) + a; const year = Math.floor(ym / 12);
+    const target = baseYears * 12 + Math.min(36, Math.max(0, year - 2027) * 3);
+    if (a >= target) return a;
+  }
+  return (baseYears + 3) * 12;
+}
+
+// Imtiyoz shartlarini tekshirish (maxsus staj qisman bo'lsa — yo'riqnoma jadvallari)
+function privEval(rule, months, special, underground) {
+  const okTotal = months >= rule.total * 12;
+  if (!rule.special || special >= rule.special) return { ok: okTotal, okTotal, okSp: true, age: rule.age, partial: false };
+  if (rule.pMin !== undefined) {
+    const min = underground && rule.pMinU ? rule.pMinU : rule.pMin;
+    if (special >= min) {
+      const age = Math.max(rule.age, rule.pBase - Math.floor(special / rule.pStep + 1e-9));
+      return { ok: okTotal, okTotal, okSp: true, age, partial: true, min };
+    }
+    return { ok: false, okTotal, okSp: false, age: rule.age, min };
+  }
+  return { ok: false, okTotal, okSp: false, age: rule.age };
+}
+
+// 55% + ortiqcha staj (yoki stajga mutanosib) — Qonun 26, 27, 29-moddalar
+function core55(eff, months, reqYears, extraOverYears) {
+  if (months >= reqYears * 12) {
+    const extraYears = Math.max(0, Math.floor((months - extraOverYears * 12) / 12));
+    return { full: true, base: 0.55 * eff, extraYears, extra: extraYears * 0.01 * eff, ratio: 1 };
+  }
+  const ratio = months / (reqYears * 12);
+  return { full: false, base: 0.55 * eff * ratio, extraYears: 0, extra: 0, ratio };
+}
+// Yoshga doir pensiya uchun eng kam miqdor qoidasi (PF-115)
+function ageTopup(core, full) {
+  let v = Math.max(core, full ? MIN_AGE : MIN_AGE_PARTIAL);
+  if (v >= MIN_AGE && v < MIN_AGE_FULL) v = MIN_AGE_FULL;
+  return v - core;
+}
+
+function calc(s) {
+  const months = Math.max(0, Math.floor(s.stajM));
+  const eff = Math.min(Math.max(0, s.salary), CAP);
+  const r = { kind: 'pension', pill: '', total: 0, parts: [], checks: [], notes: [], eff, capped: s.salary > CAP, months };
+  const P = (label, value, cls, note) => { if (value > 0.5) r.parts.push({ label, value, cls, note }); };
+  const sum = () => r.parts.reduce((a, p) => a + p.value, 0);
+  const noWage = !(s.salary > 0);
+  const titleK = TITLES[s.titleK] || 0;
+
+  if (s.type === 'age' || s.type === 'priv') {
+    const req = REQ[s.sex];
+    let reqTotal = req;
+    if (s.type === 'priv') {
+      const c = PRIV[s.priv]; const rule = c && c[s.sex];
+      if (!rule) { r.kind = 'ineligible'; r.pill = 'Bu toifa sizga tegishli emas'; r.checks.push({ st: 'no', t: 'Bu imtiyoz faqat ayollar uchun' }); return r; }
+      const ev = privEval(rule, months, s.special, s.underground);
+      r.retAge = ev.age; reqTotal = rule.total;
+      r.checks.push({ st: 'ok', t: (ev.age ? 'Pensiya yoshi: ' + ev.age + ' yosh' + (ev.partial ? ' (maxsus staj to‘liq emas, yosh qisman kamaytirildi)' : '') : 'Pensiya yoshidan qat’i nazar') + ' · ' + c.law });
+      r.checks.push({ st: ev.okTotal ? 'ok' : 'no', t: 'Umumiy staj: kamida ' + rule.total + ' yil kerak' + (ev.okTotal ? '' : ', yetmaydi') });
+      if (rule.special) r.checks.push({ st: ev.okSp ? (ev.partial ? 'warn' : 'ok') : 'no', t: 'Maxsus staj: to‘liq imtiyoz uchun ' + dec(rule.special) + ' yil' + (ev.min !== undefined ? ', qisman imtiyoz uchun kamida ' + dec(ev.min) + ' yil' : '') + (ev.okSp ? '' : '. Yetmaydi') });
+      if (!ev.ok) {
+        r.kind = 'ineligible'; r.pill = 'Imtiyoz shartlari bajarilmagan';
+        const alt = calc(Object.assign({}, s, { type: 'age' }));
+        r.alt = alt;
+        r.notes.push('Imtiyozli pensiya shartlari bajarilmadi. Umumiy tartibda ' + RET_AGE[s.sex] + ' yoshda chiqishingiz mumkin.');
+        return r;
+      }
+    } else {
+      r.retAge = RET_AGE[s.sex];
+      r.checks.push({ st: 'ok', t: 'Pensiya yoshi: ' + r.retAge + ' yosh (Qonun 7-modda)' + (s.sex === 'f' ? '. 20 yil stajingiz bo‘lsa, 54 yoshdan ham chiqish mumkin (islohot loyihasida 2027-yildan bekor qilish taklif qilingan)' : '') });
+      if (months < MIN_PARTIAL * 12) {
+        r.kind = 'allowance'; r.pill = 'Ijtimoiy nafaqa: yoshga doir';
+        r.checks.push({ st: 'no', t: 'Staj ' + MIN_PARTIAL + ' yildan kam: pensiya tayinlanmaydi' });
+        r.checks.push({ st: 'warn', t: 'O‘rniga yoshga doir ijtimoiy nafaqa: erkaklarga 65, ayollarga 60 yoshda (VM 119-son qarori)' });
+        P('Yoshga doir nafaqa', AGE_ALLOW, 's1', 'PF-115 farmoni');
+        r.total = sum(); return r;
+      }
+    }
+    if (noWage) { r.kind = 'empty'; return r; }
+    const c = core55(eff, months, reqTotal, reqTotal);
+    if (s.type === 'age') r.checks.push(c.full
+      ? { st: 'ok', t: 'Staj ' + stajText(months) + ': to‘liq pensiya uchun ' + req + ' yil yetarli' }
+      : { st: 'warn', t: 'Staj ' + stajText(months) + ': to‘liq pensiya uchun ' + req + ' yil kerak. Pensiya stajga mutanosib (8-modda)' });
+    r.kind = c.full ? 'pension' : 'partial';
+    r.pill = s.type === 'priv' ? 'Imtiyozli yoshga doir pensiya' : (c.full ? 'To‘liq yoshga doir pensiya' : 'To‘liqsiz yoshga doir pensiya');
+    r.reqTotal = reqTotal;
+    P('Asosiy qism', c.base, 's1', '55% × ' + fmt(eff) + (c.full ? '' : ' × ' + pct(c.ratio * 100) + ' staj nisbati'));
+    P('Ortiqcha staj', c.extra, 's2', c.extraYears + ' yil × 1%');
+    P('Eng kam miqdorgacha to‘ldirish', ageTopup(c.base + c.extra, c.full), 's3', c.full ? 'To‘liq stajda eng kami ' + fmt(MIN_AGE_FULL) : 'To‘liqsiz stajda eng kami ' + fmt(MIN_AGE_PARTIAL));
+  } else if (s.type === 'dis') {
+    if (s.group === '3') {
+      r.kind = 'none'; r.pill = 'Pensiya tayinlanmaydi';
+      r.checks.push({ st: 'no', t: 'III guruhga nogironlik pensiyasi tayinlanmaydi. Istisno: Chernobil AES avariyasi bilan bog‘liq holat (15-modda)' });
+      return r;
+    }
+    r.checks.push({ st: 'ok', t: (s.group === '1' ? 'I' : 'II') + ' guruh nogironligi belgilangan' });
+    const allowance = DIS_ALLOW[s.group];
+    if (s.cause !== 'injury' && months === 0) {
+      r.kind = 'allowance'; r.pill = s.cause === 'child' ? 'Ijtimoiy nafaqa: bolalikdan nogironlik' : 'Ijtimoiy nafaqa: nogironlik';
+      r.checks.push({ st: 'warn', t: s.cause === 'child' ? 'Bolalikdan nogironligi bor va ishlamagan: pensiya emas, ijtimoiy nafaqa beriladi' : 'Ish staji yo‘q: pensiya tayinlanmaydi, o‘rniga ijtimoiy nafaqa beriladi' });
+      P('Nogironlik nafaqasi', DIS_ALLOW_BASE, 's1', 'PF-115 farmoni');
+      if (s.group === '1') P('I guruh uchun qo‘shimcha', DIS_ALLOW_I_EXTRA, 's4', 'Ijtimoiy himoya milliy agentligi ma’lumoti');
+      r.total = sum(); return r;
+    }
+    if (noWage) { r.kind = 'empty'; return r; }
+    let req, extraOver;
+    if (s.cause === 'injury') { req = 0; extraOver = disRequired(s.onset); r.checks.push({ st: 'ok', t: 'Ishdagi jarohat yoki kasb kasalligi: staj talab qilinmaydi (17-modda)' }); }
+    else if (s.cause === 'general' && s.onset < 20) { req = 0; extraOver = disRequired(s.onset); r.checks.push({ st: 'ok', t: '20 yoshgacha nogiron bo‘lgan: staj talab qilinmaydi (17-modda)' }); }
+    else {
+      req = s.cause === 'child' ? 2 : disRequired(s.onset); extraOver = req;
+      const ok = months >= req * 12;
+      r.checks.push({ st: ok ? 'ok' : 'warn', t: 'Staj ' + stajText(months) + ': to‘liq pensiya uchun ' + req + ' yil kerak (17-modda)' + (ok ? '' : '. Pensiya stajga mutanosib (18-modda)') });
+    }
+    r.checks.push({ st: 'ok', t: 'Nogironlik pensiyasini olish huquqi bor (15-modda)' });
+    r.reqTotal = req;
+    const c = core55(eff, months, req, extraOver);
+    r.kind = c.full ? 'pension' : 'partial';
+    r.pill = c.full ? 'Nogironlik pensiyasi' : 'Nogironlik pensiyasi (to‘liqsiz staj)';
+    P('Asosiy qism', c.base, 's1', '55% × ' + fmt(eff) + (c.full ? '' : ' × ' + pct(c.ratio * 100) + ' staj nisbati'));
+    P('Ortiqcha staj', c.extra, 's2', c.extraYears + ' yil × 1%');
+    const coreSum = c.base + c.extra;
+    if (coreSum < MIN_DIS) P('Eng kam miqdorgacha to‘ldirish', MIN_DIS - coreSum, 's3', 'Eng kami: ' + fmt(MIN_DIS));
+    if (s.group === '1') P('I guruh nogironligi ustamasi', DIS1_BONUS, 's4', '75% × ' + fmt(PHBM) + ' (28-modda)');
+    else if (s.lone) P('Yolg‘iz II guruh nogironi ustamasi', DIS1_BONUS, 's4', '75% × ' + fmt(PHBM) + ' (28-modda)');
+    if (s.cause === 'child' && allowance > sum()) r.notes.push('Bolalikdan nogironlik ijtimoiy nafaqasi (' + som(allowance) + ') bu pensiyadan yuqori. Faqat bittasi to‘lanadi, qaysi biri olinishini tanlash mumkin.');
+  } else if (s.type === 'surv') {
+    const n = Math.max(1, Math.min(10, s.members));
+    r.checks.push({ st: 'ok', t: n + ' nafar mehnatga layoqatsiz oila a’zosi (19-modda)' });
+    const reqTab = disRequired(s.deathAge);
+    let req = 0;
+    if (s.scause === 'pensioner') r.checks.push({ st: 'ok', t: 'Boquvchi pensioner bo‘lgan: staj talab qilinmaydi' });
+    else if (s.scause === 'injury') r.checks.push({ st: 'ok', t: 'Ishdagi jarohatdan vafot: staj talab qilinmaydi (21-modda)' });
+    else {
+      req = reqTab;
+      if (months === 0) {
+        r.kind = 'allowance'; r.pill = 'Ijtimoiy nafaqa: boquvchisini yo‘qotganlik';
+        r.checks.push({ st: 'warn', t: 'Boquvchining staji yo‘q: pensiya tayinlanmaydi, o‘rniga ijtimoiy nafaqa beriladi' });
+        P('1-a’zo uchun nafaqa', SURV_ALLOW_1, 's1');
+        P('Qolgan ' + (n - 1) + ' a’zo uchun', SURV_ALLOW_NEXT * (n - 1), 's2', (n - 1) + ' × ' + fmt(SURV_ALLOW_NEXT));
+        r.total = sum(); return r;
+      }
+      const ok = months >= req * 12;
+      r.checks.push({ st: ok ? 'ok' : 'warn', t: 'Boquvchi staji ' + stajText(months) + ': ' + req + ' yil talab qilinadi (21-modda)' + (ok ? '' : '. Pensiya stajga mutanosib (22-modda)') });
+    }
+    if (noWage) { r.kind = 'empty'; return r; }
+    const ratio = req > 0 ? Math.min(1, months / (req * 12)) : 1;
+    const extraYears = ratio < 1 ? 0 : Math.max(0, Math.floor((months - reqTab * 12) / 12));
+    const basePer = 0.30 * eff * ratio;
+    const extraPer = extraYears * 0.005 * eff;
+    r.kind = ratio < 1 ? 'partial' : 'pension';
+    r.pill = 'Boquvchisini yo‘qotganlik pensiyasi';
+    P('Asosiy qism: 30% × ' + n + ' a’zo', basePer * n, 's1', '30% × ' + fmt(eff) + (ratio < 1 ? ' × ' + pct(ratio * 100) : '') + ' = ' + fmt(basePer) + ' har biriga');
+    P('Ortiqcha staj', extraPer * n, 's2', extraYears + ' yil × 0,5% × ' + n + ' a’zo (27-modda)');
+    let floorTotal = 0;
+    for (let i = 0; i < n; i++) floorTotal += s.orphan ? SURV_MIN_ORPHAN : (i === 0 ? SURV_MIN_1 : SURV_MIN_NEXT);
+    const got = (basePer + extraPer) * n;
+    if (got < floorTotal) P('Eng kam miqdorgacha to‘ldirish', floorTotal - got, 's3', s.orphan ? 'Har bir bolaga kamida ' + fmt(SURV_MIN_ORPHAN) : 'Kamida ' + fmt(SURV_MIN_1) + (n > 1 ? ' + ' + (n - 1) + ' × ' + fmt(SURV_MIN_NEXT) : ''));
+  }
+
+  if (titleK) P('Faxriy unvon ustamasi', titleK * BHM, 's4', dec(titleK) + ' × BHM (' + fmt(BHM) + ')');
+  if (s.card) P('Kartaga olganda +1%', sum() * CARD_PCT, 's5');
+  r.total = sum();
+  if (r.capped) r.notes.push('O‘rtacha oylik chegaradan oshgani uchun hisobda ' + som(CAP) + ' olindi (31-modda).');
+  return r;
+}
+/*CALC-END*/
+
+const $ = (id) => document.getElementById(id);
+const NB = ' ';
+function fmt(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, NB); }
+function som(n) { return fmt(n) + NB + 'so‘m'; }
+function dec(n) { return String(n).replace('.', ','); }
+function pct(n) { return (Math.round(n * 10) / 10).toString().replace('.', ',') + '%'; }
+const dec4 = (n) => n.toFixed(4).replace('.', ',');
+const digits = (v) => { const d = String(v).replace(/\D/g, ''); return d ? parseInt(d, 10) : 0; };
+function stajText(m) { const y = Math.floor(m / 12), mo = m % 12; return ((y ? y + ' yil' : '') + (y && mo ? ' ' : '') + (mo ? mo + ' oy' : '')) || '0'; }
+const MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'];
+
+const NOW = new Date();
+const NOW_Y = NOW.getFullYear(), NOW_M = NOW.getMonth() + 1;
+const REF = refBase(NOW_Y, NOW_M);
+const MAX_YEAR = Math.max(2026, NOW_Y);
+
+// Imtiyoz toifalari ro'yxati
+(function () {
+  const box = $('cats');
+  Object.keys(PRIV).forEach((k, i) => {
+    const l = document.createElement('label');
+    l.className = 'cat'; l.id = 'cat-' + k;
+    l.innerHTML = '<input type="radio" name="priv" value="' + k + '"' + (k === 'mother' ? ' checked' : '') + '><span class="cb"><span class="dot"></span><span><b>' + PRIV[k].name + '</b><small id="catd-' + k + '"></small></span></span>';
+    box.appendChild(l);
+  });
+})();
+// Faxriy unvon variantlari
+(function () {
+  const items = [
+    ['0', 'Unvonim yo‘q', ''],
+    ['1.6', '“O‘zbekistonda xizmat ko‘rsatgan …”', '1,6 × BHM = ' + som(1.6 * BHM) + ' / oy'],
+    ['1.8', '“O‘zbekistonda xizmat ko‘rsatgan artist”', '1,8 × BHM = ' + som(1.8 * BHM) + ' / oy'],
+    ['3', '“O‘zbekiston xalq …” yoki “xizmat ko‘rsatgan arbob”', '3 × BHM = ' + som(3 * BHM) + ' / oy']
+  ];
+  $('titles').innerHTML = items.map((it, i) => '<label class="cat"><input type="radio" name="title" value="' + it[0] + '"' + (i === 0 ? ' checked' : '') + '><span class="cb"><span class="dot"></span><span><b>' + it[1] + '</b>' + (it[2] ? '<small>' + it[2] + '</small>' : '') + '</span></span></label>').join('');
+})();
+
+function catDesc(k, sex) {
+  const r = PRIV[k][sex];
+  if (!r) return 'Faqat ayollar uchun · ' + PRIV[k].law;
+  return (r.age ? r.age + ' yosh' : 'Yoshidan qat’i nazar') + ' · umumiy staj ' + r.total + ' yil' + (r.special && r.special !== r.total ? ' · shundan ' + dec(r.special) + ' yili shu ishda' : (r.special ? ', shu ishda' : '')) + ' · ' + PRIV[k].law;
+}
+
+// Tug'ilgan oy
+(function () { const s = $('birthM'); MONTHS.forEach((m, i) => { const o = document.createElement('option'); o.value = i + 1; o.textContent = m[0].toUpperCase() + m.slice(1); s.appendChild(o); }); })();
+
+// Yillar qatorlari
+const YR_DEFAULT = [[2021, 12, 2500000], [2022, 12, 3000000], [2023, 12, 3500000], [2024, 12, 4200000], [2025, 12, 5000000]];
+(function () {
+  const box = $('yrows');
+  YR_DEFAULT.forEach((d, i) => {
+    const row = document.createElement('div'); row.className = 'yrow';
+    let opts = ''; for (let y = MAX_YEAR; y >= 2008; y--) opts += '<option value="' + y + '"' + (y === d[0] ? ' selected' : '') + '>' + y + '</option>';
+    row.innerHTML = '<select id="yy' + i + '" aria-label="' + (i + 1) + '-qator: yil">' + opts + '</select>' +
+      '<input type="number" id="ym' + i + '" inputmode="numeric" min="0" max="12" value="' + d[1] + '" aria-label="' + (i + 1) + '-qator: oylar soni">' +
+      '<input type="text" id="yw' + i + '" inputmode="numeric" autocomplete="off" value="' + fmt(d[2]) + '" aria-label="' + (i + 1) + '-qator: o‘rtacha oylik">';
+    box.appendChild(row);
+  });
+  for (let i = 0; i < YR_DEFAULT.length; i++) {
+    $('yy' + i).addEventListener('change', render);
+    $('ym' + i).addEventListener('input', () => { const e = $('ym' + i); const v = parseInt(e.value, 10); if (v > 12) e.value = 12; if (v < 0) e.value = 0; render(); });
+    const w = $('yw' + i);
+    w.addEventListener('input', () => { const d = digits(w.value); w.value = d ? fmt(Math.min(d, 99999999999)) : ''; render(); });
+  }
+})();
+function readYears() {
+  const rows = [];
+  for (let i = 0; i < YR_DEFAULT.length; i++) rows.push({ year: parseInt($('yy' + i).value, 10), months: Math.min(12, Math.max(0, parseInt($('ym' + i).value, 10) || 0)), wage: digits($('yw' + i).value) });
+  return rows;
+}
+
+function val(name) { const el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
+function readState() {
+  const y = Math.min(60, Math.max(0, parseInt($('staj').value, 10) || 0));
+  const mo = Math.min(11, Math.max(0, parseInt($('stajM').value, 10) || 0));
+  const wmode = val('wmode');
+  let salary = digits($('salary').value), yearsRes = null;
+  if (wmode === 'years') { yearsRes = avgFromYears(readYears(), REF); salary = Math.round(yearsRes.avg); }
+  const by = parseInt($('birthY').value, 10);
+  return {
+    type: val('ptype'), sex: val('sex'), priv: val('priv'), special: Math.max(0, parseFloat(String($('special').value).replace(',', '.')) || 0),
+    birthY: by >= 1930 && by <= 2015 ? by : null, birthM: parseInt($('birthM').value, 10) || 1,
+    group: val('group'), cause: val('cause'), onset: Math.max(0, parseInt($('onset').value, 10) || 0),
+    members: Math.max(1, Math.min(10, parseInt($('members').value, 10) || 1)), orphan: $('orphan').checked,
+    scause: val('scause'), deathAge: Math.max(0, parseInt($('deathAge').value, 10) || 0),
+    staj: y, stajM: y * 12 + mo, wmode, salary, yearsRes, titleK: val('title'), underground: $('underground').checked, lone: $('lone').checked, card: $('card').checked
+  };
+}
+
+function retireHTML(s, r) {
+  if (!(s.type === 'age' || s.type === 'priv') || r.retAge === undefined) return '';
+  if (r.retAge === 0) return '<div class="retire"><b>Pensiya yoshidan qat’i nazar</b><small>Maxsus staj to‘lganda istalgan yoshda chiqish mumkin.</small></div>';
+  if (!s.birthY) return '<div class="retire"><b>Pensiya yoshi: ' + r.retAge + '</b><small>Tug‘ilgan sanangizni kiritsangiz, pensiyaga chiqish oyini va qolgan vaqtni ko‘rsatamiz.</small></div>';
+  const retYM = s.birthY * 12 + (s.birthM - 1) + r.retAge * 12;
+  const nowYM = NOW_Y * 12 + (NOW_M - 1);
+  const left = retYM - nowYM;
+  const when = Math.floor(retYM / 12) + '-yil, ' + MONTHS[retYM % 12];
+  let h = '<div class="retire"><b>' + (left > 0 ? 'Pensiyaga chiqish: ' + when : 'Pensiya yoshiga yetgansiz') + '</b>';
+  h += '<small>' + r.retAge + ' yoshda' + (left > 0 ? ' · ' + stajText(left) + ' qoldi' : ' (' + when + ')') + '</small>';
+  if (s.type === 'age' && left > 0) {
+    const rm = reformAgeMonths(s.birthY, s.birthM, RET_AGE[s.sex]);
+    if (rm > r.retAge * 12 + (s.sex === 'f' && r.retAge === 54 ? 12 : 0)) {
+      const ym2 = s.birthY * 12 + (s.birthM - 1) + rm;
+      h += '<small>Islohot loyihasi qabul qilinsa: ' + stajText(rm).replace(' yil', ' yosh') + ', ' + Math.floor(ym2 / 12) + '-yil ' + MONTHS[ym2 % 12] + '. Bu hozircha loyiha.</small>';
+    }
+  }
+  return h + '</div>';
+}
+
+const SEGC = { s1: 'var(--seg1)', s2: 'var(--seg2)', s3: 'var(--seg3)', s4: 'var(--seg4)', s5: 'var(--seg5)' };
+
+function render() {
+  // Jinsga mos kelmaydigan imtiyoz toifasini almashtirish
+  const sexNow = val('sex');
+  Object.keys(PRIV).forEach((k) => { const inp = document.querySelector('input[name="priv"][value="' + k + '"]'); inp.disabled = !PRIV[k][sexNow]; });
+  const cur = document.querySelector('input[name="priv"]:checked');
+  if (!cur || !PRIV[cur.value][sexNow]) { const first = Object.keys(PRIV).find((k) => PRIV[k][sexNow]); document.querySelector('input[name="priv"][value="' + first + '"]').checked = true; }
+  const s = readState();
+  const T = s.type;
+  const isAgeLike = T === 'age' || T === 'priv';
+
+  // Ko'rinishlar
+  $('sexBox').hidden = !isAgeLike;
+  $('privBox').hidden = T !== 'priv';
+  $('birthBox').hidden = !isAgeLike;
+  $('disBox').hidden = T !== 'dis';
+  $('onsetBox').hidden = s.cause === 'child';
+  $('loneBox').hidden = s.group !== '2';
+  $('groupHint').textContent = s.group === '1' ? 'I guruhga pensiyaga 75% × pensiya bazaviy miqdori ustama qo‘shiladi.' : (s.group === '3' ? 'III guruhga pensiya faqat Chernobil bilan bog‘liq holatda.' : '');
+  $('survBox').hidden = T !== 'surv';
+  $('simpleBox').hidden = s.wmode !== 'simple';
+  $('yearsBox').hidden = s.wmode !== 'years';
+  $('s1t').textContent = T === 'surv' ? 'Oila va boquvchi' : (T === 'dis' ? 'Nogironlik haqida' : 'Siz haqingizda');
+  $('s2t').textContent = T === 'surv' ? 'Boquvchining mehnat staji' : 'Mehnat staji';
+  $('s3t').textContent = T === 'surv' ? 'Boquvchining ish haqi' : 'Ish haqi';
+  $('salaryLbl').textContent = T === 'surv' ? 'Boquvchining o‘rtacha oylik ish haqi (bugungi so‘mda)' : 'O‘rtacha oylik ish haqi (bugungi so‘mda)';
+
+  // Imtiyoz toifalari
+  Object.keys(PRIV).forEach((k) => {
+    $('catd-' + k).textContent = catDesc(k, s.sex);
+    $('cat-' + k).classList.toggle('off', !PRIV[k][s.sex]);
+  });
+  const pr = PRIV[s.priv] && PRIV[s.priv][s.sex];
+  $('specialBox').hidden = !(pr && pr.special);
+  $('undergroundBox').hidden = !(pr && pr.pMinU);
+  if (pr && pr.special) $('specialHint').textContent = 'To‘liq imtiyoz uchun ' + dec(pr.special) + ' yil' + (pr.pMin ? ', qisman (yosh kamroq qisqaradi) kamida ' + dec(pr.pMin) + ' yil' : '') + '. Kasblar ro‘yxatini va maxsus stajni Pensiya jamg‘armasi tasdiqlaydi.';
+
+  // Maslahatlar
+  $('stajTotal').textContent = 'Jami: ' + stajText(s.stajM);
+  if (T === 'age') $('stajHint').textContent = 'To‘liq pensiya uchun ' + REQ[s.sex] + ' yil, to‘liqsiz pensiya uchun kamida ' + MIN_PARTIAL + ' yil staj kerak.';
+  else if (T === 'priv') $('stajHint').textContent = pr ? 'Bu toifa uchun umumiy staj kamida ' + pr.total + ' yil bo‘lishi kerak.' : '';
+  else if (T === 'dis') $('stajHint').textContent = s.cause === 'injury' ? 'Ishdagi jarohatda staj talab qilinmaydi, lekin ish haqi hisobga olinadi.' : 'Nogironlik belgilangan paytgacha bo‘lgan staj.';
+  else $('stajHint').textContent = s.scause === 'general' ? 'Boquvchining vafot etgan kunigacha bo‘lgan staji.' : 'Bu holda staj talab qilinmaydi, lekin pensiya boquvchining ish haqidan hisoblanadi.';
+  $('onsetHint').textContent = s.cause === 'injury' ? 'Staj talab qilinmaydi. Shu yoshdagi talabdan (' + disRequired(s.onset) + ' yil) ortiq har bir yil uchun +1%.' : (s.onset < 20 ? '20 yoshgacha nogiron bo‘lganlarga staj talab qilinmaydi (Qonun 17-modda).' : 'Shu yoshda to‘liq pensiya uchun ' + disRequired(s.onset) + ' yil staj kerak.');
+  $('deathHint').textContent = (s.scause === 'general' ? 'Shu yoshda ' + disRequired(s.deathAge) + ' yil staj talab qilinadi.' : 'Staj talab qilinmaydi.') + ' Undan ortiq har bir yil har bir a’zoning pensiyasiga 0,5% qo‘shadi.';
+  const sh = $('salaryHint');
+  if (s.wmode === 'simple') {
+    if (s.salary > CAP) { sh.textContent = 'Hisobga olinadigan eng yuqori chegara ' + som(CAP) + '. Undan oshgan qismi hisoblanmaydi.'; sh.className = 'hint warn'; }
+    else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” ni tanlang.'; sh.className = 'hint'; }
+  } else renderYears(s);
+
+  // Hisob
+  const r = calc(s);
+  const pill = $('pill');
+  pill.textContent = r.kind === 'empty' ? 'Ma’lumot kerak' : r.pill;
+  pill.className = 'pill ' + ({ pension: 'ok', partial: 'mid', allowance: 'mid', ineligible: 'no', none: 'no' }[r.kind] || '');
+  const shown = r.kind === 'ineligible' ? 0 : r.total;
+  $('big').innerHTML = shown > 0 ? fmt(shown) + '<small>so‘m / oy</small>' : '—';
+  let sub = '';
+  if (r.kind === 'empty') sub = s.wmode === 'years' ? 'Kamida bitta yil uchun oylar soni va oylikni kiriting.' : 'O‘rtacha oylik ish haqini kiriting.';
+  else if (r.kind === 'pension' || r.kind === 'partial') sub = 'Taxminan, 2026-yil narxlarida.' + (r.eff > 0 && T !== 'surv' ? ' Hisobga olingan oylikning ' + pct((r.total / r.eff) * 100) + 'i.' : '') + (T === 'surv' && s.members > 1 ? ' Har bir a’zoga taxminan ' + som(r.total / s.members) + '.' : '');
+  else if (r.kind === 'allowance') sub = 'Bu pensiya emas. Ijtimoiy nafaqa miqdori ish haqi va stajga bog‘liq emas.';
+  $('sub').textContent = sub;
+  const isPension = r.kind === 'pension' || r.kind === 'partial';
+  $('payer').innerHTML = r.kind === 'allowance'
+    ? 'Tayinlaydi va to‘laydi: <b>Ijtimoiy himoya milliy agentligi</b>, tumandagi «Inson» ijtimoiy xizmatlar markazi orqali. Murojaat: Davlat xizmatlari markazi yoki my.gov.uz.'
+    : (isPension ? 'Tayinlaydi va to‘laydi: <b>Pensiya jamg‘armasi</b> (Iqtisodiyot va moliya vazirligi huzurida).' : '');
+  $('bdTitle').textContent = r.kind === 'allowance' ? 'Nafaqa nimalardan iborat' : 'Pensiya nimalardan iborat';
+  $('retire').innerHTML = retireHTML(s, r);
+
+  $('checks').innerHTML = r.checks.map((c) => '<li class="' + c.st + '"><span class="ci" aria-hidden="true">' + (c.st === 'ok' ? '✓' : c.st === 'warn' ? '!' : '×') + '</span><span>' + c.t + '</span></li>').join('');
+
+  const hasParts = r.parts.length && r.kind !== 'empty' && r.kind !== 'ineligible';
+  $('breakdown').hidden = !hasParts;
+  if (hasParts) {
+    $('bar').innerHTML = r.parts.map((p) => '<span style="flex:' + p.value.toFixed(0) + ' 1 0;background:' + SEGC[p.cls] + '"></span>').join('');
+    $('rows').innerHTML = r.parts.map((p) => '<div><i style="background:' + SEGC[p.cls] + '"></i><dt>' + p.label + (p.note ? '<small>' + p.note + '</small>' : '') + '</dt><dd>' + som(p.value) + '</dd></div>').join('') +
+      '<div class="total"><i></i><dt>Jami</dt><dd>' + som(r.total) + '</dd></div>';
+  }
+
+  const notes = r.notes.slice();
+  if (s.wmode === 'years' && s.yearsRes && s.yearsRes.months && r.kind !== 'allowance') notes.push('O‘rtacha oylik ' + s.yearsRes.months + ' oy bo‘yicha, eski oyliklar bugungi qiymatga keltirilib hisoblandi.');
+  $('msg').innerHTML = notes.map((t) => '<p>' + t + '</p>').join('');
+
+  // Maslahatlar: +1 yil staj, to'liq stajgacha
+  const tips = [];
+  if ((r.kind === 'pension' || r.kind === 'partial') && isAgeLike) {
+    const next = calc(Object.assign({}, s, { stajM: s.stajM + 12 }));
+    if (next.total - r.total > 1000) tips.push('Yana 1 yil staj qo‘shilsa, pensiya taxminan <b>' + som(next.total - r.total) + '</b> ga oshadi.');
+    if (r.kind === 'partial' && r.reqTotal) {
+      const full = calc(Object.assign({}, s, { stajM: r.reqTotal * 12 }));
+      tips.push('To‘liq stajda (' + r.reqTotal + ' yil) pensiya taxminan <b>' + som(full.total) + '</b> bo‘lardi. Yana ' + stajText(r.reqTotal * 12 - s.stajM) + ' staj kerak.');
+    }
+  }
+  if (r.kind === 'ineligible' && r.alt && r.alt.total) tips.push('Umumiy tartibdagi taxminiy pensiya: <b>' + som(r.alt.total) + '</b>.');
+  $('tip').hidden = !tips.length;
+  $('tip').innerHTML = tips.map((t) => '<p>' + t + '</p>').join('');
+
+  $('dockVal').textContent = shown > 0 ? som(shown) : '—';
+  $('dockLabel').textContent = r.kind === 'allowance' ? 'Ijtimoiy nafaqa (pensiya emas)' : (r.kind === 'ineligible' || r.kind === 'none' ? r.pill : 'Taxminiy oylik pensiya');
+}
+
+function renderYears(s) {
+  const r = s.yearsRes;
+  let h = '';
+  r.detail.forEach((d) => {
+    h += '<li><div class="yl-top"><span>' + d.year + ' · ' + d.months + ' oy</span><b>' + fmt(d.pfz) + '</b></div><div class="yl-calc">' + fmt(d.wage) + ' ÷ ' + fmt(d.base) + ' = ' + dec4(d.ikz) + ' koeff. × ' + fmt(REF) + '</div></li>';
+  });
+  if (r.detail.length) h += '<li class="yl-sum"><div class="yl-top"><span>O‘rtacha oylik (' + r.months + ' oy)</span><b>' + som(r.avg) + '</b></div></li>';
+  $('ylist').innerHTML = h;
+  let hint = 'Har qatorda: o‘sha yilgi oylik ÷ o‘sha yilning bazaviy miqdori = koeffitsient. Koeffitsient × oxirgi 12 oyning o‘rtacha bazaviy miqdori = bugungi qiymati (o‘ngdagi summa).';
+  if (r.months > 60) hint += ' Diqqat: 60 oydan ko‘p kiritildi, odatda eng yaxshi 60 oy olinadi.';
+  if (r.avg > CAP) hint += ' O‘rtacha oylik chegaradan (' + som(CAP) + ') oshgani uchun hisobda chegara olinadi.';
+  $('yearsHint').textContent = hint;
+}
+
+// Oddiy rejim: oylik
+const salaryEl = $('salary');
+salaryEl.addEventListener('input', () => { const d = digits(salaryEl.value); salaryEl.value = d ? fmt(Math.min(d, 99999999999)) : ''; render(); });
+[3000000, 5000000, CAP].forEach((v, i) => {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'chip';
+  b.textContent = i === 2 ? 'Chegara: ' + fmt(v) : fmt(v);
+  b.addEventListener('click', () => { salaryEl.value = fmt(v); render(); });
+  $('chips').appendChild(b);
+});
+
+// Staj
+const stajEl = $('staj'), stajRange = $('stajRange'), moEl = $('stajM');
+function setStaj(v) { v = Math.min(60, Math.max(0, v)); stajEl.value = v; stajRange.value = Math.min(50, v); render(); }
+function setMonths(v) {
+  let y = parseInt(stajEl.value, 10) || 0;
+  if (v > 11 && y < 60) { y += 1; v = 0; } else if (v > 11) v = 11;
+  if (v < 0 && y > 0) { y -= 1; v = 11; } else if (v < 0) v = 0;
+  moEl.value = v; setStaj(y);
+}
+stajEl.addEventListener('input', () => { let v = parseInt(stajEl.value, 10); if (v > 60) { v = 60; stajEl.value = 60; } if (!isNaN(v)) stajRange.value = Math.min(50, Math.max(0, v)); render(); });
+stajEl.addEventListener('blur', () => { const v = parseInt(stajEl.value, 10); setStaj(isNaN(v) ? 0 : v); });
+stajRange.addEventListener('input', () => setStaj(parseInt(stajRange.value, 10)));
+$('stajMinus').addEventListener('click', () => setStaj((parseInt(stajEl.value, 10) || 0) - 1));
+$('stajPlus').addEventListener('click', () => setStaj((parseInt(stajEl.value, 10) || 0) + 1));
+$('moMinus').addEventListener('click', () => setMonths((parseInt(moEl.value, 10) || 0) - 1));
+$('moPlus').addEventListener('click', () => setMonths((parseInt(moEl.value, 10) || 0) + 1));
+moEl.addEventListener('input', () => { const v = parseInt(moEl.value, 10); if (v > 11) moEl.value = 11; if (v < 0) moEl.value = 0; render(); });
+moEl.addEventListener('blur', () => { const v = parseInt(moEl.value, 10); moEl.value = isNaN(v) ? 0 : Math.min(11, Math.max(0, v)); render(); });
+
+// Oila a'zolari
+const memEl = $('members');
+function setMem(v) { memEl.value = Math.min(10, Math.max(1, v)); render(); }
+$('memMinus').addEventListener('click', () => setMem((parseInt(memEl.value, 10) || 1) - 1));
+$('memPlus').addEventListener('click', () => setMem((parseInt(memEl.value, 10) || 1) + 1));
+memEl.addEventListener('input', render);
+memEl.addEventListener('blur', () => setMem(parseInt(memEl.value, 10) || 1));
+
+document.querySelectorAll('input[type=radio]').forEach((el) => el.addEventListener('change', render));
+['onset', 'deathAge', 'special', 'birthY'].forEach((id) => $(id).addEventListener('input', render));
+['card', 'orphan', 'birthM', 'underground', 'lone'].forEach((id) => $(id).addEventListener('change', render));
+$('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+
+// Bugungi miqdorlar
+(function () {
+  const groups = [
+    ['Bazaviy miqdorlar (PF-115 farmoni)', [
+      ['Pensiyani hisoblashning bazaviy miqdori', som(PHBM), '01.07.2026 dan. Ish haqi chegarasi va nogironlik ustamalari shundan hisoblanadi.'],
+      ['Bazaviy hisoblash miqdori (BHM)', som(BHM), '01.09.2026 dan. Faxriy unvon ustamasi shundan hisoblanadi.'],
+      ['Oxirgi 12 oyning o‘rtacha bazaviy miqdori', som(REF), 'Eski oyliklar shu qiymatga ko‘paytirilib, bugungi qiymatga keltiriladi.'],
+      ['Mehnatga haq to‘lashning eng kam miqdori', som(MIN_WAGE), '01.09.2026 dan.']
+    ]],
+    ['Ish haqi chegarasi', [
+      ['Hisobga olinadigan eng yuqori o‘rtacha oylik', som(CAP), '12 × pensiyani hisoblashning bazaviy miqdori (Qonun 31-modda).']
+    ]],
+    ['Eng kam pensiyalar', [
+      ['Yoshga doir pensiya (to‘liq staj)', som(MIN_AGE_FULL), 'Eng kami 983 000, lekin 983 000–1 083 000 oralig‘idagi pensiyalar 1 083 000 ga ko‘tariladi.'],
+      ['Yoshga doir pensiya (to‘liqsiz staj)', som(MIN_AGE_PARTIAL), 'Qo‘shimcha to‘lov bilan.'],
+      ['Nogironlik pensiyasi', som(MIN_DIS), 'To‘liqsiz staj bilan ham.'],
+      ['Boquvchisini yo‘qotganlik pensiyasi, 1 a’zo', som(SURV_MIN_1), 'Keyingi har bir a’zo uchun kamida ' + som(SURV_MIN_NEXT) + ' (Qonun 26-modda: eng kam pensiyaning 50%).'],
+      ['Chin yetim har bir bolaga', som(SURV_MIN_ORPHAN), 'Yoshga doir eng kam pensiyaning 100% (Qonun 26-modda).']
+    ]],
+    ['Ijtimoiy nafaqalar (pensiya emas; Ijtimoiy himoya milliy agentligi to‘laydi)', [
+      ['Yoshga doir nafaqa', som(AGE_ALLOW), 'Staj 7 yildan kam: erkaklarga 65, ayollarga 60 yoshda.'],
+      ['Nogironlik nafaqasi, I guruh', som(DIS_ALLOW['1']), 'PF-115 da nafaqa ' + som(DIS_ALLOW_BASE) + '. I guruhga ' + som(DIS_ALLOW_I_EXTRA) + ' qo‘shimcha Ijtimoiy himoya milliy agentligi ma’lumotidan olingan.'],
+      ['Nogironlik nafaqasi, II guruh', som(DIS_ALLOW['2']), 'Staj yo‘q yoki bolalikdan nogironlik (PF-115).'],
+      ['Boquvchisini yo‘qotganlik nafaqasi', som(SURV_ALLOW_1), 'Keyingi har bir a’zo uchun +' + som(SURV_ALLOW_NEXT) + '.']
+    ]],
+    ['Ustamalar', [
+      ['I guruh va yolg‘iz II guruh nogironlari', som(DIS1_BONUS), '75% × pensiyani hisoblashning bazaviy miqdori (Qonun 28-modda).'],
+      ['Faxriy unvon: “xizmat ko‘rsatgan …”', som(1.6 * BHM), '1,6 × BHM. “Xizmat ko‘rsatgan artist”: ' + som(1.8 * BHM) + ', “Xalq …” va “arbob”: ' + som(3 * BHM) + '.'],
+      ['Pensiyani kartaga olganda', '+1%', 'Pensiya jamg‘armasi to‘laydigan pensiyadan. Ijtimoiy nafaqalarga qo‘llanmaydi.']
+    ]],
+    ['Foizlar (Qonun 26, 27-moddalar)', [
+      ['Yoshga doir va nogironlik pensiyasi', '55%', 'O‘rtacha oylikdan.'],
+      ['Ortiqcha staj uchun', '+1%', 'Talab qilingan stajdan ortiq har bir to‘liq yil uchun.'],
+      ['Boquvchisini yo‘qotganlik pensiyasi', '30%', 'Har bir oila a’zosiga, boquvchining o‘rtacha oyligidan.'],
+      ['Boquvchining ortiqcha staji uchun', '+0,5%', 'Har bir yil, har bir a’zoga.']
+    ]]
+  ];
+  $('todayList').innerHTML = groups.map((g) => '<p class="tgroup">' + g[0] + '</p><ul class="tlist">' + g[1].map((r) => '<li><span class="n">' + r[0] + '</span><span class="v">' + r[1] + '</span><span class="d">' + r[2] + '</span></li>').join('') + '</ul>').join('');
+  $('baseTable').innerHTML = BASES.filter((b) => b[0] >= 2015).slice().reverse().map((b) => '<tr><td>' + String(b[1]).padStart(2, '0') + '.' + b[0] + ' dan</td><td>' + som(b[2]) + '</td></tr>').join('');
+})();
+
+render();
+</script>
+</body>
+</html>
