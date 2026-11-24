@@ -121,6 +121,11 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 legend, .lbl { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 8px; display: block; }
 .hint { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
 .hint.warn { color: var(--warn); }
+.dtab { margin-top: 12px; border: 1px solid var(--line, #e4dccd); border-radius: 12px; overflow: hidden; font-size: 14px; }
+.dtab .dt-h { padding: 10px 14px; font-weight: 600; background: rgba(176,141,87,.10); }
+.dtab .dt-r { display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; border-top: 1px solid var(--line, #e4dccd); }
+.dtab .dt-r.on { background: rgba(176,141,87,.22); font-weight: 600; }
+.dtab .dt-n { padding: 8px 14px; border-top: 1px solid var(--line, #e4dccd); color: var(--muted); font-size: 12.5px; }
 .sub-box { display: flex; flex-direction: column; gap: 16px; }
 
 .seg { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -400,6 +405,7 @@ details .body p { margin: 0 0 8px; }
             <label class="lbl" for="onset">Nogironlik belgilangan paytdagi yosh</label>
             <div class="input-row"><input type="number" id="onset" inputmode="numeric" min="16" max="90" value="22"><span class="unit">yosh</span></div>
             <p class="hint" id="onsetHint"></p>
+            <div class="dtab" id="disTab"></div>
           </div>
         </div>
 
@@ -965,9 +971,9 @@ const MAX_YEAR = Math.max(2026, NOW_Y);
 (function () {
   const items = [
     ['0', 'Unvonim yo‘q', ''],
-    ['1.6', '“O‘zbekistonda xizmat ko‘rsatgan …”', '1,6 × BHM = ' + som(1.6 * BHM) + ' / oy'],
+    ['1.6', '“Xizmat ko‘rsatgan” unvonlari', 'O‘qituvchi, sog‘liqni saqlash xodimi, jurnalist, quruvchi va boshqa sohalar<br>1,6 × BHM = ' + som(1.6 * BHM) + ' / oy'],
     ['1.8', '“O‘zbekistonda xizmat ko‘rsatgan artist”', '1,8 × BHM = ' + som(1.8 * BHM) + ' / oy'],
-    ['3', '“O‘zbekiston xalq …” yoki “xizmat ko‘rsatgan arbob”', '3 × BHM = ' + som(3 * BHM) + ' / oy']
+    ['3', '“Xalq” unvonlari va “xizmat ko‘rsatgan arbob”', 'Xalq artisti, xalq shoiri, xalq yozuvchisi; xizmat ko‘rsatgan fan yoki san’at arbobi<br>3 × BHM = ' + som(3 * BHM) + ' / oy']
   ];
   $('titles').innerHTML = items.map((it, i) => '<label class="cat"><input type="radio" name="title" value="' + it[0] + '"' + (i === 0 ? ' checked' : '') + '><span class="cb"><span class="dot"></span><span><b>' + it[1] + '</b>' + (it[2] ? '<small>' + it[2] + '</small>' : '') + '</span></span></label>').join('');
 })();
@@ -1089,6 +1095,14 @@ function render() {
   else if (T === 'dis') $('stajHint').textContent = s.cause === 'injury' ? 'Ishdagi jarohatda staj talab qilinmaydi, lekin ish haqi hisobga olinadi.' : 'Nogironlik belgilangan paytgacha bo‘lgan staj.';
   else $('stajHint').textContent = s.scause === 'general' ? 'Boquvchining vafot etgan kunigacha bo‘lgan staji.' : 'Bu holda staj talab qilinmaydi, lekin pensiya boquvchining ish haqidan hisoblanadi.';
   $('onsetHint').textContent = s.cause === 'injury' ? 'Staj talab qilinmaydi. Shu yoshdagi talabdan (' + disRequired(s.onset) + ' yil) ortiq har bir yil uchun +1%.' : (s.onset < 20 ? '20 yoshgacha nogiron bo‘lganlarga staj talab qilinmaydi (Qonun 17-modda).' : 'Shu yoshda to‘liq pensiya uchun ' + disRequired(s.onset) + ' yil staj kerak.');
+  (function () {
+    const rows = [['20 yoshgacha', 0]]; let from = 20;
+    DIS_TABLE.forEach(([lim, yrs]) => { rows.push([lim === Infinity ? from + ' yosh va undan katta' : (from === 20 ? '20–' + (lim - 1) : from + '–' + (lim - 1)) + (lim === Infinity ? '' : ' yosh'), yrs]); from = lim; });
+    const cur = s.onset < 20 ? 0 : DIS_TABLE.findIndex(([lim]) => s.onset < lim) + 1;
+    const t = $('disTab');
+    t.hidden = s.cause !== 'general';
+    t.innerHTML = '<div class="dt-h">Yoshga qarab talab qilinadigan staj</div>' + rows.map((r, k) => '<div class="dt-r' + (k === cur ? ' on' : '') + '"><span>' + r[0] + '</span><span>' + (r[1] ? r[1] + ' yil' : 'talab qilinmaydi') + '</span></div>').join('') + '<div class="dt-n">Nogironlik boshlangan paytdagi yosh olinadi. Staj kam bo‘lsa, pensiya stajga mutanosib tayinlanadi (Qonun 17–18-moddalar).</div>';
+  })();
   $('deathHint').textContent = (s.scause === 'general' ? 'Shu yoshda ' + disRequired(s.deathAge) + ' yil staj talab qilinadi.' : 'Staj talab qilinmaydi.') + ' Undan ortiq har bir yil har bir a’zoning pensiyasiga 0,5% qo‘shadi.';
   const sh = $('salaryHint');
   if (s.wmode === 'simple') {
@@ -1230,7 +1244,7 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
     ]],
     ['Ustamalar', [
       ['I guruh va yolg‘iz II guruh nogironlari', som(DIS1_BONUS), '75% × pensiyani hisoblashning bazaviy miqdori (Qonun 28-modda).'],
-      ['Faxriy unvon: “xizmat ko‘rsatgan …”', som(1.6 * BHM), '1,6 × BHM. “Xizmat ko‘rsatgan artist”: ' + som(1.8 * BHM) + ', “Xalq …” va “arbob”: ' + som(3 * BHM) + '.'],
+      ['Faxriy unvon: “xizmat ko‘rsatgan”', som(1.6 * BHM), '1,6 × BHM. “Xizmat ko‘rsatgan artist”: ' + som(1.8 * BHM) + ', “xalq” unvonlari va “arbob”: ' + som(3 * BHM) + '.'],
       ['Pensiyani kartaga olganda', '+1%', 'Pensiya jamg‘armasi to‘laydigan pensiyadan. Ijtimoiy nafaqalarga qo‘llanmaydi.']
     ]],
     ['Foizlar (Qonun 26, 27-moddalar)', [
