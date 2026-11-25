@@ -337,6 +337,27 @@ details .body p { margin: 0 0 8px; }
 .howto ol { margin: 6px 0 10px; padding-left: 20px; }
 .howto li { margin-bottom: 4px; }
 .howto .ex { background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+.hsteps { list-style: none; margin: 4px 0 14px; padding: 0; display: grid; gap: 10px; }
+.hsteps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.hsteps .hn { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.hsteps b { display: block; font-size: 15px; }
+.hsteps small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.45; margin-top: 2px; }
+.myear { margin-bottom: 10px; }
+.mgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 560px) { .mgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.mcell { display: grid; gap: 3px; }
+.mcell span { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.mcell input { width: 100%; min-width: 0; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; font-size: 16px; font-weight: 600; padding: 9px 10px; font-variant-numeric: tabular-nums; }
+.mcell input:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.mcell input.has { border-color: var(--gold); }
+.mres { margin: 12px 0; background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; display: grid; gap: 4px; font-size: 14px; }
+.mres .r { display: flex; justify-content: space-between; gap: 10px; }
+.mres .avg { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 4px; font-weight: 700; align-items: baseline; }
+.mres .avg b { font-family: var(--font-display); font-size: 22px; color: var(--gold); }
+.mres .f { color: var(--muted); font-size: 12.5px; text-align: right; }
+.mbtns { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.mbtns .btn-p:disabled { opacity: .45; cursor: default; }
+.mnote { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
 .mini { display: grid; gap: 8px; margin-top: 8px; }
 .mini .two { gap: 8px; }
 .mini .res { font-weight: 700; }
@@ -552,27 +573,18 @@ body:not([data-view="result"]) .ractions { display: none; }
       <section class="step" id="s3" aria-labelledby="s3h">
         <h2 class="step-h" id="s3h"><span class="sn">3</span><span id="s3t">Ish haqi</span></h2>
         <details class="howto" id="howto">
-          <summary>O‘rtacha oylikni qanday topaman?</summary>
+          <summary>🧮 O‘rtacha oylikni hisoblab beramiz</summary>
           <div class="hb">
-            <b>1. Har oylik ish haqingizni toping</b>
-            <ol>
-              <li><b>«Soliq» mobil ilovasi</b> → «Ish haqi ma’lumotlari» xizmati. Unda har oy uchun hisoblangan ish haqi ko‘rinadi.</li>
-              <li>Yoki <b>my3.soliq.uz</b> → shaxsiy kabinet → «Shaxsiy ma’lumotlar» → «Fuqarolarning hisoblangan ish haqi».</li>
-              <li>Yoki ish joyingiz buxgalteriyasidan ish haqi to‘g‘risida ma’lumotnoma oling.</li>
+            <ol class="hsteps">
+              <li><span class="hn">1</span><div><b>Oyliklaringizni toping</b><small>«Soliq» ilovasi → «Ish haqi ma’lumotlari». Yoki my3.soliq.uz → «Shaxsiy ma’lumotlar» → «Fuqarolarning hisoblangan ish haqi».</small></div></li>
+              <li><span class="hn">2</span><div><b>Har oyning summasini kataklarga yozing</b><small>Soliq ushlanmasdan oldingi (hisoblangan) summani yozing. Ishlamagan oyni bo‘sh qoldiring.</small></div></li>
+              <li><span class="hn">3</span><div><b>O‘rtacha o‘zi chiqadi</b><small>Barcha oyliklar yig‘indisi ÷ ishlagan oylar soni.</small></div></li>
             </ol>
-            <p style="margin:0">Bo‘lim nomlari ilova versiyasiga qarab biroz farq qilishi mumkin. <b>Hisoblangan</b> summani oling, ya’ni soliq ushlanmasdan oldingi summani. Qo‘lga olingan summani emas.</p>
-            <p style="margin:10px 0 0"><b>2. O‘rtachasini hisoblang</b><br>Yil davomidagi barcha oylik summalarni qo‘shing va ishlagan oylaringiz soniga bo‘ling.</p>
-            <div class="ex">Misol: 2025-yilda 10 oy ishlagansiz, 10 ta oylikning yig‘indisi 48 000 000 so‘m.<br>48 000 000 ÷ 10 = <b>4 800 000 so‘m</b> — shu yilgi o‘rtacha oylik.</div>
-            <p style="margin:0" id="howtoMode"></p>
-            <div class="mini">
-              <b>Shu yerda hisoblang</b>
-              <div class="two">
-                <div class="input-row"><input type="text" id="mSum" inputmode="numeric" autocomplete="off" placeholder="Oyliklar yig‘indisi" aria-label="Oyliklar yig‘indisi, so‘m"><span class="unit">so‘m</span></div>
-                <div class="input-row"><input type="number" id="mCnt" inputmode="numeric" min="1" max="12" placeholder="Oylar" aria-label="Ishlagan oylar soni"><span class="unit">oy</span></div>
-              </div>
-              <p class="res" id="mRes">O‘rtacha oylik: <b>—</b></p>
-              <button type="button" class="btn-s" id="mUse" hidden>Shu summani o‘rtacha oylik qilib qo‘yish</button>
-            </div>
+            <div class="myear" id="mYearBox"><label class="lbl" for="mYear">Qaysi yil?</label><div class="input-row"><select id="mYear"></select></div></div>
+            <div class="mgrid" id="mGrid"></div>
+            <div class="mres" id="mRes" aria-live="polite"></div>
+            <div class="mbtns"><button type="button" class="btn-p" id="mUse" disabled>O‘rtacha oylik qilib qo‘yish</button><button type="button" class="btn-s" id="mClear">Tozalash</button></div>
+            <p class="mnote" id="howtoMode"></p>
           </div>
         </details>
         <fieldset id="wmodeBox">
@@ -1452,25 +1464,49 @@ $('shareBtn').addEventListener('click', async () => {
   catch (e) { window.prompt('Havolani nusxalang:', url); }
   setTimeout(() => { btn.textContent = label; }, 2000);
 });
-// Mini hisoblagich: yig'indi ÷ oylar
+// Oyma-oy kiritish: yig'indi ÷ ishlangan oylar
+const MON = ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'];
+$('mGrid').innerHTML = MON.map((m, k) => '<label class="mcell"><span>' + m + '</span><input type="text" id="mm' + k + '" inputmode="numeric" autocomplete="off" placeholder="—" aria-label="' + m + ' oyi ish haqi, so‘m"></label>').join('');
+(function () { let o = ''; for (let y = MAX_YEAR; y >= 2000; y--) o += '<option value="' + y + '">' + y + '</option>'; $('mYear').innerHTML = o; $('mYear').value = String(Math.min(MAX_YEAR, NOW_Y - 1)); })();
+const isYears = () => document.querySelector('input[name=wmode]:checked').value === 'years';
 function howtoText() {
-  const years = document.querySelector('input[name=wmode]:checked').value === 'years';
-  $('howtoMode').innerHTML = years
-    ? 'Har bir yil uchun alohida hisoblang va natijani pastdagi jadvalning o‘sha yil qatoriga yozing. Eski oyliklarni hisoblagich o‘zi bugungi qiymatga keltiradi.'
-    : 'Oxirgi 1–2 yil oyliklaridan foydalaning. Oyliklaringiz eskiroq yoki yildan-yilga ko‘p o‘zgargan bo‘lsa, “Batafsil hisob”dagi “Yillar bo‘yicha” rejimi yaxshiroq.';
+  const y = isYears();
+  $('mYearBox').hidden = !y;
+  $('howtoMode').innerHTML = y
+    ? 'Har bir yil uchun alohida to‘ldiring: yilni tanlang, oyliklarni yozing va tugmani bosing. Natija pastdagi jadvalning shu yil qatoriga tushadi. Eski oyliklarni hisoblagich o‘zi bugungi qiymatga keltiradi.'
+    : 'Oxirgi 12 oy oyliklarini yozish kifoya. Oyliklaringiz eskiroq yoki yildan-yilga ko‘p o‘zgargan bo‘lsa, “Batafsil hisob”dagi “Yillar bo‘yicha” rejimi yaxshiroq.';
   miniCalc();
 }
 function miniCalc() {
-  const sum = digits($('mSum').value), n = parseInt($('mCnt').value, 10);
-  const ok = sum > 0 && n > 0 && n <= 12;
-  const avg = ok ? Math.round(sum / n) : 0;
-  $('mRes').innerHTML = 'O‘rtacha oylik: <b>' + (ok ? som(avg) : '—') + '</b>' + (ok ? ' <span style="color:var(--muted);font-weight:500">(' + fmt(sum) + ' ÷ ' + n + ')</span>' : '');
-  $('mUse').hidden = !ok || document.querySelector('input[name=wmode]:checked').value === 'years';
-  $('mUse').dataset.v = avg;
+  let sum = 0, n = 0;
+  for (let k = 0; k < 12; k++) { const v = digits($('mm' + k).value); $('mm' + k).classList.toggle('has', v > 0); if (v > 0) { sum += v; n++; } }
+  const avg = n ? Math.round(sum / n) : 0;
+  $('mRes').innerHTML = '<div class="r"><span>Oyliklar yig‘indisi</span><b>' + (n ? som(sum) : '—') + '</b></div>' +
+    '<div class="r"><span>Ishlagan oylar</span><b>' + n + ' oy</b></div>' +
+    '<div class="r avg"><span>O‘rtacha oylik</span><b>' + (n ? som(avg) : '—') + '</b></div>' +
+    (n ? '<div class="f">' + fmt(sum) + ' ÷ ' + n + ' = ' + fmt(avg) + '</div>' : '');
+  const btn = $('mUse'); btn.disabled = !n; btn.dataset.v = avg; btn.dataset.n = n;
+  btn.textContent = isYears() ? $('mYear').value + '-yil qatoriga qo‘yish' : 'O‘rtacha oylik qilib qo‘yish';
 }
-$('mSum').addEventListener('input', () => { const d = digits($('mSum').value); $('mSum').value = d ? fmt(d) : ''; miniCalc(); });
-$('mCnt').addEventListener('input', miniCalc);
-$('mUse').addEventListener('click', () => { $('salary').value = fmt(+$('mUse').dataset.v); render(); $('salary').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+for (let k = 0; k < 12; k++) { const e = $('mm' + k); e.addEventListener('input', () => { const d = digits(e.value); e.value = d ? fmt(Math.min(d, 9999999999)) : ''; miniCalc(); }); }
+$('mYear').addEventListener('change', miniCalc);
+$('mClear').addEventListener('click', () => { for (let k = 0; k < 12; k++) $('mm' + k).value = ''; miniCalc(); });
+$('mUse').addEventListener('click', () => {
+  const v = +$('mUse').dataset.v, n = +$('mUse').dataset.n; if (!v) return;
+  if (isYears()) {
+    const y = $('mYear').value; let idx = -1;
+    for (let i = 0; i < YR_DEFAULT.length; i++) if ($('yy' + i).value === y) { idx = i; break; }
+    if (idx < 0) { let best = 0; for (let i = 1; i < YR_DEFAULT.length; i++) if (+$('yy' + i).value < +$('yy' + best).value) best = i; idx = best; $('yy' + idx).value = y; }
+    $('ym' + idx).value = n; $('yw' + idx).value = fmt(v); render();
+    $('mUse').textContent = y + '-yil qatoriga qo‘yildi ✓';
+    $('yw' + idx).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    $('salary').value = fmt(v); render();
+    $('mUse').textContent = 'Qo‘yildi ✓';
+    $('salary').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  setTimeout(miniCalc, 1800);
+});
 document.querySelectorAll('input[name=wmode]').forEach((el) => el.addEventListener('change', howtoText));
 
 // Qoidalar: bosib ochiladigan bloklar
