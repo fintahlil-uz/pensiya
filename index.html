@@ -376,6 +376,7 @@ body[data-view="result"] .side { position: static; }
 body[data-view] { padding-bottom: 24px; }
 body:not([data-view="wizard"]) .wz-head, body:not([data-view="wizard"]) .wz-nav { display: none; }
 body:not([data-view="result"]) .ractions { display: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 /* Kelajakdagi pensiya */
 .future { margin-top: 14px; display: grid; gap: 12px; }
 .future h2 { margin: 0; }
@@ -477,23 +478,6 @@ body:not([data-view="result"]) .ractions { display: none; }
           </div>
         </fieldset>
 
-        <fieldset id="privBox" hidden>
-          <legend>Imtiyoz toifasi</legend>
-          <div class="cats" id="cats"></div>
-          <div class="field" id="specialBox" style="margin-top:12px">
-            <label class="lbl" for="special">Shu ro‘yxatdagi ishlarda ishlagan yillar (maxsus staj)</label>
-            <div class="input-row">
-              <input type="number" id="special" inputmode="decimal" min="0" max="50" step="0.5" value="12">
-              <span class="unit">yil</span>
-            </div>
-            <p class="hint" id="specialHint"></p>
-          </div>
-          <label class="check" id="undergroundBox" style="margin-top:10px">
-            <input type="checkbox" id="underground">
-            <span><b>Yer osti ishlarida ishlaganman</b><small>Maxsus staj to‘liq bo‘lmasa, yer osti ishining har bir yili pensiya yoshini 1 yilga kamaytiradi.</small></span>
-          </label>
-        </fieldset>
-
         <div class="field" id="birthBox">
           <span class="lbl">Tug‘ilgan sana <span style="color:var(--muted);font-weight:500">(ixtiyoriy)</span></span>
           <div class="two">
@@ -563,6 +547,26 @@ body:not([data-view="result"]) .ractions { display: none; }
         </div>
       </section>
 
+      <section class="step" id="s1b" aria-labelledby="s1bh">
+        <h2 class="step-h" id="s1bh"><span class="sn">3</span><span>Imtiyoz toifasi</span></h2>
+        <fieldset id="privBox">
+          <legend class="sr-only">Imtiyoz toifasi</legend>
+          <div class="cats" id="cats"></div>
+          <div class="field" id="specialBox" style="margin-top:12px">
+            <label class="lbl" for="special">Shu ro‘yxatdagi ishlarda ishlagan yillar (maxsus staj)</label>
+            <div class="input-row">
+              <input type="number" id="special" inputmode="decimal" min="0" max="50" step="0.5" value="12">
+              <span class="unit">yil</span>
+            </div>
+            <p class="hint" id="specialHint"></p>
+          </div>
+          <label class="check" id="undergroundBox" style="margin-top:10px">
+            <input type="checkbox" id="underground">
+            <span><b>Yer osti ishlarida ishlaganman</b><small>Maxsus staj to‘liq bo‘lmasa, yer osti ishining har bir yili pensiya yoshini 1 yilga kamaytiradi.</small></span>
+          </label>
+        </fieldset>
+
+      </section>
       <section class="step" id="s2" aria-labelledby="s2h">
         <h2 class="step-h" id="s2h"><span class="sn">2</span><span id="s2t">Mehnat staji</span></h2>
         <div class="field">
@@ -1457,6 +1461,7 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
 $('typesSlot').appendChild(document.querySelector('.types'));
 $('typesLabel').hidden = true;
 const VIEW_STEPS = { quick: ['s0', 's1', 's2', 's3'], full: ['s0', 's1', 's2', 's3', 's4'] };
+const stepIds = () => { const b = VIEW_STEPS[getMode()].slice(); if (val('ptype') === 'priv') b.splice(2, 0, 's1b'); return b; };
 let wzStep = 0;
 const getMode = () => document.querySelector('input[name=mode]:checked').value;
 function applyMode() {
@@ -1474,9 +1479,9 @@ function setView(v) {
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
 function showStep(i) {
-  const ids = VIEW_STEPS[getMode()];
+  const ids = stepIds();
   wzStep = Math.max(0, Math.min(ids.length - 1, i));
-  ['s0', 's1', 's2', 's3', 's4'].forEach((id) => $(id).classList.toggle('cur', id === ids[wzStep]));
+  ['s0', 's1', 's1b', 's2', 's3', 's4'].forEach((id) => $(id).classList.toggle('cur', id === ids[wzStep]));
   ids.forEach((id, k) => { const sn = $(id).querySelector('.sn'); if (sn) sn.textContent = k + 1; });
   $('prog').innerHTML = ids.map((_, k) => '<i class="' + (k <= wzStep ? 'on' : '') + '"></i>').join('');
   $('wzCount').textContent = (wzStep + 1) + ' / ' + ids.length;
@@ -1487,7 +1492,7 @@ function showStep(i) {
 $('startBtn').addEventListener('click', () => { applyMode(); setView('wizard'); showStep(0); });
 document.querySelectorAll('input[name=mode]').forEach((el) => el.addEventListener('change', applyMode));
 $('nextBtn').addEventListener('click', () => {
-  const ids = VIEW_STEPS[getMode()];
+  const ids = stepIds();
   if (wzStep < ids.length - 1) showStep(wzStep + 1); else { render(); setView('result'); }
 });
 $('backBtn').addEventListener('click', () => { if (wzStep === 0) setView('start'); else showStep(wzStep - 1); });
