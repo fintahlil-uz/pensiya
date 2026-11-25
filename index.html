@@ -716,7 +716,7 @@ body:not([data-view="result"]) .ractions { display: none; }
         <details>
           <summary>Bazaviy miqdorlar jadvali</summary>
           <div class="body">
-            <p>Pensiya jamg‘armasi ish haqini qayta hisoblashda qo‘llaydigan bazaviy miqdorlar. 2026-yil 1-sentyabrdagi qiymat PF-115 farmonidan olindi.</p>
+            <p>Eski oyliklarni bugungi qiymatga keltirishda qo‘llanadigan pensiyani hisoblashning bazaviy miqdorlari. 2021-yil avgustgacha: Pensiya jamg‘armasining rasmiy jadvali (ish haqining yakka tartibdagi koeffitsienti nizomi, 1-ilova). 2021-yil sentyabrdan: Prezident farmonlari (PF-6279, PF-128, PF-45, PF-196, PF-108, PF-91, PF-115). Bu qiymatlar haqiqiy pensiya xabarnomasi bilan tekshirilgan.</p>
             <table class="param" id="baseTable"></table>
           </div>
         </details>
@@ -848,15 +848,20 @@ const PRIV = {
   liliput: { name: 'Gipofizar mittilik (liliputlar) va pakanalar', law: '13-modda', m: { age: 45, total: 20 }, f: { age: 40, total: 15 } }
 };
 
-// Pensiyani hisoblashning bazaviy miqdori (PHBM) tarixi [yil, oy, miqdor]. 2021-09 dan rasmiy farmonlar:
-// PF-6279 289 000, PF-128 324 000, PF-45 347 000, PF-196 372 000, PF-108 428 000, PF-91 471 000, PF-115 504 000.
-// Tekshiruv: 2026-03 dagi haqiqiy xabarnoma (22 oy, IKZ 4 xona) tiyinigacha takrorlandi.
+// Pensiyani hisoblashning bazaviy miqdori tarixi [yil, oy, miqdor].
+// 2000-08 … 2021-08: Pensiya jamg'armasi, IKZ nizomi 1-ilovasi (gov.uz/oz/pj/sections/view/2061).
+// 2021-09 dan: Prezident farmonlari (PF-6279 289 000, PF-128 324 000, PF-45 347 000, PF-196 372 000,
+// PF-108 428 000, PF-91 471 000, PF-115 504 000). Jamg'arma sahifasidagi 2021-09 dan keyingi qatorlar BHM ni
+// ko'rsatadi va haqiqiy xabarnoma bilan mos kelmaydi (−106 006 so'm); farmondagi PHBM bilan 2026-03 xabarnomasi
+// tiyinigacha (−0,07) takrorlandi.
 const BASES = [
+  [2000,8,2450],[2001,8,3430],[2002,4,3945],[2002,8,4535],[2003,5,5440],[2004,8,6530],
+  [2005,5,7835],[2005,10,9400],[2006,7,10800],[2006,11,12420],[2007,8,15525],[2007,11,17077.5],[2007,12,18630],
   [2008,4,20865],[2008,9,25040],[2008,11,26540],[2008,12,28040],[2009,8,33645],[2009,12,37680],
   [2010,8,45215],[2010,12,49735],[2011,8,57200],[2011,12,62920],[2012,8,72355],[2012,12,79590],
   [2013,8,85560],[2013,9,91530],[2013,12,93817.5],[2014,1,96105],[2014,9,107635],[2014,12,113017.5],
   [2015,1,118400],[2015,9,130240],[2016,10,149775],[2017,12,172240],[2018,7,178270],[2018,8,184300],
-  [2018,11,202730],[2019,8,223000],[2021,2,270000],[2021,9,289000],[2022,5,324000],[2023,4,347000],
+  [2018,11,202730],[2019,8,223000],[2021,9,289000],[2022,5,324000],[2023,4,347000],
   [2023,12,372000],[2024,9,428000],[2025,7,471000],[2026,7,504000]
 ];
 function baseAt(y, m) { const k = y * 12 + (m - 1); let v = BASES[0][2]; for (const [by, bm, bv] of BASES) { if (by * 12 + (bm - 1) <= k) v = bv; else break; } return v; }
@@ -1108,7 +1113,7 @@ const YR_DEFAULT = [[2021, 12, 2500000], [2022, 12, 3000000], [2023, 12, 3500000
   const box = $('yrows');
   YR_DEFAULT.forEach((d, i) => {
     const row = document.createElement('div'); row.className = 'yrow';
-    let opts = ''; for (let y = MAX_YEAR; y >= 2008; y--) opts += '<option value="' + y + '"' + (y === d[0] ? ' selected' : '') + '>' + y + '</option>';
+    let opts = ''; for (let y = MAX_YEAR; y >= 2000; y--) opts += '<option value="' + y + '"' + (y === d[0] ? ' selected' : '') + '>' + y + '</option>';
     row.innerHTML = '<select id="yy' + i + '" aria-label="' + (i + 1) + '-qator: yil">' + opts + '</select>' +
       '<input type="number" id="ym' + i + '" inputmode="numeric" min="0" max="12" value="' + d[1] + '" aria-label="' + (i + 1) + '-qator: oylar soni">' +
       '<input type="text" id="yw' + i + '" inputmode="numeric" autocomplete="off" value="' + fmt(d[2]) + '" aria-label="' + (i + 1) + '-qator: o‘rtacha oylik">';
@@ -1370,7 +1375,7 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
     ]]
   ];
   $('todayList').innerHTML = groups.map((g) => '<p class="tgroup">' + g[0] + '</p><ul class="tlist">' + g[1].map((r) => '<li><span class="n">' + r[0] + '</span><span class="v">' + r[1] + '</span><span class="d">' + r[2] + '</span></li>').join('') + '</ul>').join('');
-  $('baseTable').innerHTML = BASES.filter((b) => b[0] >= 2015).slice().reverse().map((b) => '<tr><td>' + String(b[1]).padStart(2, '0') + '.' + b[0] + ' dan</td><td>' + som(b[2]) + '</td></tr>').join('');
+  $('baseTable').innerHTML = BASES.filter((b) => b[0] >= 2005).slice().reverse().map((b) => '<tr><td>' + String(b[1]).padStart(2, '0') + '.' + b[0] + ' dan</td><td>' + som(b[2]) + '</td></tr>').join('');
 })();
 
 // ===== Mix: qadam-baqadam =====
