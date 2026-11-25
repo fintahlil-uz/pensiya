@@ -300,6 +300,61 @@ details .body p { margin: 0 0 8px; }
 #dock .d-l b { font-family: var(--font-display); font-size: 22px; font-variant-numeric: lining-nums tabular-nums; color: var(--hero-gold); }
 #dock .d-r { font-size: 13px; color: var(--hero-soft); white-space: nowrap; }
 #dock:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+/* ===== Mix: boshlash, qadamlar, natija ===== */
+.gold { color: var(--gold); }
+.startv { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+.modes { display: grid; gap: 12px; }
+.mcard { position: relative; display: block; cursor: pointer; }
+.mcard input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.mcard .mc { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 16px 18px; border: 1.5px solid var(--line); border-radius: 18px; background: var(--surface); }
+.mcard b { font-size: 17px; }
+.mcard em { font-style: normal; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--accent-soft); padding: 4px 9px; border-radius: 999px; align-self: center; }
+.mcard small { grid-column: 1 / -1; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.mcard input:checked + .mc { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1.5px var(--accent) inset; }
+.mcard input:focus-visible + .mc { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn-p, .btn-s { font: inherit; font-weight: 700; font-size: 16px; border-radius: 14px; padding: 14px 18px; cursor: pointer; text-align: center; }
+.btn-p { background: var(--ink); color: var(--surface); border: 0; }
+.btn-s { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+.btn-p:focus-visible, .btn-s:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.fine { margin: 0; font-size: 13px; color: var(--muted); text-align: center; }
+.wz-head { display: flex; align-items: center; gap: 12px; }
+.prog { display: flex; gap: 6px; flex: 1; }
+.prog i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+.prog i.on { background: var(--gold); }
+#wzCount { font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.wz-nav { display: grid; grid-template-columns: auto 1fr; gap: 10px; position: sticky; bottom: 0; background: var(--surface); padding: 12px 0 calc(4px + env(safe-area-inset-bottom, 0px)); margin-top: 4px; z-index: 5; }
+.ractions { display: grid; gap: 12px; margin-top: 14px; }
+.ractions .two-b { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.upsell { border: 1.5px solid var(--gold); }
+.upsell b { display: block; font-size: 16px; margin-bottom: 4px; }
+.upsell p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+.howto { border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); padding: 0; }
+.howto summary { cursor: pointer; padding: 12px 14px; font-weight: 700; font-size: 15px; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+.howto summary::-webkit-details-marker { display: none; }
+.howto summary::after { content: '▾'; color: var(--muted); }
+.howto[open] summary::after { content: '▴'; }
+.howto .hb { padding: 0 14px 14px; font-size: 14px; line-height: 1.55; }
+.howto ol { margin: 6px 0 10px; padding-left: 20px; }
+.howto li { margin-bottom: 4px; }
+.howto .ex { background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+.mini { display: grid; gap: 8px; margin-top: 8px; }
+.mini .two { gap: 8px; }
+.mini .res { font-weight: 700; }
+.mini .res b { font-family: var(--font-display); font-size: 20px; color: var(--gold); }
+/* Ko'rinishlar */
+body[data-view="start"] .grid, body[data-view="start"] .more, body[data-view="start"] #dock { display: none !important; }
+body[data-view="wizard"] #startView, body[data-view="wizard"] .hero, body[data-view="wizard"] .notice,
+body[data-view="wizard"] .side, body[data-view="wizard"] .more, body[data-view="wizard"] #dock,
+body[data-view="wizard"] .brandfoot { display: none !important; }
+body[data-view="wizard"] .grid, body[data-view="result"] .grid { grid-template-columns: minmax(0, 1fr); max-width: 680px; margin: 0 auto; }
+body[data-view="wizard"] .step { border-bottom: 0; padding-bottom: 4px; }
+body[data-view="wizard"] .step:not(.cur) { display: none; }
+body[data-view="result"] #startView, body[data-view="result"] .hero, body[data-view="result"] .notice,
+body[data-view="result"] main.form, body[data-view="result"] #dock { display: none !important; }
+body[data-view="result"] .side { position: static; }
+body[data-view] { padding-bottom: 24px; }
+body:not([data-view="wizard"]) .wz-head, body:not([data-view="wizard"]) .wz-nav { display: none; }
+body:not([data-view="result"]) .ractions { display: none; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
@@ -314,8 +369,8 @@ details .body p { margin: 0 0 8px; }
   </div>
   <header class="hero">
     <div class="badges"><span class="badge">Ma’lumotlar: 2026-yil noyabr</span><span class="badge">Pensiya jamg‘armasi usuli bo‘yicha</span></div>
-    <h1>Pensiya hisoblagich</h1>
-    <p>Pensiya turini tanlang, ma’lumotlaringizni kiriting. Taxminiy oylik pensiya, unga qanday shartlar kerakligi va har bir qism qayerdan kelgani shu zahoti ko‘rinadi.</p>
+    <h1>Pensiyangiz <span class="gold">qancha</span> bo‘lishini bilib oling</h1>
+    <p>Rasmiy qoidalar va 2026-yil miqdorlari asosida taxminiy hisob. Qadam-baqadam savollarga javob bering, oxirida natija va u qanday hisoblangani ko‘rinadi.</p>
   </header>
 
   <div class="notice" role="note">
@@ -323,6 +378,15 @@ details .body p { margin: 0 0 8px; }
     <span><strong>Taxminiy hisob.</strong> Natija siz kiritgan ma’lumotlar va ochiq manbalardagi qoidalar asosida chiqariladi. Haqiqiy pensiya rasmiy yozuvlaringizga qarab farq qilishi mumkin.</span>
   </div>
 
+  <section class="startv" id="startView" aria-label="Hisoblash turini tanlang">
+    <div class="modes" role="radiogroup" aria-label="Hisoblash turi">
+      <label class="mcard"><input type="radio" name="mode" value="quick" checked><span class="mc"><b>⚡ Qisqa hisob</b><em>4 qadam</em><small>Pensiya turi, siz haqingizda, staj va o‘rtacha oylik. Tez, taxminiy natija.</small></span></label>
+      <label class="mcard"><input type="radio" name="mode" value="full"><span class="mc"><b>📋 Batafsil hisob</b><em>5 qadam</em><small>Qo‘shimcha: yillar bo‘yicha oylik, tug‘ilgan sana (pensiya sanasi), faxriy unvon. Natija shaxsiy holatingizga yaqinroq bo‘ladi.</small></span></label>
+    </div>
+    <button type="button" class="btn-p" id="startBtn">Boshlash →</button>
+    <p class="fine">Ikkala hisob ham taxminiy. Rasmiy miqdorni Pensiya jamg‘armasi staj va ish haqi yozuvlaringiz bo‘yicha belgilaydi.</p>
+  </section>
+  <div id="typesHold">
   <p class="types-h" id="typesLabel">Qaysi pensiyani hisoblaymiz?</p>
   <div class="types" role="radiogroup" aria-labelledby="typesLabel">
     <label class="tcard"><input type="radio" name="ptype" value="age" checked><span class="tc">
@@ -339,10 +403,16 @@ details .body p { margin: 0 0 8px; }
       <b>Boquvchisini yo‘qotganlik</b><small>Vafot etgan boquvchining oilasiga</small></span></label>
   </div>
 
+  </div>
   <div class="grid">
     <main class="card form" aria-label="Ma’lumotlarni kiritish">
+      <div class="wz-head"><div class="prog" id="prog" aria-hidden="true"></div><span id="wzCount"></span></div>
+      <section class="step" id="s0" aria-labelledby="s0h">
+        <h2 class="step-h" id="s0h"><span class="sn">1</span><span>Qaysi pensiyani hisoblaymiz?</span></h2>
+        <div id="typesSlot"></div>
+      </section>
 
-      <section class="step" aria-labelledby="s1h">
+      <section class="step" id="s1" aria-labelledby="s1h">
         <h2 class="step-h" id="s1h"><span class="sn">1</span><span id="s1t">Siz haqingizda</span></h2>
 
         <fieldset id="sexBox">
@@ -439,7 +509,7 @@ details .body p { margin: 0 0 8px; }
         </div>
       </section>
 
-      <section class="step" aria-labelledby="s2h">
+      <section class="step" id="s2" aria-labelledby="s2h">
         <h2 class="step-h" id="s2h"><span class="sn">2</span><span id="s2t">Mehnat staji</span></h2>
         <div class="field">
           <div class="two">
@@ -460,13 +530,37 @@ details .body p { margin: 0 0 8px; }
         </div>
       </section>
 
-      <section class="step" aria-labelledby="s3h">
+      <section class="step" id="s3" aria-labelledby="s3h">
         <h2 class="step-h" id="s3h"><span class="sn">3</span><span id="s3t">Ish haqi</span></h2>
-        <fieldset>
+        <details class="howto" id="howto">
+          <summary>O‘rtacha oylikni qanday topaman?</summary>
+          <div class="hb">
+            <b>1. Har oylik ish haqingizni toping</b>
+            <ol>
+              <li><b>«Soliq» mobil ilovasi</b> → «Ish haqi ma’lumotlari» xizmati. Unda har oy uchun hisoblangan ish haqi ko‘rinadi.</li>
+              <li>Yoki <b>my3.soliq.uz</b> → shaxsiy kabinet → «Shaxsiy ma’lumotlar» → «Fuqarolarning hisoblangan ish haqi».</li>
+              <li>Yoki ish joyingiz buxgalteriyasidan ish haqi to‘g‘risida ma’lumotnoma oling.</li>
+            </ol>
+            <p style="margin:0">Bo‘lim nomlari ilova versiyasiga qarab biroz farq qilishi mumkin. <b>Hisoblangan</b> summani oling, ya’ni soliq ushlanmasdan oldingi summani. Qo‘lga olingan summani emas.</p>
+            <p style="margin:10px 0 0"><b>2. O‘rtachasini hisoblang</b><br>Yil davomidagi barcha oylik summalarni qo‘shing va ishlagan oylaringiz soniga bo‘ling.</p>
+            <div class="ex">Misol: 2025-yilda 10 oy ishlagansiz, 10 ta oylikning yig‘indisi 48 000 000 so‘m.<br>48 000 000 ÷ 10 = <b>4 800 000 so‘m</b> — shu yilgi o‘rtacha oylik.</div>
+            <p style="margin:0" id="howtoMode"></p>
+            <div class="mini">
+              <b>Shu yerda hisoblang</b>
+              <div class="two">
+                <div class="input-row"><input type="text" id="mSum" inputmode="numeric" autocomplete="off" placeholder="Oyliklar yig‘indisi" aria-label="Oyliklar yig‘indisi, so‘m"><span class="unit">so‘m</span></div>
+                <div class="input-row"><input type="number" id="mCnt" inputmode="numeric" min="1" max="12" placeholder="Oylar" aria-label="Ishlagan oylar soni"><span class="unit">oy</span></div>
+              </div>
+              <p class="res" id="mRes">O‘rtacha oylik: <b>—</b></p>
+              <button type="button" class="btn-s" id="mUse" hidden>Shu summani o‘rtacha oylik qilib qo‘yish</button>
+            </div>
+          </div>
+        </details>
+        <fieldset id="wmodeBox">
           <legend>Qanday kiritasiz</legend>
           <div class="seg">
             <label><input type="radio" name="wmode" value="simple" checked><span>Bitta o‘rtacha raqam</span></label>
-            <label><input type="radio" name="wmode" value="years"><span>Yillar bo‘yicha (aniqroq)</span></label>
+            <label><input type="radio" name="wmode" value="years"><span>Yillar bo‘yicha</span></label>
           </div>
         </fieldset>
         <div class="field" id="simpleBox">
@@ -484,7 +578,7 @@ details .body p { margin: 0 0 8px; }
         </div>
       </section>
 
-      <section class="step" aria-labelledby="s4h">
+      <section class="step" id="s4" aria-labelledby="s4h">
         <h2 class="step-h" id="s4h"><span class="sn">4</span><span>Qo‘shimcha</span></h2>
         <fieldset id="titleBox">
           <legend>Faxriy unvon</legend>
@@ -496,6 +590,7 @@ details .body p { margin: 0 0 8px; }
           <span><b>Pensiyani bank kartasiga olaman</b><small>Pensiya jamg‘armasi to‘laydigan pensiyani kartaga oluvchilarga har oylik to‘lovning 1 foizi miqdorida qo‘shimcha to‘lanadi. Ijtimoiy nafaqalarga qo‘llanmaydi.</small></span>
         </label>
       </section>
+      <div class="wz-nav"><button type="button" class="btn-s" id="backBtn">← Orqaga</button><button type="button" class="btn-p" id="nextBtn">Davom etish →</button></div>
     </main>
 
     <aside class="side">
@@ -515,6 +610,13 @@ details .body p { margin: 0 0 8px; }
         <div class="msg" id="msg"></div>
         <div class="tipbox" id="tip" hidden></div>
       </section>
+      <div class="ractions" id="resActions">
+        <div class="card upsell" id="upsell"><b>Ko‘proq ma’lumot kiritasizmi?</b><p>Yillar bo‘yicha oylik, tug‘ilgan sana va faxriy unvon “Batafsil hisob”da. Natija shaxsiy holatingizga yaqinroq bo‘ladi.</p><button type="button" class="btn-p" id="toFull" style="width:100%">📋 Batafsil hisobga o‘tish</button></div>
+        <div class="two-b"><button type="button" class="btn-s" id="editBtn">✎ Tahrirlash</button><button type="button" class="btn-s" id="rulesBtn">📚 Qoidalar</button></div>
+        <button type="button" class="btn-p" id="shareBtn">Hisoblagichni ulashish</button>
+        <button type="button" class="btn-s" id="restartBtn">Boshidan boshlash</button>
+        <p class="fine">Natija taxminiy. Rasmiy miqdorni Pensiya jamg‘armasi belgilaydi.</p>
+      </div>
     </aside>
   </div>
 
@@ -1120,7 +1222,7 @@ function render() {
   const sh = $('salaryHint');
   if (s.wmode === 'simple') {
     if (s.salary > CAP) { sh.textContent = 'Hisobga olinadigan eng yuqori chegara ' + som(CAP) + '. Undan oshgan qismi hisoblanmaydi.'; sh.className = 'hint warn'; }
-    else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” ni tanlang.'; sh.className = 'hint'; }
+    else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. ' + (document.querySelector('input[name=mode]:checked') && document.querySelector('input[name=mode]:checked').value === 'quick' ? 'Eski yillar oyliklarini kiritish uchun “Batafsil hisob”ni tanlang.' : 'Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” ni tanlang.'); sh.className = 'hint'; }
   } else renderYears(s);
 
   // Hisob
@@ -1271,7 +1373,82 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
   $('baseTable').innerHTML = BASES.filter((b) => b[0] >= 2015).slice().reverse().map((b) => '<tr><td>' + String(b[1]).padStart(2, '0') + '.' + b[0] + ' dan</td><td>' + som(b[2]) + '</td></tr>').join('');
 })();
 
-render();
+// ===== Mix: qadam-baqadam =====
+$('typesSlot').appendChild(document.querySelector('.types'));
+$('typesLabel').hidden = true;
+const VIEW_STEPS = { quick: ['s0', 's1', 's2', 's3'], full: ['s0', 's1', 's2', 's3', 's4'] };
+let wzStep = 0;
+const getMode = () => document.querySelector('input[name=mode]:checked').value;
+function applyMode() {
+  const quick = getMode() === 'quick';
+  $('birthBox').hidden = quick;
+  $('wmodeBox').hidden = quick;
+  if (quick) { const sm = document.querySelector('input[name=wmode][value=simple]'); if (!sm.checked) { sm.checked = true; } }
+  $('upsell').hidden = !quick;
+  howtoText();
+  render();
+}
+function setView(v) {
+  document.body.dataset.view = v;
+  try { history.replaceState(null, '', v === 'start' ? location.pathname : location.pathname + '#' + v); } catch (e) {}
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+function showStep(i) {
+  const ids = VIEW_STEPS[getMode()];
+  wzStep = Math.max(0, Math.min(ids.length - 1, i));
+  ['s0', 's1', 's2', 's3', 's4'].forEach((id) => $(id).classList.toggle('cur', id === ids[wzStep]));
+  ids.forEach((id, k) => { const sn = $(id).querySelector('.sn'); if (sn) sn.textContent = k + 1; });
+  $('prog').innerHTML = ids.map((_, k) => '<i class="' + (k <= wzStep ? 'on' : '') + '"></i>').join('');
+  $('wzCount').textContent = (wzStep + 1) + ' / ' + ids.length;
+  $('backBtn').textContent = wzStep === 0 ? '← Bosh sahifa' : '← Orqaga';
+  $('nextBtn').textContent = wzStep === ids.length - 1 ? 'Natijani ko‘rish' : 'Davom etish →';
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+$('startBtn').addEventListener('click', () => { applyMode(); setView('wizard'); showStep(0); });
+document.querySelectorAll('input[name=mode]').forEach((el) => el.addEventListener('change', applyMode));
+$('nextBtn').addEventListener('click', () => {
+  const ids = VIEW_STEPS[getMode()];
+  if (wzStep < ids.length - 1) showStep(wzStep + 1); else { render(); setView('result'); }
+});
+$('backBtn').addEventListener('click', () => { if (wzStep === 0) setView('start'); else showStep(wzStep - 1); });
+$('editBtn').addEventListener('click', () => { setView('wizard'); showStep(0); });
+$('restartBtn').addEventListener('click', () => setView('start'));
+$('toFull').addEventListener('click', () => { document.querySelector('input[name=mode][value=full]').checked = true; applyMode(); setView('wizard'); showStep(1); });
+$('rulesBtn').addEventListener('click', () => { document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+$('shareBtn').addEventListener('click', async () => {
+  const url = location.origin + location.pathname;
+  const data = { title: 'FinTahlil.uz pensiya hisoblagichi', text: 'Pensiyangiz taxminan qancha bo‘lishini hisoblab ko‘ring:', url };
+  try {
+    if (navigator.share) { await navigator.share(data); return; }
+    await navigator.clipboard.writeText(url);
+    $('shareBtn').textContent = 'Havola nusxalandi ✓';
+  } catch (e) { $('shareBtn').textContent = url; }
+  setTimeout(() => { $('shareBtn').textContent = 'Hisoblagichni ulashish'; }, 2500);
+});
+// Mini hisoblagich: yig'indi ÷ oylar
+function howtoText() {
+  const years = document.querySelector('input[name=wmode]:checked').value === 'years';
+  $('howtoMode').innerHTML = years
+    ? 'Har bir yil uchun alohida hisoblang va natijani pastdagi jadvalning o‘sha yil qatoriga yozing. Eski oyliklarni hisoblagich o‘zi bugungi qiymatga keltiradi.'
+    : 'Oxirgi 1–2 yil oyliklaridan foydalaning. Oyliklaringiz eskiroq yoki yildan-yilga ko‘p o‘zgargan bo‘lsa, “Batafsil hisob”dagi “Yillar bo‘yicha” rejimi yaxshiroq.';
+  miniCalc();
+}
+function miniCalc() {
+  const sum = digits($('mSum').value), n = parseInt($('mCnt').value, 10);
+  const ok = sum > 0 && n > 0 && n <= 12;
+  const avg = ok ? Math.round(sum / n) : 0;
+  $('mRes').innerHTML = 'O‘rtacha oylik: <b>' + (ok ? som(avg) : '—') + '</b>' + (ok ? ' <span style="color:var(--muted);font-weight:500">(' + fmt(sum) + ' ÷ ' + n + ')</span>' : '');
+  $('mUse').hidden = !ok || document.querySelector('input[name=wmode]:checked').value === 'years';
+  $('mUse').dataset.v = avg;
+}
+$('mSum').addEventListener('input', () => { const d = digits($('mSum').value); $('mSum').value = d ? fmt(d) : ''; miniCalc(); });
+$('mCnt').addEventListener('input', miniCalc);
+$('mUse').addEventListener('click', () => { $('salary').value = fmt(+$('mUse').dataset.v); render(); $('salary').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+document.querySelectorAll('input[name=wmode]').forEach((el) => el.addEventListener('change', howtoText));
+
+applyMode();
+const h0 = location.hash.slice(1);
+if (h0 === 'result') setView('result'); else setView('start');
 </script>
 </body>
 </html>
