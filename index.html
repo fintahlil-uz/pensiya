@@ -1375,7 +1375,7 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
     ]]
   ];
   $('todayList').innerHTML = groups.map((g) => '<p class="tgroup">' + g[0] + '</p><ul class="tlist">' + g[1].map((r) => '<li><span class="n">' + r[0] + '</span><span class="v">' + r[1] + '</span><span class="d">' + r[2] + '</span></li>').join('') + '</ul>').join('');
-  $('baseTable').innerHTML = BASES.filter((b) => b[0] >= 2005).slice().reverse().map((b) => '<tr><td>' + String(b[1]).padStart(2, '0') + '.' + b[0] + ' dan</td><td>' + som(b[2]) + '</td></tr>').join('');
+  $('baseTable').innerHTML = BASES.filter((b) => b[0] >= 2000).slice().reverse().map((b) => '<tr><td>' + String(b[1]).padStart(2, '0') + '.' + b[0] + ' dan</td><td>' + som(b[2]) + '</td></tr>').join('');
 })();
 
 // ===== Mix: qadam-baqadam =====
