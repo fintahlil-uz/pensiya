@@ -355,6 +355,15 @@ body[data-view="result"] .side { position: static; }
 body[data-view] { padding-bottom: 24px; }
 body:not([data-view="wizard"]) .wz-head, body:not([data-view="wizard"]) .wz-nav { display: none; }
 body:not([data-view="result"]) .ractions { display: none; }
+/* Bosib ochiladigan bloklar */
+.tog { cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; user-select: none; }
+.tog::after { content: '▾'; font-family: var(--font-body); font-size: 15px; color: var(--muted); flex: none; transition: transform .15s; }
+.tog[aria-expanded="true"]::after { transform: rotate(180deg); }
+.tog:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.gitem.closed > :not(h3) { display: none !important; }
+.gitem.closed { padding-bottom: 14px; }
+.tgroup.tog { margin-bottom: 0; padding: 12px 0; border-top: 1px solid var(--line); }
+.tgroup.tog[aria-expanded="false"] + .tlist { display: none; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
@@ -1453,6 +1462,18 @@ $('mSum').addEventListener('input', () => { const d = digits($('mSum').value); $
 $('mCnt').addEventListener('input', miniCalc);
 $('mUse').addEventListener('click', () => { $('salary').value = fmt(+$('mUse').dataset.v); render(); $('salary').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
 document.querySelectorAll('input[name=wmode]').forEach((el) => el.addEventListener('change', howtoText));
+
+// Qoidalar: bosib ochiladigan bloklar
+function makeTog(head, onToggle, open) {
+  head.classList.add('tog'); head.setAttribute('role', 'button'); head.tabIndex = 0;
+  const set = (v) => { head.setAttribute('aria-expanded', v ? 'true' : 'false'); onToggle(v); };
+  set(!!open);
+  const flip = () => set(head.getAttribute('aria-expanded') !== 'true');
+  head.addEventListener('click', flip);
+  head.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
+}
+document.querySelectorAll('.gitem').forEach((g) => { const h = g.querySelector('h3'); if (h) makeTog(h, (v) => g.classList.toggle('closed', !v), false); });
+document.querySelectorAll('#todayList .tgroup').forEach((t) => makeTog(t, () => {}, false));
 
 applyMode();
 const h0 = location.hash.slice(1);
