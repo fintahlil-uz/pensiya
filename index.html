@@ -386,6 +386,8 @@ body:not([data-view="result"]) .ractions { display: none; }
 .fbox span { font-size: 12.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 .fbox b { font-family: var(--font-display); font-size: 20px; white-space: nowrap; line-height: 1.15; color: var(--ink); }
 .fbox.main b { color: var(--gold); }
+#fAgeBox .seg label > span { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+#fAgeBox .seg small { display: block; font-size: 12.5px; font-weight: 600; opacity: .8; margin-top: 2px; }
 .fbox small { font-size: 12px; color: var(--muted); line-height: 1.4; }
 @media (max-width: 520px) { .fgrid { grid-template-columns: 1fr; } }
 /* Bosib ochiladigan bloklar */
@@ -656,18 +658,18 @@ body:not([data-view="result"]) .ractions { display: none; }
       <section class="card future" id="future" hidden aria-labelledby="fTitle">
         <h2 id="fTitle">Kelajakdagi pensiyam</h2>
         <p class="fwhen" id="fWhen"></p>
-        <fieldset id="fAgeBox" hidden>
-          <legend>Qaysi yoshda chiqasiz?</legend>
-          <div class="seg">
-            <label><input type="radio" name="fage" value="54"><span>54 yoshda</span></label>
-            <label><input type="radio" name="fage" value="55" checked><span>55 yoshda</span></label>
-          </div>
-          <p class="hint">20 yil va undan ko‘p stajli ayollar 54 yoshdan chiqishi mumkin (Qonun 12¹-modda). Islohot loyihasida bu imkoniyatni 2027-yildan bekor qilish taklif qilingan.</p>
-        </fieldset>
         <label class="check">
           <input type="checkbox" id="fWork" checked>
           <span><b id="fWorkL">Pensiyagacha ishlashni davom ettiraman</b><small id="fWorkN"></small></span>
         </label>
+        <fieldset id="fAgeBox" hidden>
+          <legend>Qaysi yoshda chiqasiz?</legend>
+          <div class="seg">
+            <label><input type="radio" name="fage" value="54"><span id="fA54">54 yoshda</span></label>
+            <label><input type="radio" name="fage" value="55" checked><span id="fA55">55 yoshda</span></label>
+          </div>
+          <p class="hint">20 yil va undan ko‘p stajli ayollar 54 yoshdan chiqishi mumkin (Qonun 12¹-modda). 1 yil ko‘proq ishlash pensiyaga +1% qo‘shadi, lekin 1 yillik pensiya olinmay qoladi. Islohot loyihasida 54 yoshda chiqishni 2027-yildan bekor qilish taklif qilingan.</p>
+        </fieldset>
         <div class="fgrid">
           <div class="fbox main"><span>Bugungi pulda</span><b id="fReal">—</b><small>Asosiy raqam. Oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati shuncha bo‘ladi.</small></div>
           <div class="fbox"><span id="fNomL">O‘sha yilgi so‘mda</span><b id="fNom">—</b><small id="fNomN"></small></div>
@@ -1584,8 +1586,14 @@ function renderFuture() {
     const stajAt54 = s.stajM + (work ? Math.max(0, at54 - nowYM) : 0);
     can54 = stajAt54 >= 240 && at54 > nowYM;
   }
-  $('fAgeBox').hidden = !can54;
-  if (can54 && val('fage') === '54') retAge = 54;
+  // Ishlamasa — kutish pensiyani oshirmaydi: eng erta yosh olinadi, tanlov yashiriladi
+  $('fAgeBox').hidden = !(can54 && work);
+  if (can54 && (!work || val('fage') === '54')) retAge = 54;
+  if (can54 && work) {
+    const amt = (age) => { const ym = birthYM + age * 12; const st = s.stajM + Math.max(0, ym - nowYM); return calc(Object.assign({}, s, { stajM: st, staj: Math.floor(st / 12) })).total; };
+    $('fA54').innerHTML = '54 yoshda<small>' + som(amt(54)) + '</small>';
+    $('fA55').innerHTML = '55 yoshda<small>' + som(amt(55)) + '</small>';
+  }
   const retYM = birthYM + retAge * 12;
   const left = retYM - nowYM;
   if (left <= 0) { box.hidden = true; return; }
@@ -1596,7 +1604,7 @@ function renderFuture() {
   const ry = Math.floor(retYM / 12);
   const ageNow = Math.floor((nowYM - birthYM) / 12);
   let when = 'Hozir ' + ageNow + ' yoshdasiz. Pensiyaga chiqish: ' + ry + '-yil, ' + MONTHS[retYM % 12] + ', ' + retAge + ' yoshda (' + stajText(left) + ' qoldi).';
-  $('fWorkL').textContent = 'Pensiyaga chiqqunimcha (' + ry + '-yil ' + MONTHS[retYM % 12] + 'gacha) ishlashni davom ettiraman';
+  $('fWorkL').textContent = can54 ? 'Pensiyaga chiqqunimcha ishlashni davom ettiraman' : 'Pensiyaga chiqqunimcha (' + ry + '-yil ' + MONTHS[retYM % 12] + 'gacha) ishlashni davom ettiraman';
   if (s.type === 'age') {
     const rm = reformAgeMonths(s.birthY, s.birthM, RET_AGE[s.sex]);
     if (rm > retAge * 12) { const ym2 = s.birthY * 12 + (s.birthM - 1) + rm; when += ' Islohot loyihasi qabul qilinsa: ' + Math.floor(ym2 / 12) + '-yil, ' + MONTHS[ym2 % 12] + '.'; }
@@ -1604,7 +1612,7 @@ function renderFuture() {
   $('fWhen').textContent = when;
   $('fWorkN').textContent = work
     ? 'Staj ' + stajText(s.stajM) + ' → ' + stajText(s2.stajM) + ' bo‘ladi. Oylik narxlar bilan birga oshib boradi deb olinadi.'
-    : 'Staj hozirgicha qoladi: ' + stajText(s.stajM) + '.';
+    : 'Staj hozirgicha qoladi: ' + stajText(s.stajM) + '.' + (can54 ? ' Ishlamasangiz, kutish pensiyani oshirmaydi, shuning uchun eng erta muddat (54 yosh) olindi.' : '');
   const sc = val('fscen'); $('fOwnBox').hidden = sc !== 'own';
   const S = SCEN[sc];
   const k = growthFactor(nowYM, retYM, S.rate);
