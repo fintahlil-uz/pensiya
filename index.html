@@ -677,11 +677,9 @@ body:not([data-view="result"]) .ractions { display: none; }
         <fieldset>
           <legend>Narxlar o‘sishi stsenariysi</legend>
           <div class="seg">
-            <label><input type="radio" name="fscen" value="mb" checked><span>Markaziy bank</span></label>
-            <label><input type="radio" name="fscen" value="hist"><span>Tarixiy</span></label>
-            <label><input type="radio" name="fscen" value="own"><span>O‘zim</span></label>
+            <label><input type="radio" name="fscen" value="mb" checked><span>Markaziy bank prognozi</span></label>
+            <label><input type="radio" name="fscen" value="hist"><span>Tarixiy o‘sish</span></label>
           </div>
-          <div class="input-row" id="fOwnBox" hidden style="margin-top:8px"><input type="number" id="fOwn" inputmode="decimal" min="0" max="40" step="0.5" value="8" aria-label="Yillik o‘sish, foiz"><span class="unit">% / yil</span></div>
           <p class="hint" id="fScenN"></p>
         </fieldset>
         <p class="fine" style="text-align:left">Prognoz kafolat emas. Pensiya qoidalari, miqdorlar va pensiya yoshi o‘zgarishi mumkin. Oylik inflyatsiyadan tezroq oshsa, pensiya yuqoriroq, sekinroq oshsa, pastroq chiqadi.</p>
@@ -1560,8 +1558,7 @@ document.querySelectorAll('input[name=wmode]').forEach((el) => el.addEventListen
 // Tarixiy: PHBM 289 000 (2021-09) → 504 000 (2026-07), yiliga ≈12%.
 const SCEN = {
   mb: { name: 'Markaziy bank prognozi', rate: (y) => (y <= 2026 ? 7 : (y === 2027 ? 6 : 5)), note: 'Inflyatsiya: 2026-yil ≈7%, 2027-yil ≈6% (yil ichida 5% ga tushadi), 2028-yildan 5% (Markaziy bank asosiy ssenariysi, 2026-yil noyabr). 2029-yildan keyin ham 5% maqsad olindi.' },
-  hist: { name: 'Tarixiy o‘sish', rate: () => 12, note: 'Pensiyani hisoblashning bazaviy miqdori 2021–2026-yillarda 289 000 dan 504 000 so‘mgacha oshgan, bu yiliga ≈12%. Pensiyalar amalda inflyatsiyadan tezroq oshgan.' },
-  own: { name: 'O‘z foizingiz', rate: () => Math.max(0, Math.min(40, parseFloat($('fOwn').value) || 0)), note: 'Yillik o‘sish foizini o‘zingiz kiriting.' }
+  hist: { name: 'Tarixiy o‘sish', rate: () => 12, note: 'Pensiyani hisoblashning bazaviy miqdori 2021–2026-yillarda 289 000 dan 504 000 so‘mgacha oshgan, bu yiliga ≈12%. Pensiyalar amalda inflyatsiyadan tezroq oshgan.' }
 };
 function growthFactor(fromYM, toYM, rateFn) {
   let f = 1;
@@ -1613,7 +1610,7 @@ function renderFuture() {
   $('fWorkN').textContent = work
     ? 'Staj ' + stajText(s.stajM) + ' → ' + stajText(s2.stajM) + ' bo‘ladi. Oylik narxlar bilan birga oshib boradi deb olinadi.'
     : 'Staj hozirgicha qoladi: ' + stajText(s.stajM) + '.' + (can54 ? ' Ishlamasangiz, kutish pensiyani oshirmaydi, shuning uchun eng erta muddat (54 yosh) olindi.' : '');
-  const sc = val('fscen'); $('fOwnBox').hidden = sc !== 'own';
+  const sc = val('fscen');
   const S = SCEN[sc];
   const k = growthFactor(nowYM, retYM, S.rate);
   const real = r2.total, nom = Math.round(real * k / 1000) * 1000;
@@ -1626,7 +1623,6 @@ function renderFuture() {
 $('fWork').addEventListener('change', renderFuture);
 document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', renderFuture));
 document.querySelectorAll('input[name=fscen]').forEach((el) => el.addEventListener('change', renderFuture));
-$('fOwn').addEventListener('input', renderFuture);
 
 // Qoidalar: bosib ochiladigan bloklar
 function makeTog(head, onToggle, open) {
