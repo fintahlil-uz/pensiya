@@ -1418,17 +1418,20 @@ $('nextBtn').addEventListener('click', () => {
 $('backBtn').addEventListener('click', () => { if (wzStep === 0) setView('start'); else showStep(wzStep - 1); });
 $('editBtn').addEventListener('click', () => { setView('wizard'); showStep(0); });
 $('restartBtn').addEventListener('click', () => setView('start'));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) $('shareBtn').textContent = 'Hisoblagichni ulashish'; });
 $('toFull').addEventListener('click', () => { document.querySelector('input[name=mode][value=full]').checked = true; applyMode(); setView('wizard'); showStep(1); });
 $('rulesBtn').addEventListener('click', () => { document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 $('shareBtn').addEventListener('click', async () => {
   const url = location.origin + location.pathname;
   const data = { title: 'FinTahlil.uz pensiya hisoblagichi', text: 'Pensiyangiz taxminan qancha bo‘lishini hisoblab ko‘ring:', url };
-  try {
-    if (navigator.share) { await navigator.share(data); return; }
-    await navigator.clipboard.writeText(url);
-    $('shareBtn').textContent = 'Havola nusxalandi ✓';
-  } catch (e) { $('shareBtn').textContent = url; }
-  setTimeout(() => { $('shareBtn').textContent = 'Hisoblagichni ulashish'; }, 2500);
+  const btn = $('shareBtn'), label = 'Hisoblagichni ulashish';
+  if (navigator.share) {
+    try { await navigator.share(data); } catch (e) { /* foydalanuvchi oynani yopdi — hech narsa qilmaymiz */ }
+    btn.textContent = label; return;
+  }
+  try { await navigator.clipboard.writeText(url); btn.textContent = 'Havola nusxalandi ✓'; }
+  catch (e) { window.prompt('Havolani nusxalang:', url); }
+  setTimeout(() => { btn.textContent = label; }, 2000);
 });
 // Mini hisoblagich: yig'indi ÷ oylar
 function howtoText() {
