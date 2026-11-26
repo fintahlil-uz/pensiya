@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="uz" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -410,6 +410,94 @@ body:not([data-view="result"]) .ractions { display: none; }
 .more details { transition: box-shadow .25s ease; }
 .more details.isopen { box-shadow: inset 3px 0 0 var(--gold); padding-left: 12px; }
 .more details > .tw > .ti { padding-top: 4px; }
+
+/* ===================== QAYTA DIZAYN (2026-11): FinTahlil brendi, "shisha" uslub ===================== */
+:root {
+  --bg: #F6F2EA; --surface: rgba(255,255,255,.80); --surface-2: rgba(255,255,255,.62);
+  --line: rgba(31,42,68,.11); --accent-soft: #EFE6D6; --muted: #6A6458;
+  --glass-b: rgba(255,255,255,.75); --sh: 0 10px 30px rgba(31,42,68,.08);
+  --r: 24px;
+}
+body { background: #F6F2EA linear-gradient(180deg, #1F2A44 0px, #2C3958 240px, #6A6F7E 400px, #E9E2D4 560px, #F6F2EA 760px) no-repeat; background-size: 100% 900px; }
+.wrap { max-width: 1180px; padding-top: 14px; }
+/* Yuqori qator va sarlavha — to'q fonda */
+.brandbar { border-bottom: 1px solid rgba(255,255,255,.14); }
+.brandbar .brand { color: #fff; }
+.brandbar .brand span { color: #CFAE78; }
+.social a { color: #fff; background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); }
+.social a:hover { border-color: #CFAE78; }
+.hero h1 { color: #fff; }
+.hero h1 .gold { color: #CFAE78; }
+.hero p { color: #C9CFDA; }
+.badge { background: rgba(255,255,255,.12); color: #F1E6CF; }
+.notice { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); color: #F1E6CF; backdrop-filter: blur(10px); }
+/* Kartalar — shisha */
+.card, .mcard .mc, .tcard .tc, .cat .cc, .howto, .dtab, .fbox {
+  background: var(--surface); border-color: var(--glass-b);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+}
+.card { border-radius: var(--r); box-shadow: var(--sh); padding: 20px; }
+.mcard .mc { border-radius: 22px; box-shadow: var(--sh); }
+.mcard input:checked + .mc { background: #fff; border-color: #CFAE78; box-shadow: 0 0 0 2px #CFAE78 inset, var(--sh); }
+.mcard em { background: #EFE6D6; }
+.tcard .tc { border-radius: 20px; box-shadow: var(--sh); }
+.tcard input:checked + .tc { background: #fff; border-color: #1F2A44; box-shadow: 0 0 0 1.5px #1F2A44 inset, var(--sh); }
+.tcard .ic { border-radius: 50%; background: #EFE6D6; }
+.tcard input:checked + .tc .ic { background: #1F2A44; color: #CFAE78; }
+/* Tugmalar — yumaloq */
+.btn-p, .btn-s { border-radius: 999px; }
+.btn-p { background: #1F2A44; box-shadow: 0 8px 20px rgba(31,42,68,.18); }
+.btn-s { background: rgba(255,255,255,.7); border-color: rgba(31,42,68,.25); }
+.seg span { border-radius: 16px; background: rgba(255,255,255,.7); border-color: rgba(31,42,68,.12); }
+.seg input:checked + span { background: #1F2A44; border-color: #1F2A44; color: #fff; }
+.input-row { border-radius: 16px; }
+/* Qadamlar */
+.step-h { font-size: 22px; }
+.step-h .sn { background: #1F2A44; color: #CFAE78; width: 30px; height: 30px; }
+.prog i { height: 6px; border-radius: 3px; background: rgba(31,42,68,.12); }
+.prog i.on { background: #B08D57; }
+.wz-nav { background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.92) 30%); border-radius: 0 0 var(--r) var(--r); }
+/* Natija kartasi */
+.result { border-radius: 28px; background: linear-gradient(160deg, #1F2A44 0%, #26345A 100%); box-shadow: 0 18px 40px rgba(31,42,68,.25); }
+/* Kelajak: ikki rangli lenta va grafik */
+.future { border-radius: var(--r); }
+.fgrid { gap: 0; grid-template-columns: 1fr 1fr !important; border-radius: 18px; overflow: hidden; }
+.fgrid .fbox { border: 0; border-radius: 0; backdrop-filter: none; }
+.fgrid .fbox.main { background: #1F2A44; }
+.fgrid .fbox.main span, .fgrid .fbox.main small { color: #C9CFDA; }
+.fgrid .fbox.main b { color: #E0C08A; }
+.fgrid .fbox:not(.main) { background: #CFAE78; clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%); margin-left: -14px; padding-left: 26px; }
+.fgrid .fbox:not(.main) span, .fgrid .fbox:not(.main) small { color: #3B2E16; }
+.fgrid .fbox:not(.main) b { color: #1F2A44; }
+.fgrid .fbox b { font-size: clamp(17px, 4.6vw, 22px); }
+.fbars { display: flex; align-items: flex-end; gap: 6px; height: 110px; padding: 4px 2px 0; }
+.fbars i { flex: 1; border-radius: 8px 8px 4px 4px; background: #E6DAC4; min-height: 8px; transition: height .3s ease; }
+.fbars i.hi { background: #B08D57; }
+.fbl { display: flex; gap: 6px; font-size: 10.5px; color: var(--muted); padding: 0 2px; }
+.fbl span { flex: 1; text-align: center; }
+/* Mobil pastki menyu (natija ekranida) */
+.mdock { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: none; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.82); border: 1px solid rgba(255,255,255,.9); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 12px 30px rgba(31,42,68,.18); z-index: 30; }
+.mdock button { font: inherit; font-size: 14px; font-weight: 700; color: #1F2A44; border: 0; background: transparent; border-radius: 999px; padding: 11px 16px; display: inline-flex; flex-direction: row; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; line-height: 1; }
+.mdock button.on { background: #1F2A44; color: #fff; }
+.mdock button:focus-visible { outline: 3px solid #CFAE78; outline-offset: 2px; }
+body[data-view="result"] .mdock { display: flex; }
+body[data-view="result"] { padding-bottom: 96px; }
+/* Kompyuter: ikki ustun, natija darhol yangilanadi */
+@media (min-width: 1024px) {
+  body[data-view="wizard"] .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 470px); max-width: none; gap: 26px; }
+  body[data-view="wizard"] .side { display: block !important; position: sticky; top: 16px; }
+  body[data-view="wizard"] .step:not(.cur) { display: none; }
+  body[data-view="wizard"] .step { border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+  body[data-view="wizard"] .wz-head, body[data-view="wizard"] .wz-nav { display: none !important; }
+  body[data-view="wizard"] .ractions { display: grid !important; }
+  body[data-view="wizard"] #editBtn { display: none; }
+  body[data-view="wizard"] .more { display: block !important; }
+  body[data-view="wizard"] .hero { display: flex !important; margin-bottom: 18px; }
+  body[data-view="wizard"] .hero .badges, body[data-view="wizard"] .hero p { display: none; }
+  body[data-view="wizard"] .hero h1 { font-size: 34px; }
+  body { background-size: 100% 1000px; }
+  .mdock { display: none !important; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
@@ -678,6 +766,7 @@ body:not([data-view="result"]) .ractions { display: none; }
           <div class="fbox main"><span>Bugungi pulda</span><b id="fReal">—</b><small>Asosiy raqam. Oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati shuncha bo‘ladi.</small></div>
           <div class="fbox"><span id="fNomL">O‘sha yilgi so‘mda</span><b id="fNom">—</b><small id="fNomN"></small></div>
         </div>
+        <div aria-hidden="true"><div class="fbars" id="fBars"></div><div class="fbl" id="fBl"></div></div>
         <fieldset>
           <legend>Narxlar o‘sishi stsenariysi</legend>
           <div class="seg">
@@ -888,6 +977,11 @@ body:not([data-view="result"]) .ractions { display: none; }
   <span class="d-r">Batafsil ↑</span>
 </button>
 
+<nav class="mdock" aria-label="Bo‘limlar">
+  <button type="button" id="dkCalc">🧮 Hisob</button>
+  <button type="button" id="dkRes" class="on">📊 Natija</button>
+  <button type="button" id="dkRules">📚 Qoidalar</button>
+</nav>
 <script>
 /*CALC-START*/
 // ---- 2026-yil noyabr holatidagi miqdorlar (PF-115, 23.06.2026) ----
@@ -1473,7 +1567,9 @@ function applyMode() {
   howtoText();
   render();
 }
+const isDesk = () => window.matchMedia('(min-width: 1024px)').matches;
 function setView(v) {
+  if (v === 'result' && isDesk()) v = 'wizard';
   document.body.dataset.view = v;
   try { history.replaceState(null, '', v === 'start' ? location.pathname : location.pathname + '#' + v); } catch (e) {}
   window.scrollTo({ top: 0, behavior: 'auto' });
@@ -1481,7 +1577,8 @@ function setView(v) {
 function showStep(i) {
   const ids = stepIds();
   wzStep = Math.max(0, Math.min(ids.length - 1, i));
-  ['s0', 's1', 's1b', 's2', 's3', 's4'].forEach((id) => $(id).classList.toggle('cur', id === ids[wzStep]));
+  const desk = isDesk();
+  ['s0', 's1', 's1b', 's2', 's3', 's4'].forEach((id) => $(id).classList.toggle('cur', desk ? ids.includes(id) : id === ids[wzStep]));
   ids.forEach((id, k) => { const sn = $(id).querySelector('.sn'); if (sn) sn.textContent = k + 1; });
   $('prog').innerHTML = ids.map((_, k) => '<i class="' + (k <= wzStep ? 'on' : '') + '"></i>').join('');
   $('wzCount').textContent = (wzStep + 1) + ' / ' + ids.length;
@@ -1498,6 +1595,10 @@ $('nextBtn').addEventListener('click', () => {
 $('backBtn').addEventListener('click', () => { if (wzStep === 0) setView('start'); else showStep(wzStep - 1); });
 $('editBtn').addEventListener('click', () => { setView('wizard'); showStep(0); });
 $('restartBtn').addEventListener('click', () => setView('start'));
+window.matchMedia('(min-width: 1024px)').addEventListener('change', () => { if (document.body.dataset.view !== 'start') { setView(isDesk() ? 'wizard' : document.body.dataset.view); showStep(wzStep); } });
+$('dkCalc').addEventListener('click', () => { setView('wizard'); showStep(0); });
+$('dkRes').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+$('dkRules').addEventListener('click', () => document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }));
 document.addEventListener('visibilitychange', () => { if (!document.hidden) $('shareBtn').textContent = 'Hisoblagichni ulashish'; });
 $('toFull').addEventListener('click', () => { document.querySelector('input[name=mode][value=full]').checked = true; applyMode(); setView('wizard'); showStep(1); });
 $('rulesBtn').addEventListener('click', () => { document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
@@ -1624,6 +1725,13 @@ function renderFuture() {
   $('fNom').textContent = real > 0 ? '≈ ' + som(nom) : '—';
   $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : (r2.kind === 'allowance' ? 'Staj yetmaydi: pensiya emas, nafaqa.' : '');
   $('fScenN').textContent = S.note;
+  // Yillar bo'yicha nominal pensiya (grafik)
+  const ys = []; for (let y = NOW_Y; y <= ry; y++) ys.push(y);
+  const pick = ys.length <= 8 ? ys : Array.from({ length: 8 }, (_, i) => ys[Math.round(i * (ys.length - 1) / 7)]);
+  const vals = pick.map((y) => real * growthFactor(nowYM, Math.min(retYM, y === NOW_Y ? nowYM : y * 12 + 6), S.rate));
+  const mx = Math.max(...vals) || 1;
+  $('fBars').innerHTML = real > 0 ? pick.map((y, i) => '<i class="' + (i === pick.length - 1 ? 'hi' : '') + '" style="height:' + Math.max(8, Math.round(vals[i] / mx * 100)) + '%" title="' + y + ': ' + som(Math.round(vals[i] / 1000) * 1000) + '"></i>').join('') : '';
+  $('fBl').innerHTML = real > 0 ? pick.map((y) => '<span>' + y + '</span>').join('') : '';
 }
 $('fWork').addEventListener('change', renderFuture);
 document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', renderFuture));
@@ -1675,6 +1783,7 @@ document.querySelectorAll('#todayList .tgroup').forEach((t) => {
 applyMode();
 const h0 = location.hash.slice(1);
 if (h0 === 'result') setView('result'); else setView('start');
+showStep(0);
 </script>
 </body>
 </html>
