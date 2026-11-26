@@ -1446,13 +1446,14 @@ function readState() {
   let salary = digits($('salary').value), yearsRes = null;
   if (wmode === 'years') { yearsRes = avgFromYears(readYears(), REF); salary = Math.round(yearsRes.avg); }
   const by = parseInt($('birthY').value, 10);
+  const quickM = (document.querySelector('input[name=mode]:checked') || {}).value === 'quick';
   return {
     type: val('ptype'), sex: val('sex'), priv: val('priv'), special: Math.max(0, parseFloat(String($('special').value).replace(',', '.')) || 0),
-    birthY: by >= 1930 && by <= 2015 ? by : null, birthM: parseInt($('birthM').value, 10) || 1,
+    birthY: !quickM && by >= 1930 && by <= 2015 ? by : null, birthM: parseInt($('birthM').value, 10) || 1,
     group: val('group'), cause: val('cause'), onset: Math.max(0, parseInt($('onset').value, 10) || 0),
     members: Math.max(1, Math.min(10, parseInt($('members').value, 10) || 1)), orphan: $('orphan').checked,
     scause: val('scause'), deathAge: Math.max(0, parseInt($('deathAge').value, 10) || 0),
-    staj: y, stajM: y * 12 + mo, wmode, salary, yearsRes, titleK: val('title'), underground: $('underground').checked, lone: $('lone').checked, card: $('card').checked
+    staj: y, stajM: y * 12 + mo, wmode, salary, yearsRes, titleK: quickM ? '0' : val('title'), underground: $('underground').checked, lone: $('lone').checked, card: $('card').checked
   };
 }
 
@@ -1492,7 +1493,7 @@ function render() {
   // Ko'rinishlar
   $('sexBox').hidden = !isAgeLike;
   $('privBox').hidden = T !== 'priv';
-  $('birthBox').hidden = !isAgeLike;
+  $('birthBox').hidden = !isAgeLike || (document.querySelector('input[name=mode]:checked') || {}).value === 'quick';
   $('disBox').hidden = T !== 'dis';
   $('onsetBox').hidden = false; $('onsetRow').hidden = $('onsetLbl').hidden = s.cause === 'child';
   $('loneBox').hidden = s.group !== '2';
@@ -1693,6 +1694,7 @@ const stepIds = () => { const b = VIEW_STEPS[getMode()].slice(); if (val('ptype'
 let wzStep = 0;
 const getMode = () => document.querySelector('input[name=mode]:checked').value;
 function applyMode() {
+  setTimeout(() => { if (document.body.dataset.view === 'wizard') showStep(Math.min(wzStep, stepIds().length - 1)); }, 0);
   const quick = getMode() === 'quick';
   $('birthBox').hidden = quick;
   $('wmodeBox').hidden = quick;
@@ -1720,6 +1722,7 @@ function showStep(i) {
   $('nextBtn').textContent = wzStep === ids.length - 1 ? 'Natijani ko‘rish' : 'Davom etish →';
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
+document.querySelectorAll('input[name=ptype]').forEach((el) => el.addEventListener('change', () => { if (document.body.dataset.view === 'wizard') showStep(Math.min(wzStep, stepIds().length - 1)); }));
 $('startBtn').addEventListener('click', () => { applyMode(); setView('wizard'); showStep(0); });
 document.querySelectorAll('input[name=mode]').forEach((el) => el.addEventListener('change', applyMode));
 $('nextBtn').addEventListener('click', () => {
