@@ -609,6 +609,21 @@ body[data-view="result"] { padding-bottom: 120px; }
   .appbar { padding-bottom: 22px; }
   .rtop .big { font-size: 60px; }
 }
+/* Kichik telefonlar (≤359px): Kelajakda kartasi siqilmasin */
+@media (max-width: 359px) {
+  .fkel { flex-wrap: wrap; row-gap: 8px; }
+  .fchips button { padding: 8px 12px; font-size: 13px; }
+  .fgrid .fbox { padding: 10px 12px; }
+  .fgrid .fbox:not(.main) { padding-left: 22px; }
+  .fgrid .fbox b { font-size: 17px; }
+  .fcount { font-size: 38px; }
+  .ring { width: 94px; height: 94px; }
+  .ring > div { width: 76px; height: 76px; }
+  .ring b { font-size: 22px; }
+  .rtop .big { font-size: 40px; }
+  .wz-nav { gap: 8px; }
+  .wz-nav .btn-p, .wz-nav .btn-s { padding: 13px 12px; font-size: 15px; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
@@ -645,7 +660,7 @@ body[data-view="result"] { padding-bottom: 120px; }
       <div class="hl"><span class="dotic">⏳</span><div><b>Pensiya hisoblagich</b><small>Qonun va 2026-yil miqdorlari asosida</small></div></div>
       <h1 class="stitle">Pensiyangiz <span class="gold">qancha</span> bo‘ladi?</h1>
       <p class="sdesc" id="modeDesc"></p>
-      <div class="ribbon"><div class="ra"><small>Turlari</small><b>4 ta pensiya</b></div><div class="rbn"><small>Natija</small><b>bugun + kelajak</b></div></div>
+      <div class="ribbon"><div class="ra"><small>Turlari</small><b>4 ta pensiya</b></div><div class="rbn"><small>Natija</small><b id="rbnRes">bugun + kelajak</b></div></div>
     </div>
     <div class="tiles2">
       <div class="tile2"><span>MA’LUMOTLAR</span><b>2026-yil noyabr</b></div>
@@ -694,7 +709,7 @@ body[data-view="result"] { padding-bottom: 120px; }
         <div class="field" id="birthBox">
           <span class="lbl">Tug‘ilgan sana <span style="color:var(--muted);font-weight:500">(ixtiyoriy)</span></span>
           <div class="two">
-            <div class="input-row"><input type="number" id="birthY" inputmode="numeric" min="1940" max="2010" placeholder="Yil, masalan 1990" aria-label="Tug‘ilgan yil"></div>
+            <div class="input-row"><input type="number" id="birthY" inputmode="numeric" min="1930" max="2015" placeholder="Yil, masalan 1990" aria-label="Tug‘ilgan yil"></div>
             <div class="input-row"><select id="birthM" aria-label="Tug‘ilgan oy"></select></div>
           </div>
           <p class="hint">Kiritsangiz, pensiyaga qachon chiqishingizni ko‘rsatamiz.</p>
@@ -849,7 +864,7 @@ body[data-view="result"] { padding-bottom: 120px; }
         </fieldset>
         <label class="check">
           <input type="checkbox" id="card" checked>
-          <span><b>Pensiyani bank kartasiga olaman</b><small>Pensiya jamg‘armasi to‘laydigan pensiyani kartaga oluvchilarga har oylik to‘lovning 1 foizi miqdorida qo‘shimcha to‘lanadi. Ijtimoiy nafaqalarga qo‘llanmaydi.</small></span>
+          <span><b>Pensiyani bank kartasiga olaman</b><small>Pensiyani bank kartasiga oluvchilarga har oylik to‘lovning 1 foizi miqdorida qo‘shimcha to‘lanadi (2022-yil 1-maydan). Hisoblagich bu qo‘shimchani faqat pensiyaga qo‘shadi.</small></span>
         </label>
       </section>
       <div class="wz-nav"><button type="button" class="btn-s" id="backBtn">← Orqaga</button><button type="button" class="btn-p" id="nextBtn">Davom etish →</button></div>
@@ -878,7 +893,7 @@ body[data-view="result"] { padding-bottom: 120px; }
           <div class="hl"><span class="dotic">⏳</span><div><b id="fTitle">Pensiyagacha</b><small id="fWhoS"></small></div></div>
           <div class="fmain"><div class="fleft"><div class="fcount" id="fCount">—</div><p class="fwhen" id="fWhen"></p></div>
           <div class="ring" id="fRing" style="--p:0%"><div><b id="fRingN">—</b><small id="fRingS"></small></div></div></div>
-          <div class="ribbon"><div class="ra"><small>Hozirgi staj</small><b id="fStA">—</b></div><div class="rbn"><small>Pensiyada</small><b id="fStB">—</b></div></div>
+          <div class="ribbon"><div class="ra"><small>Hozirgi staj</small><b id="fStA">—</b></div><div class="rbn"><small id="fStBL">Pensiyada</small><b id="fStB">—</b></div></div>
         </div>
         <label class="check">
           <input type="checkbox" id="fWork" checked>
@@ -901,7 +916,7 @@ body[data-view="result"] { padding-bottom: 120px; }
           <div class="fbox"><span id="fNomL">O‘sha yilgi so‘mda</span><b id="fNom">—</b><small id="fNomN"></small></div>
         </div>
         <fieldset class="fscen">
-          <legend>Narxlar o‘sishi stsenariysi</legend>
+          <legend>Narxlar o‘sishi ssenariysi</legend>
           <div class="seg">
             <label><input type="radio" name="fscen" value="mb" checked><span>Markaziy bank prognozi</span></label>
             <label><input type="radio" name="fscen" value="hist"><span>Tarixiy o‘sish</span></label>
@@ -909,7 +924,7 @@ body[data-view="result"] { padding-bottom: 120px; }
           <p class="hint" id="fScenN"></p>
         </fieldset>
         </div>
-        <p class="fine" style="text-align:left">“Bugungi pulda” — oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati. Prognoz kafolat emas. Pensiya qoidalari, miqdorlar va pensiya yoshi o‘zgarishi mumkin. Oylik inflyatsiyadan tezroq oshsa, pensiya yuqoriroq, sekinroq oshsa, pastroq chiqadi.</p>
+        <p class="fine" id="fFine" style="text-align:left">“Bugungi pulda” — oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati. Prognoz kafolat emas. Pensiya qoidalari, miqdorlar va pensiya yoshi o‘zgarishi mumkin. Oylik inflyatsiyadan tezroq oshsa, pensiya yuqoriroq, sekinroq oshsa, pastroq chiqadi.</p>
       </section>
       <div class="ractions" id="resActions">
         <div class="card upsell" id="upsell"><b>Ko‘proq ma’lumot kiritasizmi?</b><p>“Batafsil hisob”da tug‘ilgan sanangizni kiritsangiz, pensiyaga chiqish sanasi va <b>kelajakdagi pensiyangiz</b> ham hisoblanadi. Yillar bo‘yicha oylik va faxriy unvon ham shu yerda.</p><button type="button" class="btn-p" id="toFull" style="width:100%">📋 Batafsil hisobga o‘tish</button></div>
@@ -942,7 +957,7 @@ body[data-view="result"] { padding-bottom: 120px; }
             <li>Staj kamida 7 yil, lekin to‘liq emas: pensiya stajga mutanosib (8, 29-moddalar).</li>
             <li>Staj 7 yildan kam: pensiya tayinlanmaydi. O‘rniga Ijtimoiy himoya milliy agentligi yoshga doir ijtimoiy nafaqa beradi (erkaklar 65, ayollar 60 yoshda; bolalikdan nogiron farzand onalari 55 yoshda).</li>
             <li>Miqdori: o‘rtacha oylikning 55%, talab qilingan stajdan ortiq har bir to‘liq yil uchun +1% (26, 27-moddalar).</li>
-            <li>Pensiyadan ushlab qolishlar (alimentlar, qarzlar) 50% dan oshmaydi, pensionerga kamida 715 000 so‘m qolishi kerak (2026-yil avgust o‘zgarishlari).</li>
+            <li>Pensiyadan ushlab qolishlar (alimentlar, qarzlar) 50 foizdan oshmaydi, pensionerga kamida 715 000 so‘m qolishi kerak (2026-yil avgust o‘zgarishlari).</li>
           </ul>
         </div>
         <div class="gitem">
@@ -1010,7 +1025,7 @@ body[data-view="result"] { padding-bottom: 120px; }
             <p><b>4. Boquvchisini yo‘qotganlik pensiyasi.</b> Har bir oila a’zosiga 30% × boquvchining o‘rtacha oyligi.</p>
             <p><b>5. Eng kam miqdor.</b> Natija eng kam pensiyadan past bo‘lsa, eng kam miqdorgacha to‘ldiriladi.</p>
             <p><b>6. Ustama va karta.</b> Faxriy unvon ustamasi qo‘shiladi, pensiyani kartaga olganda jami summaga 1% qo‘shiladi.</p>
-            <p><b>7. Ijtimoiy nafaqa.</b> Pensiya tayinlanmaydigan holatlarda qat’iy miqdordagi nafaqa ko‘rsatiladi. U pensiya emas, uni Ijtimoiy himoya milliy agentligi to‘laydi, karta qo‘shimchasi va unvon ustamasi unga qo‘shilmaydi.</p>
+            <p><b>7. Ijtimoiy nafaqa.</b> Pensiya tayinlanmaydigan holatlarda qat’iy miqdordagi nafaqa ko‘rsatiladi. U pensiya emas, uni Ijtimoiy himoya milliy agentligi to‘laydi. Hisoblagich nafaqaga karta qo‘shimchasi va unvon ustamasini qo‘shmaydi.</p>
             <p>Nogironlik pensiyasi va boquvchisini yo‘qotganlik pensiyasi uchun talab qilingan staj (yoshga qarab): 23 yoshgacha 2 yil, 23–26: 3, 26–31: 5, 31–36: 7, 36–41: 9, 41–46: 11, 46–51: 14, 51–56: 17, 56 va undan katta: 20 yil.</p>
           </div>
         </details>
@@ -1024,7 +1039,7 @@ body[data-view="result"] { padding-bottom: 120px; }
         <details>
           <summary>Hisobga olinmagan va taxminiy joylar</summary>
           <div class="body">
-            <p>Harbiy xizmatchilar pensiyasi (alohida qonun), urush qatnashchilari va boshqa toifalar ustamalari (28-modda), uchuvchi, artist, sportchi, pedagog va tibbiyot xodimlarining maxsus toifalari, mintaqaviy koeffitsientlar (33-modda).</p>
+            <p>Harbiy xizmatchilar pensiyasi (alohida qonun), urush qatnashchilari va boshqa toifalar ustamalari (28-modda), yoshga doir pensiya oluvchi I guruh va yolg‘iz II guruh nogironlariga 28-moddadagi ustama, uchuvchi, artist, sportchi, pedagog va tibbiyot xodimlarining maxsus toifalari, mintaqaviy koeffitsientlar (33-modda).</p>
             <p>Yillar bo‘yicha rejimda yil ichidagi oylar uchun o‘sha yilning o‘rtacha bazaviy miqdori olinadi. Jamg‘arma esa har bir oyni alohida hisoblaydi.</p>
             <p>Taxminiy olingan joylar: boquvchi pensioner yoki ishdagi jarohatdan vafot etganda ortiqcha staj 17-moddadagi yosh jadvali bo‘yicha hisoblandi; ishdagi jarohatda ham ortiqcha staj shu jadvaldan hisoblandi.</p>
             <p>Ilgari ba’zi manbalarda 5 va undan ko‘p bola tuqqan onalar uchun erta pensiya ko‘rsatilgan. Amaldagi Qonun matnida bu band yo‘q, shuning uchun hisoblagichga kiritilmadi.</p>
@@ -1033,7 +1048,7 @@ body[data-view="result"] { padding-bottom: 120px; }
         <details>
           <summary>Pensiya islohoti: loyiha va qabul qilingan hujjatlar</summary>
           <div class="body">
-            <p><b>Hali qabul qilinmagan (loyiha).</b> “Aholi farovonligini ta’minlash va pensiya ta’minoti tizimini isloh qilish chora-tadbirlari to‘g‘risida”gi Prezident farmoni loyihasi (ID-10855) 2026-yil 15–30-sentyabrda jamoatchilik muhokamasida bo‘ldi. 2026-yil 24-noyabr holatiga ko‘ra imzolangani haqida ma’lumot topilmadi. Loyihadagi takliflar:</p>
+            <p><b>Hali qabul qilinmagan (loyiha).</b> “Aholi farovonligini ta’minlash va pensiya ta’minoti tizimini isloh qilish chora-tadbirlari to‘g‘risida”gi Prezident farmoni loyihasi (ID-10855) 2026-yil 15–30-sentyabrda jamoatchilik muhokamasida bo‘ldi. 2026-yil 26-noyabr holatiga ko‘ra imzolangani haqida ma’lumot topilmadi. Loyihadagi takliflar:</p>
             <ul style="margin:0 0 8px;padding-left:18px">
               <li>2028-yildan pensiya yoshini har yili 3 oyga oshirib, 2039-yilda erkaklar uchun 63, ayollar uchun 58 yoshga yetkazish;</li>
               <li>2027-yildan 20 yil stajli ayollarning 54 yoshdan chiqish huquqini bekor qilish;</li>
@@ -1045,8 +1060,8 @@ body[data-view="result"] { padding-bottom: 120px; }
             <p>Hisoblagich amaldagi qoidalar bo‘yicha ishlaydi. Loyiha bo‘yicha pensiya yoshi natija kartasida alohida qatorda ko‘rsatiladi.</p>
             <p><b>2026-yilda qabul qilingan va hisobga olingan hujjatlar:</b></p>
             <ul style="margin:0 0 8px;padding-left:18px">
-              <li>PF-115 farmoni (23.06.2026): 1-iyuldan pensiya va nafaqalar 7% ga oshirildi. Hisoblagichdagi barcha miqdorlar shu farmondan olingan.</li>
-              <li>Qonunga o‘zgartirishlar (Senat 7-avgustda ma’qulladi): nogironlik pensiyasi proaktiv tayinlanadi va avtomatik qayta hisoblanadi; ushlab qolishlar pensiyaning 50% idan oshmaydi, pensionerga kamida 715 000 so‘m qoladi.</li>
+              <li>PF-115 farmoni (23.06.2026): 1-iyuldan pensiya va nafaqalar 7 foizga oshirildi. Hisoblagichdagi barcha miqdorlar shu farmondan olingan.</li>
+              <li>Qonunga o‘zgartirishlar (Senat 7-avgustda ma’qulladi): nogironlik pensiyasi proaktiv tayinlanadi va avtomatik qayta hisoblanadi; ushlab qolishlar pensiyaning 50 foizidan oshmaydi, pensionerga kamida 715 000 so‘m qoladi.</li>
               <li>PQ-355 qarori (28.09.2026): 1-noyabrdan ishdan bo‘shatilganlarga 2 yil oldin pensiya proaktiv tayinlanadi; 1-oktyabrdan o‘zini o‘zi band qilganlar uchun belgilangan ijtimoiy soliqni to‘lagan shaxsga 1 yillik staj avtomatik hisoblanadi; 1-dekabrdan pensiyaning boshqa turiga onlayn o‘tish mumkin, yangi pensiya kichik bo‘lsa, avvalgisi saqlanadi.</li>
               <li>Vazirlar Mahkamasining 576-son qarori (19.10.2026): oktyabr–dekabrda Andijon, Samarqand, Xorazm va Sirdaryo viloyatlarida pensiya xizmatlarini arizasiz ko‘rsatish sinovdan o‘tkaziladi (nogironlik guruhi o‘zgarganda qayta hisoblash va boshqalar).</li>
             </ul>
@@ -1089,7 +1104,7 @@ body[data-view="result"] { padding-bottom: 120px; }
             </ul>
           </div>
         </details>
-        <p class="stamp">Ma’lumotlar holati: 2026-yil 24-noyabr.</p>
+        <p class="stamp">Ma’lumotlar holati: 2026-yil 26-noyabr.</p>
       </section>
     </div>
   </div>
@@ -1264,7 +1279,9 @@ function calc(s) {
         r.kind = 'ineligible'; r.pill = 'Imtiyoz shartlari bajarilmagan';
         const alt = calc(Object.assign({}, s, { type: 'age' }));
         r.alt = alt; r.retAge = alt.retAge;
-        r.notes.push('Imtiyozli pensiya shartlari bajarilmadi. Umumiy tartibda ' + RET_AGE[s.sex] + ' yoshda chiqishingiz mumkin.');
+        r.notes.push(alt.kind === 'allowance'
+          ? 'Imtiyozli pensiya shartlari bajarilmadi. Umumiy tartibda ham staj 7 yildan kam: pensiya tayinlanmaydi, ' + (s.sex === 'f' ? 60 : 65) + ' yoshda ijtimoiy nafaqa beriladi.'
+          : 'Imtiyozli pensiya shartlari bajarilmadi. Umumiy tartibda ' + RET_AGE[s.sex] + ' yoshda chiqishingiz mumkin' + (s.sex === 'f' && months >= 240 ? ' (staj 20 yildan ko‘p bo‘lgani uchun 54 yoshda ham)' : '') + '.');
         return r;
       }
     } else {
@@ -1466,7 +1483,8 @@ function retireHTML(s, r) {
   if (!(s.type === 'age' || s.type === 'priv') || r.retAge === undefined) return '';
   if (r.retAge === 0) return '<div class="retire"><b>Pensiya yoshidan qat’i nazar</b><small>Maxsus staj to‘lganda istalgan yoshda chiqish mumkin.</small></div>';
   const quickM = (document.querySelector('input[name=mode]:checked') || {}).value === 'quick';
-  const alw = r.kind === 'allowance' ? (s.sex === 'f' ? 60 : 65) : 0;
+  const kindR = r.kind === 'ineligible' && r.alt ? r.alt.kind : r.kind;
+  const alw = kindR === 'allowance' ? (s.sex === 'f' ? 60 : 65) : 0;
   if (alw) {
     let t = '<div class="retire"><b>Pensiya uchun staj yetmaydi</b><small>Staj kamida 7 yil bo‘lsa, ' + r.retAge + ' yoshda pensiya tayinlanadi. Aks holda ' + alw + ' yoshda ijtimoiy nafaqa beriladi';
     if (s.birthY) { const ym = s.birthY * 12 + (s.birthM - 1) + alw * 12; t += ' (' + Math.floor(ym / 12) + '-yil ' + MONTHS[ym % 12] + ')'; }
@@ -1479,6 +1497,13 @@ function retireHTML(s, r) {
   const when = Math.floor(retYM / 12) + '-yil, ' + MONTHS[retYM % 12];
   let h = '<div class="retire"><b>' + (left > 0 ? 'Pensiyaga chiqish: ' + when : 'Pensiya yoshiga yetgansiz') + '</b>';
   h += '<small>' + r.retAge + ' yoshda' + (left > 0 ? ' · ' + stajText(left) + ' qoldi' : ' (' + when + ')') + '</small>';
+  // 12¹-modda: 20+ yil stajli ayollar 54 yoshdan
+  if (s.type === 'age' && s.sex === 'f' && r.retAge === 55 && s.stajM >= 240 && left > 0) {
+    const ym54 = s.birthY * 12 + (s.birthM - 1) + 54 * 12;
+    h += ym54 > nowYM
+      ? '<small>Staj 20 yildan ko‘p: 54 yoshda (' + Math.floor(ym54 / 12) + '-yil ' + MONTHS[ym54 % 12] + ') ham chiqishingiz mumkin.</small>'
+      : '<small>54 yoshga to‘lgansiz va stajingiz 20 yildan ko‘p: hozir ham chiqishingiz mumkin.</small>';
+  }
   if (s.type === 'age' && left > 0) {
     const rm = reformAgeMonths(s.birthY, s.birthM, RET_AGE[s.sex]);
     if (rm > r.retAge * 12 + (s.sex === 'f' && r.retAge === 54 ? 12 : 0)) {
@@ -1509,7 +1534,7 @@ function render() {
   $('disBox').hidden = T !== 'dis';
   $('onsetBox').hidden = false; $('onsetRow').hidden = $('onsetLbl').hidden = s.cause === 'child';
   $('loneBox').hidden = s.group !== '2';
-  $('groupHint').textContent = s.group === '1' ? 'I guruhga pensiyaga 75% × pensiya bazaviy miqdori ustama qo‘shiladi.' : (s.group === '3' ? 'III guruhga pensiya faqat Chernobil bilan bog‘liq holatda.' : '');
+  $('groupHint').textContent = s.group === '1' ? 'I guruh nogironligida pensiyaga ustama qo‘shiladi: pensiyani hisoblash bazaviy miqdorining 75% (' + som(DIS1_BONUS) + ').' : (s.group === '3' ? 'III guruhga pensiya faqat Chernobil bilan bog‘liq holatda.' : '');
   $('survBox').hidden = T !== 'surv';
   $('simpleBox').hidden = s.wmode !== 'simple';
   $('yearsBox').hidden = s.wmode !== 'years';
@@ -1547,7 +1572,7 @@ function render() {
   const sh = $('salaryHint');
   if (s.wmode === 'simple') {
     if (s.salary > CAP) { sh.textContent = 'Hisobga olinadigan eng yuqori chegara ' + som(CAP) + '. Undan oshgan qismi hisoblanmaydi.'; sh.className = 'hint warn'; }
-    else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. ' + (document.querySelector('input[name=mode]:checked') && document.querySelector('input[name=mode]:checked').value === 'quick' ? 'Eski yillar oyliklarini kiritish uchun “Batafsil hisob”ni tanlang.' : 'Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” ni tanlang.'); sh.className = 'hint'; }
+    else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. ' + (document.querySelector('input[name=mode]:checked') && document.querySelector('input[name=mode]:checked').value === 'quick' ? 'Eski yillar oyliklarini kiritish uchun “Batafsil hisob”ni tanlang.' : 'Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” rejimini tanlang.'); sh.className = 'hint'; }
   } else renderYears(s);
 
   // Hisob (doim hozirgi staj bilan)
@@ -1593,7 +1618,9 @@ function render() {
       tips.push('To‘liq stajda (' + r.reqTotal + ' yil) pensiya taxminan <b>' + som(full.total) + '</b> bo‘lardi. Yana ' + stajText(r.reqTotal * 12 - s.stajM) + ' staj kerak.');
     }
   }
-  if (r.kind === 'ineligible' && r.alt && r.alt.total) tips.push('Umumiy tartibdagi taxminiy pensiya: <b>' + som(r.alt.total) + '</b>.');
+  if (r.kind === 'ineligible' && r.alt && r.alt.total) tips.push(r.alt.kind === 'allowance'
+    ? 'Umumiy tartibda: ijtimoiy nafaqa <b>' + som(r.alt.total) + '</b> (' + (s.sex === 'f' ? 60 : 65) + ' yoshda, pensiya emas).'
+    : 'Umumiy tartibdagi taxminiy pensiya: <b>' + som(r.alt.total) + '</b>.');
   $('tip').hidden = !tips.length;
   $('tip').innerHTML = tips.map((t) => '<p>' + t + '</p>').join('');
 
@@ -1670,7 +1697,7 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
       ['Hisobga olinadigan eng yuqori o‘rtacha oylik', som(CAP), '12 × pensiyani hisoblashning bazaviy miqdori (Qonun 31-modda).']
     ]],
     ['Eng kam pensiyalar', [
-      ['Yoshga doir pensiya (to‘liq staj)', som(MIN_AGE_FULL), 'Eng kami 983 000, lekin 983 000–1 083 000 oralig‘idagi pensiyalar 1 083 000 ga ko‘tariladi.'],
+      ['Yoshga doir pensiya (to‘liq staj)', som(MIN_AGE_FULL), 'Eng kami 983 000, lekin 983 000–1 083 000 oralig‘idagi pensiyalar 1 083 000 so‘mga ko‘tariladi.'],
       ['Yoshga doir pensiya (to‘liqsiz staj)', som(MIN_AGE_PARTIAL), 'Qo‘shimcha to‘lov bilan.'],
       ['Nogironlik pensiyasi', som(MIN_DIS), 'To‘liqsiz staj bilan ham.'],
       ['Boquvchisini yo‘qotganlik pensiyasi, 1 a’zo', som(SURV_MIN_1), 'Keyingi har bir a’zo uchun kamida ' + som(SURV_MIN_NEXT) + ' (Qonun 26-modda: eng kam pensiyaning 50%).'],
@@ -1685,7 +1712,7 @@ $('dock').addEventListener('click', () => { $('result').scrollIntoView({ behavio
     ['Ustamalar', [
       ['I guruh va yolg‘iz II guruh nogironlari', som(DIS1_BONUS), '75% × pensiyani hisoblashning bazaviy miqdori (Qonun 28-modda).'],
       ['Faxriy unvon: “xizmat ko‘rsatgan”', som(1.6 * BHM), '1,6 × BHM. “Xizmat ko‘rsatgan artist”: ' + som(1.8 * BHM) + ', “xalq” unvonlari va “arbob”: ' + som(3 * BHM) + '.'],
-      ['Pensiyani kartaga olganda', '+1%', 'Pensiya jamg‘armasi to‘laydigan pensiyadan. Ijtimoiy nafaqalarga qo‘llanmaydi.']
+      ['Pensiyani kartaga olganda', '+1%', 'Har oylik pensiyadan (Prezident qarori, 2022-yil 1-maydan). Hisoblagich nafaqaga qo‘shmaydi.']
     ]],
     ['Foizlar (Qonun 26, 27-moddalar)', [
       ['Yoshga doir va nogironlik pensiyasi', '55%', 'O‘rtacha oylikdan.'],
@@ -1752,7 +1779,7 @@ $('abRules').addEventListener('click', () => { $('abBox').hidden = true; if (doc
 $('abMenu').addEventListener('click', (e) => { e.stopPropagation(); const b = $('abBox'); b.hidden = !b.hidden; $('abMenu').setAttribute('aria-expanded', String(!b.hidden)); });
 document.addEventListener('click', (e) => { if (!e.target.closest('.appbar')) $('abBox').hidden = true; });
 $('abBack').addEventListener('click', () => { const v = document.body.dataset.view; if (v === 'result') { setView('wizard'); showStep(stepIds().length - 1); } else if (v === 'wizard') { if (isDesk() || wzStep === 0) setView('start'); else showStep(wzStep - 1); } });
-function modeDesc() { $('modeDesc').textContent = getMode() === 'quick' ? 'Qisqa hisob: pensiya turi, siz haqingizda, staj va o‘rtacha oylik. Taxminan 1 daqiqa.' : 'Batafsil hisob: qo‘shimcha ravishda tug‘ilgan sana, yillar bo‘yicha oylik va faxriy unvon. Pensiyaga chiqish sanasi va kelajakdagi pensiya ham hisoblanadi.'; }
+function modeDesc() { $('rbnRes').textContent = getMode() === 'quick' ? 'bugungi pensiya' : 'bugun + kelajak'; $('modeDesc').textContent = getMode() === 'quick' ? 'Qisqa hisob: pensiya turi, siz haqingizda, staj va o‘rtacha oylik. Taxminan 1 daqiqa.' : 'Batafsil hisob: qo‘shimcha ravishda tug‘ilgan sana, yillar bo‘yicha oylik va faxriy unvon. Pensiyaga chiqish sanasi va kelajakdagi pensiya ham hisoblanadi.'; }
 document.querySelectorAll('input[name=mode]').forEach((el) => el.addEventListener('change', modeDesc)); modeDesc();
 $('dkRes').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 $('dkRules').addEventListener('click', () => document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }));
@@ -1820,7 +1847,7 @@ document.querySelectorAll('input[name=wmode]').forEach((el) => el.addEventListen
 // Markaziy bank asosiy ssenariysi: 2026 yakuni ~7%, 2027-yil 2-yarmida 5% targetga, 2028–2029 da 5% (CBU, 2026-11-04).
 // Tarixiy: PHBM 289 000 (2021-09) → 504 000 (2026-07), yiliga ≈12%.
 const SCEN = {
-  mb: { name: 'Markaziy bank prognozi', rate: (y) => (y <= 2026 ? 7 : (y === 2027 ? 6 : 5)), note: 'Inflyatsiya: 2026-yil ≈7%, 2027-yil ≈6% (yil ichida 5% ga tushadi), 2028-yildan 5% (Markaziy bank asosiy ssenariysi, 2026-yil noyabr). 2029-yildan keyin ham 5% maqsad olindi.' },
+  mb: { name: 'Markaziy bank prognozi', rate: (y) => (y <= 2026 ? 7 : (y === 2027 ? 6 : 5)), note: 'Inflyatsiya: 2026-yil ≈7%, 2027-yil ≈6% (yil ichida 5 foizga tushadi), 2028-yildan 5% (Markaziy bank asosiy ssenariysi, 2026-yil noyabr). 2029-yildan keyin ham 5% maqsad olindi.' },
   hist: { name: 'Tarixiy o‘sish', rate: () => 12, note: 'Pensiyani hisoblashning bazaviy miqdori 2021–2026-yillarda 289 000 dan 504 000 so‘mgacha oshgan, bu yiliga ≈12%. Pensiyalar amalda inflyatsiyadan tezroq oshgan.' }
 };
 function growthFactor(fromYM, toYM, rateFn) {
@@ -1830,22 +1857,26 @@ function growthFactor(fromYM, toYM, rateFn) {
 }
 function renderFuture() {
   const box = $('future');
-  const s = readState();
+  let s = readState();
   const ageLike = s.type === 'age' || s.type === 'priv';
   if (!ageLike || !s.birthY) { box.hidden = true; return; }
-  const r0 = calc(s);
-  if (!r0.retAge) { box.hidden = true; return; }
+  let r0 = calc(s);
+  // Imtiyoz shartlari bajarilmasa — kelajak umumiy tartib bo'yicha
+  const viaAlt = r0.kind === 'ineligible' && !!r0.alt;
+  if (viaAlt) { s = Object.assign({}, s, { type: 'age' }); r0 = r0.alt; }
+  if (!r0.retAge || r0.kind === 'empty' || r0.kind === 'ineligible') { box.hidden = true; return; }
   const nowYM = NOW_Y * 12 + (NOW_M - 1);
   const birthYM = s.birthY * 12 + (s.birthM - 1);
   const work = $('fWork').checked;
   let retAge = r0.retAge;
   // Ayollar: 20+ yil staj bo'lsa (yoki 54 yoshgacha to'lsa) 54 yoshda chiqish mumkin
   let can54 = false;
+  const at54 = birthYM + 54 * 12;
   if (s.type === 'age' && s.sex === 'f' && retAge === 55) {
-    const at54 = birthYM + 54 * 12;
     const stajAt54 = s.stajM + (work ? Math.max(0, at54 - nowYM) : 0);
     can54 = stajAt54 >= 240 && at54 > nowYM;
   }
+  const now54 = s.type === 'age' && s.sex === 'f' && retAge === 55 && s.stajM >= 240 && at54 <= nowYM;
   // Ishlamasa — kutish pensiyani oshirmaydi: eng erta yosh olinadi, tanlov yashiriladi
   $('fAgeBox').hidden = !(can54 && work);
   if (can54 && (!work || val('fage') === '54')) retAge = 54;
@@ -1855,28 +1886,39 @@ function renderFuture() {
     $('fA55').innerHTML = '55 yoshda<small>' + som(amt(55)) + '</small>';
   }
   const retYM = birthYM + retAge * 12;
-  const left = retYM - nowYM;
-  if (left <= 0) { box.hidden = true; return; }
+  const leftRet = retYM - nowYM;
+  if (leftRet <= 0) { box.hidden = true; return; }
   box.hidden = false;
-  const s2 = Object.assign({}, s, { stajM: s.stajM + (work ? left : 0) });
+  const s2 = Object.assign({}, s, { stajM: s.stajM + (work ? leftRet : 0) });
   s2.staj = Math.floor(s2.stajM / 12);
   const r2 = calc(s2);
   const ry = Math.floor(retYM / 12);
   const ageNow = Math.floor((nowYM - birthYM) / 12);
-  let when = 'Hozir ' + ageNow + ' yoshdasiz. Pensiyaga chiqish: ' + ry + '-yil, ' + MONTHS[retYM % 12] + ', ' + retAge + ' yoshda (' + stajText(left) + ' qoldi).';
-  $('fWorkL').textContent = can54 ? 'Pensiyaga chiqqunimcha ishlashni davom ettiraman' : 'Pensiyaga chiqqunimcha (' + ry + '-yil ' + MONTHS[retYM % 12] + 'gacha) ishlashni davom ettiraman';
-  if (s.type === 'age') {
+  // Pensiya yoshida ham staj 7 yildan kam bo'lsa — pensiya emas, nafaqa yoshi
+  const alwMode = (work ? r2 : r0).kind === 'allowance';
+  const alwAge = s.sex === 'f' ? 60 : 65;
+  const tgtAge = alwMode ? alwAge : retAge;
+  const tgtYM = birthYM + tgtAge * 12;
+  const left = tgtYM - nowYM;
+  $('fTitle').textContent = alwMode ? 'Nafaqagacha' : 'Pensiyagacha';
+  let when = alwMode
+    ? 'Pensiya tayinlanmaydi. Ijtimoiy nafaqa: ' + Math.floor(tgtYM / 12) + '-yil, ' + MONTHS[tgtYM % 12] + ', ' + alwAge + ' yoshda.'
+    : 'Pensiyaga chiqish: ' + ry + '-yil, ' + MONTHS[retYM % 12] + ', ' + retAge + ' yoshda.';
+  if (!alwMode && s.type === 'age') {
     const rm = reformAgeMonths(s.birthY, s.birthM, RET_AGE[s.sex]);
     if (rm > retAge * 12) { const ym2 = s.birthY * 12 + (s.birthM - 1) + rm; when += ' Islohot loyihasi qabul qilinsa: ' + Math.floor(ym2 / 12) + '-yil, ' + MONTHS[ym2 % 12] + '.'; }
   }
-  $('fWhen').textContent = when.replace(/^Hozir \d+ yoshdasiz\. /, '').replace(/ \([^)]*qoldi\)/, '');
+  if (now54) when += ' 54 yoshga to‘lgansiz va stajingiz 20 yildan ko‘p: hozir ham chiqishingiz mumkin.';
+  $('fWhen').textContent = when;
+  $('fWorkL').textContent = can54 ? 'Pensiyaga chiqqunimcha ishlashni davom ettiraman' : 'Pensiyaga chiqqunimcha (' + ry + '-yil ' + MONTHS[retYM % 12] + 'gacha) ishlashni davom ettiraman';
   const lm = left % 12, ly = Math.floor(left / 12);
   $('fCount').innerHTML = (ly ? ly + '<small>yil</small>' : '') + (lm || !ly ? lm + '<small>oy</small>' : '');
-  $('fWhoS').textContent = (s.sex === 'f' ? 'Ayol' : 'Erkak') + ' · ' + s.birthY + '-yil ' + MONTHS[(s.birthM - 1)];
-  $('fRingN').textContent = ageNow; $('fRingS').textContent = 'yosh / ' + retAge + ' dan';
-  $('fRing').style.setProperty('--p', Math.min(100, Math.round((nowYM - birthYM) / (retYM - birthYM) * 100)) + '%');
+  $('fWhoS').textContent = (s.sex === 'f' ? 'Ayol' : 'Erkak') + ' · ' + s.birthY + '-yil ' + MONTHS[(s.birthM - 1)] + (viaAlt ? ' · umumiy tartibda' : '');
+  $('fRingN').textContent = ageNow; $('fRingS').textContent = 'yosh / ' + tgtAge + ' dan';
+  $('fRing').style.setProperty('--p', Math.min(100, Math.round((nowYM - birthYM) / (tgtYM - birthYM) * 100)) + '%');
+  $('fStBL').textContent = alwMode ? retAge + ' yoshda' : 'Pensiyada';
   $('fWorkN').textContent = work
-    ? 'Staj ' + stajText(s.stajM) + ' → ' + stajText(s2.stajM) + ' bo‘ladi. Oylik narxlar bilan birga oshib boradi deb olinadi.'
+    ? 'Staj ' + stajText(s.stajM) + ' → ' + stajText(s2.stajM) + ' bo‘ladi.' + (alwMode ? '' : ' Oylik narxlar bilan birga oshib boradi deb olinadi.')
     : 'Staj hozirgicha qoladi: ' + stajText(s.stajM) + '.' + (can54 ? ' Ishlamasangiz, kutish pensiyani oshirmaydi, shuning uchun eng erta muddat (54 yosh) olindi.' : '');
   const sc = val('fscen');
   const S = SCEN[sc];
@@ -1885,19 +1927,25 @@ function renderFuture() {
   $('fReal').textContent = real > 0 ? fmt(real) : '—';
   $('fNomL').textContent = ry + '-yilgi so‘mda';
   $('fNom').textContent = real > 0 ? '≈ ' + fmt(nom) : '—';
-  $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : (r2.kind === 'allowance' ? 'Staj yetmaydi: pensiya emas, nafaqa.' : '');
+  $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : '';
   $('fScenN').textContent = S.note;
   $('fStA').textContent = stajText(s.stajM); $('fStB').textContent = stajText(s2.stajM);
-  $('fProj').hidden = !work;
-  $('fNoWork').hidden = work;
-  $('fNoWork').innerHTML = r0.kind === 'allowance'
-    ? 'Staj ortmasa, pensiya tayinlanmaydi: ' + (s.sex === 'f' ? 60 : 65) + ' yoshda ijtimoiy nafaqa (<b>' + som(r0.total) + '</b>) beriladi. Kelajakdagi pensiyani ko‘rish uchun “ishlashni davom ettiraman” belgisini qo‘ying.'
-    : 'Staj ortmasa, pensiyangiz bugungi pulda <b>' + som(r0.total) + '</b> bo‘ladi, ya’ni tepadagi summa bilan bir xil. Kelajakdagi hisobni ko‘rish uchun “ishlashni davom ettiraman” belgisini qo‘ying.';
+  const needWage = work && r2.kind === 'empty';
+  const showProj = work && !alwMode && !needWage;
+  $('fProj').hidden = !showProj;
+  $('fFine').hidden = alwMode || needWage;
+  $('fNoWork').hidden = showProj;
+  $('fNoWork').innerHTML = needWage ? 'Kelajakdagi pensiyani hisoblash uchun o‘rtacha oylik ish haqini kiriting.' : alwMode
+    ? (work
+      ? retAge + ' yoshgacha ishlasangiz ham staj ' + stajText(s2.stajM) + ' bo‘ladi, bu 7 yildan kam. Shuning uchun pensiya tayinlanmaydi: ' + alwAge + ' yoshda ijtimoiy nafaqa (<b>' + som(r2.total) + '</b>) beriladi. ' + retAge + ' yoshdan keyin ham ishlab, stajni 7 yilga yetkazsangiz, pensiya tayinlanishi mumkin.'
+      : 'Staj ortmasa, pensiya tayinlanmaydi: ' + alwAge + ' yoshda ijtimoiy nafaqa (<b>' + som(r0.total) + '</b>) beriladi. Kelajakdagi pensiyani ko‘rish uchun “ishlashni davom ettiraman” belgisini qo‘ying.')
+    : 'Staj ortmasa, pensiyangiz bugungi pulda <b>' + som(r0.total) + '</b> bo‘ladi' + (viaAlt ? ' (umumiy tartibda)' : ', ya’ni tepadagi summa bilan bir xil') + '. Kelajakdagi hisobni ko‘rish uchun “ishlashni davom ettiraman” belgisini qo‘ying.';
 
   $('fChips').innerHTML = [['mb', 'Markaziy bank'], ['hist', 'Tarixiy']].map(([v, t]) => '<button type="button" data-v="' + v + '" class="' + (sc === v ? 'on' : '') + '">' + t + '</button>').join('');
   // Yillar bo'yicha nominal pensiya (grafik)
   const ys = []; for (let y = NOW_Y; y <= ry; y++) ys.push(y);
-  const pick = ys.length <= 8 ? ys : Array.from({ length: 8 }, (_, i) => ys[Math.round(i * (ys.length - 1) / 7)]);
+  const nb = window.innerWidth < 360 ? 6 : 8; // kichik ekranda kamroq ustun, yozuvlar sig'sin
+  const pick = ys.length <= nb ? ys : Array.from({ length: nb }, (_, i) => ys[Math.round(i * (ys.length - 1) / (nb - 1))]);
   const vals = pick.map((y) => real * growthFactor(nowYM, Math.min(retYM, y === NOW_Y ? nowYM : y * 12 + 6), S.rate));
   const mx = Math.max(...vals) || 1;
   $('fBars').innerHTML = real > 0 ? pick.map((y, i) => '<i class="' + (i === pick.length - 1 ? 'hi' : '') + '" style="height:' + Math.max(8, Math.round(vals[i] / mx * 100)) + '%" title="' + y + ': ' + som(Math.round(vals[i] / 1000) * 1000) + '"></i>').join('') : '';
