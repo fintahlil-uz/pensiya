@@ -469,7 +469,7 @@ body { background: #F6F2EA linear-gradient(180deg, #1F2A44 0px, #2C3958 240px, #
 .fgrid .fbox:not(.main) { background: #CFAE78; clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%); margin-left: -14px; padding-left: 26px; }
 .fgrid .fbox:not(.main) span, .fgrid .fbox:not(.main) small { color: #3B2E16; }
 .fgrid .fbox:not(.main) b { color: #1F2A44; }
-.fgrid .fbox b { font-size: clamp(17px, 4.6vw, 22px); }
+.fgrid .fbox b { font-size: clamp(18px, 5.2vw, 23px); font-variant-numeric: tabular-nums; }
 .fbars { display: flex; align-items: flex-end; gap: 6px; height: 110px; padding: 4px 2px 0; }
 .fbars i { flex: 1; border-radius: 8px 8px 4px 4px; background: #E6DAC4; min-height: 8px; transition: height .3s ease; }
 .fbars i.hi { background: #B08D57; }
@@ -596,6 +596,10 @@ body[data-view="start"] #abBack { visibility: hidden; }
 .rtop .pill { font-size: 12px; padding: 4px 10px; }
 .rcard { --seg1: #1F2A44; --seg2: #B08D57; --seg3: #2F4F3E; --seg4: #CFAE78; --seg5: #6F7E99; }
 body[data-view="start"] .brandfoot { display: none; }
+.fsum { display: grid; gap: 2px; padding: 14px 16px; border-radius: 18px; background: #1F2A44; color: #fff; }
+.fsum span { font-size: 13px; color: #C9CFDA; font-weight: 600; }
+.fsum b { font-size: clamp(26px, 7.5vw, 32px); font-weight: 800; color: #E0C08A; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.fsum small { font-size: 12.5px; color: #C9CFDA; }
 /* Dock */
 .mdock { gap: 8px; padding: 7px; }
 .mdock button { width: 52px; height: 52px; padding: 0; justify-content: center; font-size: 22px; background: rgba(246,242,234,.95); }
@@ -880,6 +884,7 @@ body[data-view="result"] { padding-bottom: 120px; }
           <input type="checkbox" id="fWork" checked>
           <span><b id="fWorkL">Pensiyagacha ishlashni davom ettiraman</b><small id="fWorkN"></small></span>
         </label>
+        <div class="fsum" aria-live="polite"><span id="fSumL">Pensiyaga chiqqanda (bugungi pulda)</span><b id="fSum">—</b><small id="fSumD"></small></div>
         <fieldset id="fAgeBox" hidden>
           <legend>Qaysi yoshda chiqasiz?</legend>
           <div class="seg">
@@ -1811,6 +1816,7 @@ function renderFuture() {
   const box = $('future');
   const s = readState();
   const ageLike = s.type === 'age' || s.type === 'priv';
+  const rl0 = document.querySelector('.rlabel'); if (rl0) rl0.textContent = 'Taxminiy oylik pensiya';
   if (!ageLike || !s.birthY) { box.hidden = true; return; }
   const r0 = calc(s);
   if (!r0.retAge) { box.hidden = true; return; }
@@ -1861,13 +1867,16 @@ function renderFuture() {
   const S = SCEN[sc];
   const k = growthFactor(nowYM, retYM, S.rate);
   const real = r2.total, nom = Math.round(real * k / 1000) * 1000;
-  const mln = (v) => (v / 1e6).toFixed(2).replace('.', ',') + ' mln so‘m';
-  $('fReal').textContent = real > 0 ? mln(real) : '—'; $('fReal').title = real > 0 ? som(real) : '';
+  $('fReal').textContent = real > 0 ? fmt(real) : '—';
   $('fNomL').textContent = ry + '-yilgi so‘mda';
-  $('fNom').textContent = real > 0 ? '≈ ' + mln(nom) : '—'; $('fNom').title = real > 0 ? som(nom) : '';
+  $('fNom').textContent = real > 0 ? '≈ ' + fmt(nom) : '—';
   $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : (r2.kind === 'allowance' ? 'Staj yetmaydi: pensiya emas, nafaqa.' : '');
   $('fScenN').textContent = S.note;
   $('fStA').textContent = stajText(s.stajM); $('fStB').textContent = stajText(s2.stajM);
+  $('fSum').textContent = real > 0 ? som(real) : (r2.kind === 'allowance' ? 'Nafaqa' : '—');
+  const dlt = real - r0.total;
+  $('fSumD').textContent = real > 0 ? (dlt > 0 ? 'Hozirgi hisobdan ' + som(dlt) + ' ko‘p (staj ortgani uchun)' : 'Hozirgi hisob bilan bir xil: staj ortmaydi') : '';
+  const rl = document.querySelector('.rlabel'); if (rl) rl.textContent = 'Hozirgi staj bilan hisob';
   $('fChips').innerHTML = [['mb', 'Markaziy bank'], ['hist', 'Tarixiy']].map(([v, t]) => '<button type="button" data-v="' + v + '" class="' + (sc === v ? 'on' : '') + '">' + t + '</button>').join('');
   // Yillar bo'yicha nominal pensiya (grafik)
   const ys = []; for (let y = NOW_Y; y <= ry; y++) ys.push(y);
