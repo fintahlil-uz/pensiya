@@ -596,10 +596,6 @@ body[data-view="start"] #abBack { visibility: hidden; }
 .rtop .pill { font-size: 12px; padding: 4px 10px; }
 .rcard { --seg1: #1F2A44; --seg2: #B08D57; --seg3: #2F4F3E; --seg4: #CFAE78; --seg5: #6F7E99; }
 body[data-view="start"] .brandfoot { display: none; }
-.fsum { display: grid; gap: 2px; padding: 14px 16px; border-radius: 18px; background: #1F2A44; color: #fff; }
-.fsum span { font-size: 13px; color: #C9CFDA; font-weight: 600; }
-.fsum b { font-size: clamp(26px, 7.5vw, 32px); font-weight: 800; color: #E0C08A; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.fsum small { font-size: 12.5px; color: #C9CFDA; }
 /* Dock */
 .mdock { gap: 8px; padding: 7px; }
 .mdock button { width: 52px; height: 52px; padding: 0; justify-content: center; font-size: 22px; background: rgba(246,242,234,.95); }
@@ -884,7 +880,6 @@ body[data-view="result"] { padding-bottom: 120px; }
           <input type="checkbox" id="fWork" checked>
           <span><b id="fWorkL">Pensiyagacha ishlashni davom ettiraman</b><small id="fWorkN"></small></span>
         </label>
-        <div class="fsum" aria-live="polite"><span id="fSumL">Pensiyaga chiqqanda (bugungi pulda)</span><b id="fSum">—</b><small id="fSumD"></small></div>
         <fieldset id="fAgeBox" hidden>
           <legend>Qaysi yoshda chiqasiz?</legend>
           <div class="seg">
@@ -1477,6 +1472,20 @@ function retireHTML(s, r) {
 
 const SEGC = { s1: 'var(--seg1)', s2: 'var(--seg2)', s3: 'var(--seg3)', s4: 'var(--seg4)', s5: 'var(--seg5)' };
 
+// Pensiyagacha qo'shiladigan staj (oy): "ishlashni davom ettiraman" belgilangan bo'lsa
+function futureAdd(s) {
+  if (!(s.type === 'age' || s.type === 'priv') || !s.birthY) return 0;
+  const fw = document.getElementById('fWork'); if (!fw || !fw.checked) return 0;
+  const r0 = calc(s); if (!r0.retAge) return 0;
+  const nowYM = NOW_Y * 12 + (NOW_M - 1), birthYM = s.birthY * 12 + (s.birthM - 1);
+  let retAge = r0.retAge;
+  if (s.type === 'age' && s.sex === 'f' && retAge === 55) {
+    const at54 = birthYM + 54 * 12;
+    const can54 = s.stajM + Math.max(0, at54 - nowYM) >= 240 && at54 > nowYM;
+    if (can54 && val('fage') === '54') retAge = 54;
+  }
+  return Math.max(0, birthYM + retAge * 12 - nowYM);
+}
 function render() {
   queueMicrotask(() => { try { renderFuture(); } catch (e) { const f = document.getElementById('future'); if (f) f.hidden = true; } });
   // Jinsga mos kelmaydigan imtiyoz toifasini almashtirish
@@ -1484,7 +1493,7 @@ function render() {
   Object.keys(PRIV).forEach((k) => { const inp = document.querySelector('input[name="priv"][value="' + k + '"]'); inp.disabled = !PRIV[k][sexNow]; });
   const cur = document.querySelector('input[name="priv"]:checked');
   if (!cur || !PRIV[cur.value][sexNow]) { const first = Object.keys(PRIV).find((k) => PRIV[k][sexNow]); document.querySelector('input[name="priv"][value="' + first + '"]').checked = true; }
-  const s = readState();
+  let s = readState();
   const T = s.type;
   const isAgeLike = T === 'age' || T === 'priv';
 
@@ -1536,8 +1545,12 @@ function render() {
     else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. ' + (document.querySelector('input[name=mode]:checked') && document.querySelector('input[name=mode]:checked').value === 'quick' ? 'Eski yillar oyliklarini kiritish uchun “Batafsil hisob”ni tanlang.' : 'Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” ni tanlang.'); sh.className = 'hint'; }
   } else renderYears(s);
 
-  // Hisob
+  // Hisob ("pensiyagacha ishlayman" belgilansa — pensiyaga chiqqandagi staj bilan)
+  const s0 = s, fAdd = futureAdd(s);
+  if (fAdd) { s = Object.assign({}, s, { stajM: s.stajM + fAdd }); s.staj = Math.floor(s.stajM / 12); }
   const r = calc(s);
+  const rl = document.querySelector('.rlabel');
+  if (rl) rl.textContent = fAdd ? 'Pensiyaga chiqqanda · staj ' + stajText(s.stajM) : 'Taxminiy oylik pensiya';
   const pill = $('pill');
   pill.textContent = r.kind === 'empty' ? 'Ma’lumot kerak' : r.pill;
   pill.className = 'pill ' + ({ pension: 'ok', partial: 'mid', allowance: 'mid', ineligible: 'no', none: 'no' }[r.kind] || '');
@@ -1816,7 +1829,6 @@ function renderFuture() {
   const box = $('future');
   const s = readState();
   const ageLike = s.type === 'age' || s.type === 'priv';
-  const rl0 = document.querySelector('.rlabel'); if (rl0) rl0.textContent = 'Taxminiy oylik pensiya';
   if (!ageLike || !s.birthY) { box.hidden = true; return; }
   const r0 = calc(s);
   if (!r0.retAge) { box.hidden = true; return; }
@@ -1873,10 +1885,7 @@ function renderFuture() {
   $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : (r2.kind === 'allowance' ? 'Staj yetmaydi: pensiya emas, nafaqa.' : '');
   $('fScenN').textContent = S.note;
   $('fStA').textContent = stajText(s.stajM); $('fStB').textContent = stajText(s2.stajM);
-  $('fSum').textContent = real > 0 ? som(real) : (r2.kind === 'allowance' ? 'Nafaqa' : '—');
-  const dlt = real - r0.total;
-  $('fSumD').textContent = real > 0 ? (dlt > 0 ? 'Hozirgi hisobdan ' + som(dlt) + ' ko‘p (staj ortgani uchun)' : 'Hozirgi hisob bilan bir xil: staj ortmaydi') : '';
-  const rl = document.querySelector('.rlabel'); if (rl) rl.textContent = 'Hozirgi staj bilan hisob';
+
   $('fChips').innerHTML = [['mb', 'Markaziy bank'], ['hist', 'Tarixiy']].map(([v, t]) => '<button type="button" data-v="' + v + '" class="' + (sc === v ? 'on' : '') + '">' + t + '</button>').join('');
   // Yillar bo'yicha nominal pensiya (grafik)
   const ys = []; for (let y = NOW_Y; y <= ry; y++) ys.push(y);
@@ -1886,9 +1895,9 @@ function renderFuture() {
   $('fBars').innerHTML = real > 0 ? pick.map((y, i) => '<i class="' + (i === pick.length - 1 ? 'hi' : '') + '" style="height:' + Math.max(8, Math.round(vals[i] / mx * 100)) + '%" title="' + y + ': ' + som(Math.round(vals[i] / 1000) * 1000) + '"></i>').join('') : '';
   $('fBl').innerHTML = real > 0 ? pick.map((y) => '<span>' + y + '</span>').join('') : '';
 }
-$('fWork').addEventListener('change', renderFuture);
+$('fWork').addEventListener('change', render);
 $('fChips').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelector('input[name=fscen][value=' + b.dataset.v + ']').checked = true; renderFuture(); });
-document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', renderFuture));
+document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', render));
 document.querySelectorAll('input[name=fscen]').forEach((el) => el.addEventListener('change', renderFuture));
 
 // Qoidalar: bosib ochiladigan bloklar
