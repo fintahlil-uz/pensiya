@@ -596,6 +596,9 @@ body[data-view="start"] #abBack { visibility: hidden; }
 .rtop .pill { font-size: 12px; padding: 4px 10px; }
 .rcard { --seg1: #1F2A44; --seg2: #B08D57; --seg3: #2F4F3E; --seg4: #CFAE78; --seg5: #6F7E99; }
 body[data-view="start"] .brandfoot { display: none; }
+.fproj { display: grid; gap: 14px; }
+.fproj[hidden] { display: none; }
+.fnowork { margin: 0; padding: 12px 14px; border-radius: 16px; background: #F3EDE2; font-size: 14px; color: #1F2A44; line-height: 1.45; }
 /* Dock */
 .mdock { gap: 8px; padding: 7px; }
 .mdock button { width: 52px; height: 52px; padding: 0; justify-content: center; font-size: 22px; background: rgba(246,242,234,.95); }
@@ -888,6 +891,8 @@ body[data-view="result"] { padding-bottom: 120px; }
           </div>
           <p class="hint">20 yil va undan ko‘p stajli ayollar 54 yoshdan chiqishi mumkin (Qonun 12¹-modda). 1 yil ko‘proq ishlash pensiyaga +1% qo‘shadi, lekin 1 yillik pensiya olinmay qoladi. Islohot loyihasida 54 yoshda chiqishni 2027-yildan bekor qilish taklif qilingan.</p>
         </fieldset>
+        <p class="fnowork" id="fNoWork" hidden></p>
+        <div class="fproj" id="fProj">
         <div class="fkel"><b>Kelajakda</b><div class="fchips" id="fChips"></div></div>
         <div aria-hidden="true"><div class="fbars" id="fBars"></div><div class="fbl" id="fBl"></div></div>
         <div class="fgrid">
@@ -902,6 +907,7 @@ body[data-view="result"] { padding-bottom: 120px; }
           </div>
           <p class="hint" id="fScenN"></p>
         </fieldset>
+        </div>
         <p class="fine" style="text-align:left">“Bugungi pulda” — oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati. Prognoz kafolat emas. Pensiya qoidalari, miqdorlar va pensiya yoshi o‘zgarishi mumkin. Oylik inflyatsiyadan tezroq oshsa, pensiya yuqoriroq, sekinroq oshsa, pastroq chiqadi.</p>
       </section>
       <div class="ractions" id="resActions">
@@ -1472,20 +1478,6 @@ function retireHTML(s, r) {
 
 const SEGC = { s1: 'var(--seg1)', s2: 'var(--seg2)', s3: 'var(--seg3)', s4: 'var(--seg4)', s5: 'var(--seg5)' };
 
-// Pensiyagacha qo'shiladigan staj (oy): "ishlashni davom ettiraman" belgilangan bo'lsa
-function futureAdd(s) {
-  if (!(s.type === 'age' || s.type === 'priv') || !s.birthY) return 0;
-  const fw = document.getElementById('fWork'); if (!fw || !fw.checked) return 0;
-  const r0 = calc(s); if (!r0.retAge) return 0;
-  const nowYM = NOW_Y * 12 + (NOW_M - 1), birthYM = s.birthY * 12 + (s.birthM - 1);
-  let retAge = r0.retAge;
-  if (s.type === 'age' && s.sex === 'f' && retAge === 55) {
-    const at54 = birthYM + 54 * 12;
-    const can54 = s.stajM + Math.max(0, at54 - nowYM) >= 240 && at54 > nowYM;
-    if (can54 && val('fage') === '54') retAge = 54;
-  }
-  return Math.max(0, birthYM + retAge * 12 - nowYM);
-}
 function render() {
   queueMicrotask(() => { try { renderFuture(); } catch (e) { const f = document.getElementById('future'); if (f) f.hidden = true; } });
   // Jinsga mos kelmaydigan imtiyoz toifasini almashtirish
@@ -1545,12 +1537,8 @@ function render() {
     else { sh.textContent = 'So‘nggi 10 yil ichidagi eng yaxshi ketma-ket 5 yillik o‘rtacha oylik, bugungi qiymatda. ' + (document.querySelector('input[name=mode]:checked') && document.querySelector('input[name=mode]:checked').value === 'quick' ? 'Eski yillar oyliklarini kiritish uchun “Batafsil hisob”ni tanlang.' : 'Eski yillar oyliklarini kiritish uchun “Yillar bo‘yicha” ni tanlang.'); sh.className = 'hint'; }
   } else renderYears(s);
 
-  // Hisob ("pensiyagacha ishlayman" belgilansa — pensiyaga chiqqandagi staj bilan)
-  const s0 = s, fAdd = futureAdd(s);
-  if (fAdd) { s = Object.assign({}, s, { stajM: s.stajM + fAdd }); s.staj = Math.floor(s.stajM / 12); }
+  // Hisob (doim hozirgi staj bilan)
   const r = calc(s);
-  const rl = document.querySelector('.rlabel');
-  if (rl) rl.textContent = fAdd ? 'Pensiyaga chiqqanda · staj ' + stajText(s.stajM) : 'Taxminiy oylik pensiya';
   const pill = $('pill');
   pill.textContent = r.kind === 'empty' ? 'Ma’lumot kerak' : r.pill;
   pill.className = 'pill ' + ({ pension: 'ok', partial: 'mid', allowance: 'mid', ineligible: 'no', none: 'no' }[r.kind] || '');
@@ -1885,6 +1873,9 @@ function renderFuture() {
   $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : (r2.kind === 'allowance' ? 'Staj yetmaydi: pensiya emas, nafaqa.' : '');
   $('fScenN').textContent = S.note;
   $('fStA').textContent = stajText(s.stajM); $('fStB').textContent = stajText(s2.stajM);
+  $('fProj').hidden = !work;
+  $('fNoWork').hidden = work;
+  $('fNoWork').innerHTML = 'Staj ortmasa, pensiyangiz bugungi pulda <b>' + som(r0.total) + '</b> bo‘ladi, ya’ni tepadagi summa bilan bir xil. Kelajakdagi hisobni ko‘rish uchun “ishlashni davom ettiraman” belgisini qo‘ying.';
 
   $('fChips').innerHTML = [['mb', 'Markaziy bank'], ['hist', 'Tarixiy']].map(([v, t]) => '<button type="button" data-v="' + v + '" class="' + (sc === v ? 'on' : '') + '">' + t + '</button>').join('');
   // Yillar bo'yicha nominal pensiya (grafik)
@@ -1895,9 +1886,9 @@ function renderFuture() {
   $('fBars').innerHTML = real > 0 ? pick.map((y, i) => '<i class="' + (i === pick.length - 1 ? 'hi' : '') + '" style="height:' + Math.max(8, Math.round(vals[i] / mx * 100)) + '%" title="' + y + ': ' + som(Math.round(vals[i] / 1000) * 1000) + '"></i>').join('') : '';
   $('fBl').innerHTML = real > 0 ? pick.map((y) => '<span>' + y + '</span>').join('') : '';
 }
-$('fWork').addEventListener('change', render);
+$('fWork').addEventListener('change', renderFuture);
 $('fChips').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelector('input[name=fscen][value=' + b.dataset.v + ']').checked = true; renderFuture(); });
-document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', render));
+document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', renderFuture));
 document.querySelectorAll('input[name=fscen]').forEach((el) => el.addEventListener('change', renderFuture));
 
 // Qoidalar: bosib ochiladigan bloklar
