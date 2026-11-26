@@ -498,17 +498,128 @@ body[data-view="result"] { padding-bottom: 96px; }
   body { background-size: 100% 1000px; }
   .mdock { display: none !important; }
 }
+
+/* ===== Namuna bo'yicha to'liq qayta qurish (2026-11-26) ===== */
+:root { --font-display: "Manrope", "Segoe UI", system-ui, sans-serif; }
+h1, h2, h3, .step-h { font-family: var(--font-body); font-weight: 800; letter-spacing: -0.02em; }
+.hero, .notice, .types-h { display: none !important; }
+.wrap { max-width: 1180px; padding: 10px 16px 32px; }
+/* App bar */
+.appbar { position: relative; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: 10px; padding: 6px 0 16px; }
+.appbar .brand { justify-self: center; font-family: var(--font-body); font-weight: 800; font-size: 20px; color: #fff; text-decoration: none; letter-spacing: -.01em; }
+.appbar .brand span { color: #CFAE78; }
+.rb { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.12); color: #fff; font: inherit; font-size: 18px; display: grid; place-items: center; cursor: pointer; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.rb:focus-visible { outline: 3px solid #CFAE78; outline-offset: 2px; }
+body[data-view="start"] #abBack { visibility: hidden; }
+.abbox { position: absolute; right: 0; top: 56px; z-index: 40; display: grid; min-width: 220px; padding: 6px; border-radius: 18px; background: rgba(255,255,255,.96); box-shadow: 0 14px 34px rgba(31,42,68,.22); }
+.abbox a, .abbox button { font: inherit; font-size: 15px; font-weight: 600; color: #1F2A44; text-decoration: none; text-align: left; padding: 12px 14px; border-radius: 12px; border: 0; background: transparent; cursor: pointer; }
+.abbox a:hover, .abbox button:hover { background: #F3EDE2; }
+/* Start */
+.startv { max-width: 560px; margin: 0 auto; gap: 14px; }
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); }
+.modes .mcard .mc { display: flex; justify-content: center; align-items: center; padding: 12px 10px; border: 0 !important; border-radius: 999px; background: transparent !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.modes .mcard b { font-size: 16px; color: #fff; font-weight: 700; }
+.modes .mcard em, .modes .mcard small { display: none; }
+.modes .mcard input:checked + .mc { background: #CFAE78 !important; }
+.modes .mcard input:checked + .mc b { color: #1F2A44; }
+.hl { display: flex; gap: 12px; align-items: center; }
+.hl b { display: block; font-size: 17px; font-weight: 700; color: #1F2A44; }
+.hl small { display: block; font-size: 13px; color: var(--muted); }
+.dotic { width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 18px; flex: none; box-shadow: 0 2px 8px rgba(31,42,68,.08); }
+.sdash { display: grid; gap: 14px; }
+.stitle { font-size: clamp(30px, 8vw, 40px); line-height: 1.1; color: #1F2A44; margin: 4px 0 0; }
+.sdesc { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
+.ribbon { display: flex; height: 58px; border-radius: 16px; overflow: hidden; }
+.ribbon > div { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 16px; min-width: 0; }
+.ribbon small { font-size: 12px; opacity: .85; white-space: nowrap; }
+.ribbon b { font-size: 17px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ribbon .ra { background: #1F2A44; color: #fff; clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%); }
+.ribbon .rbn { background: #CFAE78; color: #1F2A44; margin-left: -14px; padding-left: 26px; text-align: right; align-items: flex-end; clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%); }
+.tiles2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile2 { background: var(--surface); border: 1px solid var(--glass-b); border-radius: 22px; padding: 16px; box-shadow: var(--sh); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.tile2 span { display: block; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; color: var(--muted); }
+.tile2 b { display: block; font-size: 17px; font-weight: 800; color: #1F2A44; margin-top: 6px; }
+.btn-p { padding: 17px 18px; font-size: 17px; }
+.startv .fine { color: var(--muted); }
+/* Wizard */
+.step-h { font-size: 22px; color: #1F2A44; }
+.wz-head { margin-bottom: 4px; }
+.prog i { height: 6px; }
+/* Natija: tepada katta summa, pastda och kartalar */
+.result { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; display: grid; gap: 14px; }
+.rtop { padding: 2px 4px 6px; }
+.rtop .rhead { justify-content: space-between; }
+.rlabel { font-size: 14px; color: #C9CFDA; font-weight: 600; }
+.rtop .big { font-family: var(--font-body); font-weight: 800; letter-spacing: -0.03em; font-size: clamp(46px, 13vw, 64px); color: #E0C08A; margin: 8px 0 4px; }
+.rtop .big small { color: #fff; font-size: .28em; }
+.rtop .subline { color: #C9CFDA; }
+.rcard { --hero-ink: #1F2A44; --hero-soft: #6A6458; --hero-gold: #B08D57; color: #1F2A44; background: var(--surface); border: 1px solid var(--glass-b); border-radius: 26px; padding: 18px; box-shadow: var(--sh); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.rcard:empty, .rcard:has(> #retire:empty):has(> .payer:empty) { display: none; }
+.rcard .rtitle { margin-top: 0; color: #6A6458; }
+.rcard .payer { margin: 0; font-size: 14px; color: #1F2A44; background: #F3EDE2; border-radius: 14px; padding: 12px 14px; }
+.rcard .retire { border-color: rgba(31,42,68,.12); background: #fff; border-radius: 16px; }
+.rcard .bar { background: #EFE6D6; }
+.rcard .rows div { border-bottom-color: rgba(31,42,68,.08); }
+.rcard .rows dt { color: #3A4256; }
+.result .msg:not(:empty), .result .tipbox { --hero-ink: #1F2A44; color: #1F2A44; background: var(--surface); border: 1px solid var(--glass-b); border-radius: 22px; padding: 14px 16px; box-shadow: var(--sh); margin: 0; }
+.result .msg:empty { display: none; }
+.result .pill { background: rgba(255,255,255,.16); color: #fff; }
+.result .pill.ok { background: #2F4F3E; } .result .pill.mid { background: #CFAE78; color: #1F2A44; }
+/* Kelajak kartasi */
+.future { border-radius: 26px; padding: 18px; gap: 14px; }
+.fhead { display: grid; gap: 14px; }
+.fmain { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.fcount { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; color: #1F2A44; line-height: 1; }
+.fcount small { font-size: 16px; font-weight: 600; color: var(--muted); margin: 0 6px 0 2px; letter-spacing: 0; }
+.fwhen { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.ring { width: 112px; height: 112px; flex: none; border-radius: 50%; background: conic-gradient(#B08D57 0 var(--p), #EFE6D6 0); display: grid; place-items: center; }
+.ring > div { width: 90px; height: 90px; border-radius: 50%; background: #FBF8F2; display: grid; place-content: center; text-align: center; }
+.ring b { font-size: 26px; font-weight: 800; color: #1F2A44; line-height: 1; }
+.ring small { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.fkel { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
+.fkel > b { font-size: 18px; font-weight: 800; color: #1F2A44; }
+.fchips { display: flex; gap: 6px; }
+.fchips button { font: inherit; font-size: 14px; font-weight: 700; border-radius: 999px; padding: 9px 14px; border: 1px solid rgba(31,42,68,.14); background: rgba(255,255,255,.75); color: #1F2A44; cursor: pointer; }
+.fchips button.on { background: #1F2A44; color: #fff; border-color: #1F2A44; }
+.fscen legend, .fscen .seg { display: none; }
+.fscen .hint { margin-top: 0; }
+.fgrid { height: auto; }
+.fgrid .fbox { padding: 12px 16px; gap: 2px; }
+.fgrid .fbox small { display: none; }
+.fgrid .fbox span { font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 600; }
+.fbars { height: 120px; gap: 8px; }
+.fbars i { border-radius: 10px 10px 6px 6px; }
+#fAgeBox .seg span { border-radius: 16px; }
+.wz-nav .btn-p, .wz-nav .btn-s { white-space: nowrap; padding: 15px 18px; font-size: 16px; }
+.rtop .rhead { flex-wrap: wrap; gap: 8px; }
+.rlabel { white-space: nowrap; }
+.rtop .pill { font-size: 12px; padding: 4px 10px; }
+.rcard { --seg1: #1F2A44; --seg2: #B08D57; --seg3: #2F4F3E; --seg4: #CFAE78; --seg5: #6F7E99; }
+body[data-view="start"] .brandfoot { display: none; }
+/* Dock */
+.mdock { gap: 8px; padding: 7px; }
+.mdock button { width: 52px; height: 52px; padding: 0; justify-content: center; font-size: 22px; background: rgba(246,242,234,.95); }
+.mdock button.on { background: #1F2A44; }
+body[data-view="result"] { padding-bottom: 120px; }
+@media (min-width: 1024px) {
+  .appbar { padding-bottom: 22px; }
+  .rtop .big { font-size: 60px; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brandbar">
+  <div class="appbar">
+    <button type="button" class="rb" id="abBack" aria-label="Orqaga">←</button>
     <a class="brand" href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener" aria-label="FinTahlil.uz Instagram sahifasi">FinTahlil<span>.uz</span></a>
-    <nav class="social" aria-label="FinTahlil.uz ijtimoiy tarmoqlarda">
-      <a href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://t.me/fintahlil_uz" target="_blank" rel="noopener">Telegram</a>
-    </nav>
+    <button type="button" class="rb" id="abMenu" aria-label="Menyu" aria-expanded="false" aria-controls="abBox">≡</button>
+    <div class="abbox" id="abBox" hidden>
+      <a href="https://instagram.com/fintahlil.uz" target="_blank" rel="noopener">📷 Instagram</a>
+      <a href="https://t.me/fintahlil_uz" target="_blank" rel="noopener">✈️ Telegram</a>
+      <button type="button" id="abRules">📚 Qoidalar va manbalar</button>
+      <button type="button" id="abShare">⤴ Ulashish</button>
+    </div>
   </div>
   <header class="hero">
     <div class="badges"><span class="badge">Ma’lumotlar: 2026-yil noyabr</span><span class="badge">Pensiya jamg‘armasi usuli bo‘yicha</span></div>
@@ -526,7 +637,17 @@ body[data-view="result"] { padding-bottom: 96px; }
       <label class="mcard"><input type="radio" name="mode" value="quick" checked><span class="mc"><b>⚡ Qisqa hisob</b><em>≈1 daqiqa</em><small>Pensiya turi, siz haqingizda, staj va o‘rtacha oylik. Tez, taxminiy natija.</small></span></label>
       <label class="mcard"><input type="radio" name="mode" value="full"><span class="mc"><b>📋 Batafsil hisob</b><em>≈3 daqiqa</em><small>Qo‘shimcha: yillar bo‘yicha oylik, tug‘ilgan sana (pensiya sanasi), faxriy unvon. Natija shaxsiy holatingizga yaqinroq bo‘ladi.</small></span></label>
     </div>
-    <button type="button" class="btn-p" id="startBtn">Boshlash →</button>
+    <div class="card sdash">
+      <div class="hl"><span class="dotic">⏳</span><div><b>Pensiya hisoblagich</b><small>Qonun va 2026-yil miqdorlari asosida</small></div></div>
+      <h1 class="stitle">Pensiyangiz <span class="gold">qancha</span> bo‘ladi?</h1>
+      <p class="sdesc" id="modeDesc"></p>
+      <div class="ribbon"><div class="ra"><small>Turlari</small><b>4 ta pensiya</b></div><div class="rbn"><small>Natija</small><b>bugun + kelajak</b></div></div>
+    </div>
+    <div class="tiles2">
+      <div class="tile2"><span>MA’LUMOTLAR</span><b>2026-yil noyabr</b></div>
+      <div class="tile2"><span>USUL</span><b>Pensiya jamg‘armasi</b></div>
+    </div>
+    <button type="button" class="btn-p" id="startBtn">Hisoblashni boshlash</button>
     <p class="fine">Ikkala hisob ham taxminiy. Rasmiy miqdorni Pensiya jamg‘armasi staj va ish haqi yozuvlaringiz bo‘yicha belgilaydi.</p>
   </section>
   <div id="typesHold">
@@ -732,14 +853,15 @@ body[data-view="result"] { padding-bottom: 96px; }
 
     <aside class="side">
       <section class="card result" id="result" aria-live="polite" aria-label="Natija">
-        <div class="rhead"><span class="pill" id="pill"></span><span class="mark" aria-hidden="true">FinTahlil.uz</span></div>
-        <div class="big" id="big"></div>
-        <p class="subline" id="sub"></p>
-        <p class="payer" id="payer"></p>
-        <div id="retire"></div>
-        <p class="rtitle">Shartlar</p>
-        <ul class="checks" id="checks"></ul>
-        <div id="breakdown">
+        <div class="rtop">
+          <div class="rhead"><span class="rlabel">Taxminiy oylik pensiya</span><span class="pill" id="pill"></span></div>
+          <div class="big" id="big"></div>
+          <p class="subline" id="sub"></p>
+        </div>
+        <div class="rcard"><p class="payer" id="payer"></p><div id="retire"></div></div>
+        <div class="rcard"><p class="rtitle">Shartlar</p>
+        <ul class="checks" id="checks"></ul></div>
+        <div id="breakdown" class="rcard">
           <p class="rtitle" id="bdTitle">Pensiya nimalardan iborat</p>
           <div class="bar" id="bar" aria-hidden="true"></div>
           <dl class="rows" id="rows"></dl>
@@ -748,8 +870,12 @@ body[data-view="result"] { padding-bottom: 96px; }
         <div class="tipbox" id="tip" hidden></div>
       </section>
       <section class="card future" id="future" hidden aria-labelledby="fTitle">
-        <h2 id="fTitle">Kelajakdagi pensiyam</h2>
-        <p class="fwhen" id="fWhen"></p>
+        <div class="fhead">
+          <div class="hl"><span class="dotic">⏳</span><div><b id="fTitle">Pensiyagacha</b><small id="fWhoS"></small></div></div>
+          <div class="fmain"><div class="fleft"><div class="fcount" id="fCount">—</div><p class="fwhen" id="fWhen"></p></div>
+          <div class="ring" id="fRing" style="--p:0%"><div><b id="fRingN">—</b><small id="fRingS"></small></div></div></div>
+          <div class="ribbon"><div class="ra"><small>Hozirgi staj</small><b id="fStA">—</b></div><div class="rbn"><small>Pensiyada</small><b id="fStB">—</b></div></div>
+        </div>
         <label class="check">
           <input type="checkbox" id="fWork" checked>
           <span><b id="fWorkL">Pensiyagacha ishlashni davom ettiraman</b><small id="fWorkN"></small></span>
@@ -762,12 +888,13 @@ body[data-view="result"] { padding-bottom: 96px; }
           </div>
           <p class="hint">20 yil va undan ko‘p stajli ayollar 54 yoshdan chiqishi mumkin (Qonun 12¹-modda). 1 yil ko‘proq ishlash pensiyaga +1% qo‘shadi, lekin 1 yillik pensiya olinmay qoladi. Islohot loyihasida 54 yoshda chiqishni 2027-yildan bekor qilish taklif qilingan.</p>
         </fieldset>
+        <div class="fkel"><b>Kelajakda</b><div class="fchips" id="fChips"></div></div>
+        <div aria-hidden="true"><div class="fbars" id="fBars"></div><div class="fbl" id="fBl"></div></div>
         <div class="fgrid">
-          <div class="fbox main"><span>Bugungi pulda</span><b id="fReal">—</b><small>Asosiy raqam. Oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati shuncha bo‘ladi.</small></div>
+          <div class="fbox main"><span>Bugungi pulda</span><b id="fReal">—</b></div>
           <div class="fbox"><span id="fNomL">O‘sha yilgi so‘mda</span><b id="fNom">—</b><small id="fNomN"></small></div>
         </div>
-        <div aria-hidden="true"><div class="fbars" id="fBars"></div><div class="fbl" id="fBl"></div></div>
-        <fieldset>
+        <fieldset class="fscen">
           <legend>Narxlar o‘sishi stsenariysi</legend>
           <div class="seg">
             <label><input type="radio" name="fscen" value="mb" checked><span>Markaziy bank prognozi</span></label>
@@ -775,7 +902,7 @@ body[data-view="result"] { padding-bottom: 96px; }
           </div>
           <p class="hint" id="fScenN"></p>
         </fieldset>
-        <p class="fine" style="text-align:left">Prognoz kafolat emas. Pensiya qoidalari, miqdorlar va pensiya yoshi o‘zgarishi mumkin. Oylik inflyatsiyadan tezroq oshsa, pensiya yuqoriroq, sekinroq oshsa, pastroq chiqadi.</p>
+        <p class="fine" style="text-align:left">“Bugungi pulda” — oylik va narxlar bir xil sur’atda oshsa, pensiyangizning xarid quvvati. Prognoz kafolat emas. Pensiya qoidalari, miqdorlar va pensiya yoshi o‘zgarishi mumkin. Oylik inflyatsiyadan tezroq oshsa, pensiya yuqoriroq, sekinroq oshsa, pastroq chiqadi.</p>
       </section>
       <div class="ractions" id="resActions">
         <div class="card upsell" id="upsell"><b>Ko‘proq ma’lumot kiritasizmi?</b><p>“Batafsil hisob”da tug‘ilgan sanangizni kiritsangiz, pensiyaga chiqish sanasi va <b>kelajakdagi pensiyangiz</b> ham hisoblanadi. Yillar bo‘yicha oylik va faxriy unvon ham shu yerda.</p><button type="button" class="btn-p" id="toFull" style="width:100%">📋 Batafsil hisobga o‘tish</button></div>
@@ -978,9 +1105,10 @@ body[data-view="result"] { padding-bottom: 96px; }
 </button>
 
 <nav class="mdock" aria-label="Bo‘limlar">
-  <button type="button" id="dkCalc">🧮 Hisob</button>
-  <button type="button" id="dkRes" class="on">📊 Natija</button>
-  <button type="button" id="dkRules">📚 Qoidalar</button>
+  <button type="button" id="dkCalc" aria-label="Hisob">🧮</button>
+  <button type="button" id="dkRes" class="on" aria-label="Natija">📊</button>
+  <button type="button" id="dkRules" aria-label="Qoidalar">📚</button>
+  <button type="button" id="dkShare" aria-label="Ulashish">⤴</button>
 </nav>
 <script>
 /*CALC-START*/
@@ -1582,7 +1710,7 @@ function showStep(i) {
   ids.forEach((id, k) => { const sn = $(id).querySelector('.sn'); if (sn) sn.textContent = k + 1; });
   $('prog').innerHTML = ids.map((_, k) => '<i class="' + (k <= wzStep ? 'on' : '') + '"></i>').join('');
   $('wzCount').textContent = (wzStep + 1) + ' / ' + ids.length;
-  $('backBtn').textContent = wzStep === 0 ? '← Bosh sahifa' : '← Orqaga';
+  $('backBtn').textContent = '← Orqaga';
   $('nextBtn').textContent = wzStep === ids.length - 1 ? 'Natijani ko‘rish' : 'Davom etish →';
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
@@ -1597,6 +1725,14 @@ $('editBtn').addEventListener('click', () => { setView('wizard'); showStep(0); }
 $('restartBtn').addEventListener('click', () => setView('start'));
 window.matchMedia('(min-width: 1024px)').addEventListener('change', () => { if (document.body.dataset.view !== 'start') { setView(isDesk() ? 'wizard' : document.body.dataset.view); showStep(wzStep); } });
 $('dkCalc').addEventListener('click', () => { setView('wizard'); showStep(0); });
+$('dkShare').addEventListener('click', () => $('shareBtn').click());
+$('abShare').addEventListener('click', () => { $('abBox').hidden = true; $('shareBtn').click(); });
+$('abRules').addEventListener('click', () => { $('abBox').hidden = true; if (document.body.dataset.view === 'start') { setView(isDesk() ? 'wizard' : 'result'); } setTimeout(() => document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50); });
+$('abMenu').addEventListener('click', (e) => { e.stopPropagation(); const b = $('abBox'); b.hidden = !b.hidden; $('abMenu').setAttribute('aria-expanded', String(!b.hidden)); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.appbar')) $('abBox').hidden = true; });
+$('abBack').addEventListener('click', () => { const v = document.body.dataset.view; if (v === 'result') { setView('wizard'); showStep(stepIds().length - 1); } else if (v === 'wizard') { if (isDesk() || wzStep === 0) setView('start'); else showStep(wzStep - 1); } });
+function modeDesc() { $('modeDesc').textContent = getMode() === 'quick' ? 'Qisqa hisob: pensiya turi, siz haqingizda, staj va o‘rtacha oylik. Taxminan 1 daqiqa.' : 'Batafsil hisob: qo‘shimcha ravishda tug‘ilgan sana, yillar bo‘yicha oylik va faxriy unvon. Pensiyaga chiqish sanasi va kelajakdagi pensiya ham hisoblanadi.'; }
+document.querySelectorAll('input[name=mode]').forEach((el) => el.addEventListener('change', modeDesc)); modeDesc();
 $('dkRes').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 $('dkRules').addEventListener('click', () => document.querySelector('.more').scrollIntoView({ behavior: 'smooth', block: 'start' }));
 document.addEventListener('visibilitychange', () => { if (!document.hidden) $('shareBtn').textContent = 'Hisoblagichni ulashish'; });
@@ -1712,7 +1848,12 @@ function renderFuture() {
     const rm = reformAgeMonths(s.birthY, s.birthM, RET_AGE[s.sex]);
     if (rm > retAge * 12) { const ym2 = s.birthY * 12 + (s.birthM - 1) + rm; when += ' Islohot loyihasi qabul qilinsa: ' + Math.floor(ym2 / 12) + '-yil, ' + MONTHS[ym2 % 12] + '.'; }
   }
-  $('fWhen').textContent = when;
+  $('fWhen').textContent = when.replace(/^Hozir \d+ yoshdasiz\. /, '').replace(/ \([^)]*qoldi\)/, '');
+  const lm = left % 12, ly = Math.floor(left / 12);
+  $('fCount').innerHTML = (ly ? ly + '<small>yil</small>' : '') + (lm || !ly ? lm + '<small>oy</small>' : '');
+  $('fWhoS').textContent = (s.sex === 'f' ? 'Ayol' : 'Erkak') + ' · ' + s.birthY + '-yil ' + MONTHS[(s.birthM - 1)];
+  $('fRingN').textContent = ageNow; $('fRingS').textContent = 'yosh / ' + retAge + ' dan';
+  $('fRing').style.setProperty('--p', Math.min(100, Math.round((nowYM - birthYM) / (retYM - birthYM) * 100)) + '%');
   $('fWorkN').textContent = work
     ? 'Staj ' + stajText(s.stajM) + ' → ' + stajText(s2.stajM) + ' bo‘ladi. Oylik narxlar bilan birga oshib boradi deb olinadi.'
     : 'Staj hozirgicha qoladi: ' + stajText(s.stajM) + '.' + (can54 ? ' Ishlamasangiz, kutish pensiyani oshirmaydi, shuning uchun eng erta muddat (54 yosh) olindi.' : '');
@@ -1720,11 +1861,14 @@ function renderFuture() {
   const S = SCEN[sc];
   const k = growthFactor(nowYM, retYM, S.rate);
   const real = r2.total, nom = Math.round(real * k / 1000) * 1000;
-  $('fReal').textContent = real > 0 ? som(real) : '—';
+  const mln = (v) => (v / 1e6).toFixed(2).replace('.', ',') + ' mln so‘m';
+  $('fReal').textContent = real > 0 ? mln(real) : '—'; $('fReal').title = real > 0 ? som(real) : '';
   $('fNomL').textContent = ry + '-yilgi so‘mda';
-  $('fNom').textContent = real > 0 ? '≈ ' + som(nom) : '—';
+  $('fNom').textContent = real > 0 ? '≈ ' + mln(nom) : '—'; $('fNom').title = real > 0 ? som(nom) : '';
   $('fNomN').textContent = real > 0 ? 'Narxlar ' + ry + '-yilgacha ≈' + Math.round((k - 1) * 100) + '% oshadi deb olindi.' : (r2.kind === 'allowance' ? 'Staj yetmaydi: pensiya emas, nafaqa.' : '');
   $('fScenN').textContent = S.note;
+  $('fStA').textContent = stajText(s.stajM); $('fStB').textContent = stajText(s2.stajM);
+  $('fChips').innerHTML = [['mb', 'Markaziy bank'], ['hist', 'Tarixiy']].map(([v, t]) => '<button type="button" data-v="' + v + '" class="' + (sc === v ? 'on' : '') + '">' + t + '</button>').join('');
   // Yillar bo'yicha nominal pensiya (grafik)
   const ys = []; for (let y = NOW_Y; y <= ry; y++) ys.push(y);
   const pick = ys.length <= 8 ? ys : Array.from({ length: 8 }, (_, i) => ys[Math.round(i * (ys.length - 1) / 7)]);
@@ -1734,6 +1878,7 @@ function renderFuture() {
   $('fBl').innerHTML = real > 0 ? pick.map((y) => '<span>' + y + '</span>').join('') : '';
 }
 $('fWork').addEventListener('change', renderFuture);
+$('fChips').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelector('input[name=fscen][value=' + b.dataset.v + ']').checked = true; renderFuture(); });
 document.querySelectorAll('input[name=fage]').forEach((el) => el.addEventListener('change', renderFuture));
 document.querySelectorAll('input[name=fscen]').forEach((el) => el.addEventListener('change', renderFuture));
 
